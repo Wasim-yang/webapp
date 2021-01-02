@@ -10215,7 +10215,7 @@ a.text-dark:hover, a.text-dark:focus {
   }
 }
 input[type=text], input[type=password] {
-  width: 100%;
+  width: 80%;
   padding: 6px 10px;
   margin: 4px 0;
   display: inline-block;
@@ -10240,7 +10240,6 @@ input[type=text], input[type=password] {
 
 img.avatar {
   width: 40%;
-  border-radius: 50%;
 }
 
 
@@ -10313,5 +10312,8 @@ span.psw {
   .cancelbtn {
     width: 100%;
   }
+}
+.imagebox{
+
 }
 /*# sourceMappingURL=bootstrap.css.map */
