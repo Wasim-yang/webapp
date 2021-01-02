@@ -1,0 +1,30 @@
+.body{
+    background-image: url("/images/background.png");
+    background-size: cover;
+}
+.container-fluid{
+    width: 1000px;
+    margin-left:150px;
+}
+.jumbotron{
+    opacity: 0.85;
+}
+.row{
+    height: 100vh;
+}
+.card-header{
+    text-align: center;
+}
+.card-header img{
+    width: 40px;
+    height: 40px;
+}
+.card-body{
+    padding-top: 50px;
+}
+.alert-info{
+    margin-top: 20px;
+}
+.custom-control{
+    padding-bottom: 15px;
+}
