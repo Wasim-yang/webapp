@@ -17,8 +17,8 @@
     <script src="js/popper.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/main.js"></script>
-    <script src="js/request.js"></script>
     <script type="text/javascript" src="js/Control.js"></script>
+    <script src="js/request.js"></script>
     <!-- Data table plugin-->
     <script>
         let path
@@ -34,7 +34,7 @@
                 mimeType: "multipart/form-data",
                 success: function (data) {
                     path=data
-                    alert('上传成功')
+                    alert('image upload successful!')
                     let name = document.getElementById("goodName").value
                     let cost = document.getElementById("goodCost").value
                     let number = document.getElementById("goodNumber").value
@@ -46,7 +46,7 @@
                         })
                 },
                 error: function (data) {
-                    alert('上传失败')
+                    alert('image upload failed')
                 }
             });
         }
