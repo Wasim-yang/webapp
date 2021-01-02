@@ -9,99 +9,149 @@
     <!-- Main CSS-->
     <link rel="stylesheet" type="text/css" href="css/Login_main.css">
     <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
-    <!-- Font-icon css-->
     <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
     <!-- Essential javascripts for application to work-->
     <script src="js/jquery-3.2.1.min.js"></script>
     <script src="js/popper.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
+    <script src="js/bootstrap-table.js"></script>
     <script src="js/main.js"></script>
     <script type="text/javascript" src="js/Control.js"></script>
     <!-- Data table plugin-->
 
     <script src="js/request.js"></script>
     <script>
+        let flag = 0
+        let originpath
+        let path
+        $(function () {
+            $("#modalgoodsfile").change(function () {
+                flag = 1
+                var objUrl = getObjectURL(this.files[0]);//获取文件信息
+                console.log("objUrl = " + objUrl);
+                if (objUrl) {
+                    $("#modalgoodsimage").attr("src", objUrl);
+                }
+            });
+        })
 
-        function updategoods(){
-            let id=document.getElementById("modalgoodsid").value;
-            let name=document.getElementById("modalgoodsname").value;
-            let cost=document.getElementById("modalgoodscost").value;
-            let number=document.getElementById("modalgoodsnumber").value;
-            let ean=document.getElementById("modalgoodsean").value;
-            let description=document.getElementById("modalgoodsdescription").value;
-            request("http://127.0.0.1:8080/goods/update",`id=${id}&name=${name}&cost=${cost}&number=${number}&ean=${ean}&description=${description}`,res=>{
-                alert(res.message)
-            })
+        function getObjectURL(file) {
+            var url = null;
+            if (window.createObjectURL != undefined) {
+                url = window.createObjectURL(file);
+            } else if (window.URL != undefined) { // mozilla(firefox)
+                url = window.URL.createObjectURL(file);
+            } else if (window.webkitURL != undefined) { // webkit or chrome
+                url = window.webkitURL.createObjectURL(file);
+            }
+            return url;
         }
-        function selectgoods() {
-            request("http://127.0.0.1:8080/goods/select", ``, res => {
-                let table = document.getElementById("goods_list")
-                res.forEach(goods => {
-                    let row = document.createElement("tr")
-                    let cell1 = document.createElement("td")
-                    let cell2 = document.createElement("td")
-                    let cell3 = document.createElement("td")
-                    let cell4 = document.createElement("td")
-                    let cell5 = document.createElement("td")
-                    let cell6 = document.createElement("td")
-                    let seebutton = document.createElement("button")
-                    let updatebutton = document.createElement("button")
-                    let deletebutton = document.createElement("button")
-                    seebutton.type = "button"
-                    updatebutton.type = "button"
-                    deletebutton.type = "button"
-                    seebutton.className = "btn btn-primary"
-                    updatebutton.className = "btn btn-info"
-                    deletebutton.className = "btn btn-warning"
-                    seebutton.appendChild(document.createTextNode("查看"))
-                    updatebutton.appendChild(document.createTextNode("编辑"))
-                    deletebutton.appendChild(document.createTextNode("删除"))
-                    seebutton.setAttribute("id",goods.id)
-                    seebutton.setAttribute("name",goods.name)
-                    seebutton.setAttribute("cost",goods.cost)
-                    seebutton.setAttribute("number",goods.number)
-                    seebutton.setAttribute("ean",goods.ean)
-                    seebutton.setAttribute("description",goods.description)
-                    seebutton.setAttribute("image",goods.path)
-                    updatebutton.setAttribute("id",goods.id)
-                    deletebutton.setAttribute("id",goods.id)
-                    seebutton.onclick=function (){
-                        document.getElementById("modalgoodsid").value=seebutton.getAttribute("id")
-                        document.getElementById("modalgoodsname").value=seebutton.getAttribute("name")
-                        document.getElementById("modalgoodscost").value=seebutton.getAttribute("cost")
-                        document.getElementById("modalgoodsnumber").value=seebutton.getAttribute("number")
-                        document.getElementById("modalgoodsean").value=seebutton.getAttribute("ean")
-                        document.getElementById("modalgoodsdescription").value=seebutton.getAttribute("description")
-                        $("#modalgoodsimage").attr("src", seebutton.getAttribute("image"));
-                        document.getElementById('goodsmodal').style.display='block'
-                    }
-                    updatebutton.onclick = function(){
 
-                    }
-                    deletebutton.onclick = function(){
-                        let gid=this.getAttribute("id")
-                        request("http://127.0.0.1:8080/goods/delete",`id=${gid}`,res=>{
+        function updategoods() {
+            let id = document.getElementById("modalgoodsid").value;
+            let name = document.getElementById("modalgoodsname").value;
+            let cost = document.getElementById("modalgoodscost").value;
+            let number = document.getElementById("modalgoodsnumber").value;
+            let ean = document.getElementById("modalgoodsean").value;
+            let description = document.getElementById("modalgoodsdescription").value;
+            if (flag == 1) {
+                let formData = new FormData();
+                formData.append('upload', $("#modalgoodsfile")[0].files[0]);
+                formData.append('originpath',originpath)
+                $.ajax({
+                    url: "http://127.0.0.1:8080/upload/update",//文档接口
+                    type: "post",
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    mimeType: "multipart/form-data",
+                    success: function (data) {
+                        flag=0
+                        path = data
+                        alert('上传成功')
+                        request("http://127.0.0.1:8080/goods/update", `id=${id}&name=${name}&cost=${cost}&number=${number}&ean=${ean}&description=${description}&path=${path}`, res => {
                             alert(res.message)
                         })
                     }
-                    cell1.appendChild(document.createTextNode(goods.id))
-                    cell2.appendChild(document.createTextNode(goods.name))
-                    cell3.appendChild(document.createTextNode(goods.cost))
-                    cell4.appendChild(document.createTextNode(goods.number))
-                    cell5.appendChild(document.createTextNode(goods.ean))
-                    cell6.appendChild(seebutton)
-                    cell6.appendChild(updatebutton)
-                    cell6.appendChild(deletebutton)
-                    row.appendChild(cell1)
-                    row.appendChild(cell2)
-                    row.appendChild(cell3)
-                    row.appendChild(cell4)
-                    row.appendChild(cell5)
-                    row.appendChild(cell6)
-                    table.appendChild(row)
                 })
-            })
+            }
+            else{
+                request("http://127.0.0.1:8080/goods/update", `id=${id}&name=${name}&cost=${cost}&number=${number}&ean=${ean}&description=${description}&path=${originpath}`, res => {
+                    alert(res.message)
+                })
+            }
         }
+
+            function selectgoods() {
+                request("http://127.0.0.1:8080/goods/select", ``, res => {
+                    let table = document.getElementById("goods_list")
+                    res.forEach(goods => {
+                        let row = document.createElement("tr")
+                        let cell1 = document.createElement("td")
+                        let cell2 = document.createElement("td")
+                        let cell3 = document.createElement("td")
+                        let cell4 = document.createElement("td")
+                        let cell5 = document.createElement("td")
+                        let cell6 = document.createElement("td")
+                        let seebutton = document.createElement("button")
+                        let updatebutton = document.createElement("button")
+                        let deletebutton = document.createElement("button")
+                        seebutton.type = "button"
+                        updatebutton.type = "button"
+                        deletebutton.type = "button"
+                        seebutton.className = "btn btn-primary"
+                        updatebutton.className = "btn btn-info"
+                        deletebutton.className = "btn btn-warning"
+                        seebutton.appendChild(document.createTextNode("查看"))
+                        updatebutton.appendChild(document.createTextNode("编辑"))
+                        deletebutton.appendChild(document.createTextNode("删除"))
+                        seebutton.setAttribute("id", goods.id)
+                        seebutton.setAttribute("name", goods.name)
+                        seebutton.setAttribute("cost", goods.cost)
+                        seebutton.setAttribute("number", goods.number)
+                        seebutton.setAttribute("ean", goods.ean)
+                        seebutton.setAttribute("description", goods.description)
+                        seebutton.setAttribute("image", goods.path)
+                        updatebutton.setAttribute("id", goods.id)
+                        deletebutton.setAttribute("id", goods.id)
+                        seebutton.onclick = function () {
+                            document.getElementById("modalgoodsid").value = seebutton.getAttribute("id")
+                            document.getElementById("modalgoodsname").value = seebutton.getAttribute("name")
+                            document.getElementById("modalgoodscost").value = seebutton.getAttribute("cost")
+                            document.getElementById("modalgoodsnumber").value = seebutton.getAttribute("number")
+                            document.getElementById("modalgoodsean").value = seebutton.getAttribute("ean")
+                            document.getElementById("modalgoodsdescription").value = seebutton.getAttribute("description")
+                            originpath = seebutton.getAttribute("image")
+                            $("#modalgoodsimage").attr("src", seebutton.getAttribute("image"));
+                            document.getElementById('goodsmodal').style.display = 'block'
+                        }
+                        updatebutton.onclick = function () {
+
+                        }
+                        deletebutton.onclick = function () {
+                            let gid = this.getAttribute("id")
+                            request("http://127.0.0.1:8080/goods/delete", `id=${gid}`, res => {
+                                alert(res.message)
+                            })
+                        }
+                        cell1.appendChild(document.createTextNode(goods.id))
+                        cell2.appendChild(document.createTextNode(goods.name))
+                        cell3.appendChild(document.createTextNode(goods.cost))
+                        cell4.appendChild(document.createTextNode(goods.number))
+                        cell5.appendChild(document.createTextNode(goods.ean))
+                        cell6.appendChild(seebutton)
+                        cell6.appendChild(updatebutton)
+                        cell6.appendChild(deletebutton)
+                        row.appendChild(cell1)
+                        row.appendChild(cell2)
+                        row.appendChild(cell3)
+                        row.appendChild(cell4)
+                        row.appendChild(cell5)
+                        row.appendChild(cell6)
+                        table.appendChild(row)
+                    })
+                })
+            }
     </script>
 </head>
 <body class="app sidebar-mini rtl" onload='selectgoods()'>
@@ -280,31 +330,40 @@
     <form class="modal-content animate" action="/action_page.php">
         <div class="imgcontainer">
             <!-- 点击×号，隐藏模态框-->
-            <span onclick="document.getElementById('goodsmodal').style.display='none'" class="close" title="Close Modal">×</span>
-            <img src="" id="modalgoodsimage" alt="Avatar" class="avatar">
+            <span onclick="document.getElementById('goodsmodal').style.display='none'" class="close"
+                  title="Close Modal">×</span>
         </div>
 
         <div class="container">
+            <div class="imagebox">
+                <label><b>商品图片</b></label>
+                <img src="" id="modalgoodsimage" alt="Avatar" class="avatar" style="width: 20rem;height: 15rem"/>
+                <label class="btn btn-info fileinput-button">
+                    <span>更换图片</span>
+                    <input type="file" name="modalgoodsfile" id="modalgoodsfile"
+                           accept="image/gif,image/jpeg,image/jpg,image/png,image/svg"/>
+                </label>
+            </div>
             <label><b>商品编号</b></label>
-            <input type="text" id="modalgoodsid" required readonly>
+            <input type="text" id="modalgoodsid" required readonly><br>
 
             <label><b>商品名称</b></label>
-            <input type="text" id="modalgoodsname" required>
+            <input type="text" id="modalgoodsname" required><br>
 
-            <label><b>单价</b></label>
-            <input type="text" id="modalgoodscost" required>
+            <label><b>商品单价</b></label>
+            <input type="text" id="modalgoodscost" required><br>
 
-            <label><b>库存</b></label>
-            <input type="text" id="modalgoodsnumber" required>
+            <label><b>商品库存</b></label>
+            <input type="text" id="modalgoodsnumber" required><br>
 
             <label><b>商品条码</b></label>
-            <input type="text" id="modalgoodsean" required>
+            <input type="text" id="modalgoodsean" required><br>
 
             <label><b>商品描述</b></label>
             <textarea id="modalgoodsdescription" cols="100" rows="3"
                       class="form-control" required></textarea>
 
-            <button type="button" style="margin-top: 10px;"  onclick="updategoods()">保存修改</button>
+            <button type="button" style="margin-top: 10px;" onclick="updategoods()">保存修改</button>
         </div>
 
         <div class="container" style="background-color:#f1f1f1">

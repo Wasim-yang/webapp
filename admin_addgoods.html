@@ -35,22 +35,20 @@
                 success: function (data) {
                     path=data
                     alert('上传成功')
+                    let name = document.getElementById("goodName").value
+                    let cost = document.getElementById("goodCost").value
+                    let number = document.getElementById("goodNumber").value
+                    let ean = document.getElementById("goodEAN").value
+                    let description = document.getElementById("goodsdescription").value
+                    request("http://127.0.0.1:8080/goods/insert",
+                        `name=${name}&cost=${cost}&number=${number}&ean=${ean}&description=${description}&path=${path}`, res => {
+                            alert(res.message)
+                        })
                 },
                 error: function (data) {
                     alert('上传失败')
                 }
             });
-
-            let name = document.getElementById("goodName").value
-            let cost = document.getElementById("goodCost").value
-            let number = document.getElementById("goodNumber").value
-            let ean = document.getElementById("goodEAN").value
-            let description = document.getElementById("goodsdescription").value
-
-            request("http://127.0.0.1:8080/goods/insert",
-                `name=${name}&cost=${cost}&number=${number}&ean=${ean}&description=${description}&path=${path}`, res => {
-                    alert(res.message)
-                })
         }
 
         $(function () {
