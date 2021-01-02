@@ -10,9 +10,7 @@
     <link rel="stylesheet" type="text/css" href="css/Login_main.css">
     <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
     <!-- Font-icon css-->
-    <link rel="stylesheet" type="text/css"
-          href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-
+    <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
     <!-- Essential javascripts for application to work-->
     <script src="js/jquery-3.2.1.min.js"></script>
     <script src="js/popper.min.js"></script>
@@ -20,12 +18,93 @@
     <script src="js/main.js"></script>
     <script type="text/javascript" src="js/Control.js"></script>
     <!-- Data table plugin-->
-    <script type="text/javascript" src="/js/plugins/jquery.dataTables.min.js"></script>
-    <script type="text/javascript" src="/js/plugins/dataTables.bootstrap.min.js"></script>
-    <script type="text/javascript">$('#scoreTable').DataTable();</script>
 
+    <script src="js/request.js"></script>
+    <script>
+
+        function updategoods(){
+            let id=document.getElementById("modalgoodsid").value;
+            let name=document.getElementById("modalgoodsname").value;
+            let cost=document.getElementById("modalgoodscost").value;
+            let number=document.getElementById("modalgoodsnumber").value;
+            let ean=document.getElementById("modalgoodsean").value;
+            let description=document.getElementById("modalgoodsdescription").value;
+            request("http://127.0.0.1:8080/goods/update",`id=${id}&name=${name}&cost=${cost}&number=${number}&ean=${ean}&description=${description}`,res=>{
+                alert(res.message)
+            })
+        }
+        function selectgoods() {
+            request("http://127.0.0.1:8080/goods/select", ``, res => {
+                let table = document.getElementById("goods_list")
+                res.forEach(goods => {
+                    let row = document.createElement("tr")
+                    let cell1 = document.createElement("td")
+                    let cell2 = document.createElement("td")
+                    let cell3 = document.createElement("td")
+                    let cell4 = document.createElement("td")
+                    let cell5 = document.createElement("td")
+                    let cell6 = document.createElement("td")
+                    let seebutton = document.createElement("button")
+                    let updatebutton = document.createElement("button")
+                    let deletebutton = document.createElement("button")
+                    seebutton.type = "button"
+                    updatebutton.type = "button"
+                    deletebutton.type = "button"
+                    seebutton.className = "btn btn-primary"
+                    updatebutton.className = "btn btn-info"
+                    deletebutton.className = "btn btn-warning"
+                    seebutton.appendChild(document.createTextNode("查看"))
+                    updatebutton.appendChild(document.createTextNode("编辑"))
+                    deletebutton.appendChild(document.createTextNode("删除"))
+                    seebutton.setAttribute("id",goods.id)
+                    seebutton.setAttribute("name",goods.name)
+                    seebutton.setAttribute("cost",goods.cost)
+                    seebutton.setAttribute("number",goods.number)
+                    seebutton.setAttribute("ean",goods.ean)
+                    seebutton.setAttribute("description",goods.description)
+                    seebutton.setAttribute("image",goods.path)
+                    updatebutton.setAttribute("id",goods.id)
+                    deletebutton.setAttribute("id",goods.id)
+                    seebutton.onclick=function (){
+                        document.getElementById("modalgoodsid").value=seebutton.getAttribute("id")
+                        document.getElementById("modalgoodsname").value=seebutton.getAttribute("name")
+                        document.getElementById("modalgoodscost").value=seebutton.getAttribute("cost")
+                        document.getElementById("modalgoodsnumber").value=seebutton.getAttribute("number")
+                        document.getElementById("modalgoodsean").value=seebutton.getAttribute("ean")
+                        document.getElementById("modalgoodsdescription").value=seebutton.getAttribute("description")
+                        $("#modalgoodsimage").attr("src", seebutton.getAttribute("image"));
+                        document.getElementById('goodsmodal').style.display='block'
+                    }
+                    updatebutton.onclick = function(){
+
+                    }
+                    deletebutton.onclick = function(){
+                        let gid=this.getAttribute("id")
+                        request("http://127.0.0.1:8080/goods/delete",`id=${gid}`,res=>{
+                            alert(res.message)
+                        })
+                    }
+                    cell1.appendChild(document.createTextNode(goods.id))
+                    cell2.appendChild(document.createTextNode(goods.name))
+                    cell3.appendChild(document.createTextNode(goods.cost))
+                    cell4.appendChild(document.createTextNode(goods.number))
+                    cell5.appendChild(document.createTextNode(goods.ean))
+                    cell6.appendChild(seebutton)
+                    cell6.appendChild(updatebutton)
+                    cell6.appendChild(deletebutton)
+                    row.appendChild(cell1)
+                    row.appendChild(cell2)
+                    row.appendChild(cell3)
+                    row.appendChild(cell4)
+                    row.appendChild(cell5)
+                    row.appendChild(cell6)
+                    table.appendChild(row)
+                })
+            })
+        }
+    </script>
 </head>
-<body class="app sidebar-mini rtl">
+<body class="app sidebar-mini rtl" onload='selectgoods()'>
 <!-- Navbar-->
 <header class="navbar navbar-dark bg-dark shadow fixed-top ">
     <!--左侧-->
@@ -155,10 +234,10 @@
         <div>
             <h1><i class="fa fa fa-align-left"></i>商品列表</h1>
         </div>
-<!--        <ul class="app-breadcrumb breadcrumb">-->
-<!--            <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>-->
-<!--            <li class="breadcrumb-item"><a href="/admin_score.html">添加商品</a></li>-->
-<!--        </ul>-->
+        <!--        <ul class="app-breadcrumb breadcrumb">-->
+        <!--            <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>-->
+        <!--            <li class="breadcrumb-item"><a href="/admin_score.html">添加商品</a></li>-->
+        <!--        </ul>-->
     </div>
     <div class="row">
         <div class="col-md-12">
@@ -169,7 +248,7 @@
                             <input class="form-control" type="text" name="teacher" placeholder="查询商品">
                         </div>
                         <div class="col-lg-3">
-                            <button class="btn btn-primary" id="#" type="button" >查询</button>
+                            <button class="btn btn-primary" id="#" type="button">查询</button>
                         </div>
                     </div>
                 </form>
@@ -182,10 +261,12 @@
                                 <th>名称</th>
                                 <th>单价</th>
                                 <th>库存</th>
+                                <th>商品条码</th>
                                 <th>操作</th>
                             </tr>
                             </thead>
-                            <tbody id="score_list">
+                            <tbody id="goods_list">
+
                             </tbody>
                         </table>
                     </div>
@@ -194,6 +275,42 @@
         </div>
     </div>
 </main>
+<div id="goodsmodal" class="modal">
+    　　　　　　
+    <form class="modal-content animate" action="/action_page.php">
+        <div class="imgcontainer">
+            <!-- 点击×号，隐藏模态框-->
+            <span onclick="document.getElementById('goodsmodal').style.display='none'" class="close" title="Close Modal">×</span>
+            <img src="" id="modalgoodsimage" alt="Avatar" class="avatar">
+        </div>
 
+        <div class="container">
+            <label><b>商品编号</b></label>
+            <input type="text" id="modalgoodsid" required readonly>
+
+            <label><b>商品名称</b></label>
+            <input type="text" id="modalgoodsname" required>
+
+            <label><b>单价</b></label>
+            <input type="text" id="modalgoodscost" required>
+
+            <label><b>库存</b></label>
+            <input type="text" id="modalgoodsnumber" required>
+
+            <label><b>商品条码</b></label>
+            <input type="text" id="modalgoodsean" required>
+
+            <label><b>商品描述</b></label>
+            <textarea id="modalgoodsdescription" cols="100" rows="3"
+                      class="form-control" required></textarea>
+
+            <button type="button" style="margin-top: 10px;"  onclick="updategoods()">保存修改</button>
+        </div>
+
+        <div class="container" style="background-color:#f1f1f1">
+            <!-- 点击cancel按钮，把模态框隐藏-->
+        </div>
+    </form>
+</div>
 </body>
 </html>
