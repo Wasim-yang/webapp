@@ -24,6 +24,11 @@
         let flag = 0
         let originpath
         let path
+        let currentPage
+        let totalPage
+        let PageSize
+        let totalRecord
+        let targetPage
         $(function () {
             $("#modalgoodsfile").change(function () {
                 flag = 1
@@ -84,10 +89,19 @@
         }
         /*查询并生成表单*/
         function selectgoods() {
-            request("http://127.0.0.1:8080/goods/select", ``, res => {
+            request("http://127.0.0.1:8080/goods/selectall", ``, res => {
+                currentPage=res.currentPage
+                totalPage=res.totalPage
+                PageSize=res.pageSize
+                totalRecord=res.totalRecord
                 let table = document.getElementById("goods_list")
                 /*生成表单并打印数据与操作按钮*/
-                res.forEach(goods => {
+                let goodsList=res.dataList
+                document.getElementById("pageResult").append("共有"+totalRecord+"条记录 共"+totalPage+"页 当前"+currentPage+"页")
+                for(let i=0;i<totalRecord;i++)
+                {
+                    if(i>=PageSize)
+                        break
                     let row = document.createElement("tr")
                     let cell1 = document.createElement("td")
                     let cell2 = document.createElement("td")
@@ -104,14 +118,14 @@
                     deletebutton.style = "margin-right: -40px;margin-left: 10px"
                     seebutton.appendChild(document.createTextNode("查看"))
                     deletebutton.appendChild(document.createTextNode("删除"))
-                    seebutton.setAttribute("id", goods.id)
-                    seebutton.setAttribute("name", goods.name)
-                    seebutton.setAttribute("cost", goods.cost)
-                    seebutton.setAttribute("number", goods.number)
-                    seebutton.setAttribute("ean", goods.ean)
-                    seebutton.setAttribute("description", goods.description)
-                    seebutton.setAttribute("image", goods.path)
-                    deletebutton.setAttribute("id", goods.id)
+                    seebutton.setAttribute("id", goodsList[i].id)
+                    seebutton.setAttribute("name", goodsList[i].name)
+                    seebutton.setAttribute("cost", goodsList[i].cost)
+                    seebutton.setAttribute("number", goodsList[i].number)
+                    seebutton.setAttribute("ean", goodsList[i].ean)
+                    seebutton.setAttribute("description", goodsList[i].description)
+                    seebutton.setAttribute("image", goodsList[i].path)
+                    deletebutton.setAttribute("id", goodsList[i].id)
                     /*查看按钮-在拟态框中显示详细数据*/
                     seebutton.onclick = function () {
                         document.getElementById("modalgoodsid").value = seebutton.getAttribute("id")
@@ -132,11 +146,11 @@
                             window.location.reload();
                         })
                     }
-                    cell1.appendChild(document.createTextNode(goods.id))
-                    cell2.appendChild(document.createTextNode(goods.name))
-                    cell3.appendChild(document.createTextNode(goods.cost))
-                    cell4.appendChild(document.createTextNode(goods.number))
-                    cell5.appendChild(document.createTextNode(goods.ean))
+                    cell1.appendChild(document.createTextNode(goodsList[i].id))
+                    cell2.appendChild(document.createTextNode(goodsList[i].name))
+                    cell3.appendChild(document.createTextNode(goodsList[i].cost))
+                    cell4.appendChild(document.createTextNode(goodsList[i].number))
+                    cell5.appendChild(document.createTextNode(goodsList[i].ean))
                     cell6.appendChild(seebutton)
                     cell6.appendChild(deletebutton)
                     row.appendChild(cell1)
@@ -146,8 +160,13 @@
                     row.appendChild(cell5)
                     row.appendChild(cell6)
                     table.appendChild(row)
-                })
+                }
             })
+        }
+
+        function firstpage(){
+            targetPage=0
+            request()
         }
     </script>
 </head>
@@ -316,6 +335,13 @@
 
                             </tbody>
                         </table>
+                        <p id="pageResult"/>
+                        <div style="text-align: center">
+                        <a href="#" onclick="firstPage();">首页</a>&nbsp;&nbsp;
+                        <a href="#" onclick="nextPage();">下一页</a>&nbsp;&nbsp;
+                        <a href="#" onclick="previousPage();">上一页</a>&nbsp;&nbsp;
+                        <a href="#" onblur="lastPage();">尾页</a>
+                        </div>
                     </div>
                 </div>
             </div>
