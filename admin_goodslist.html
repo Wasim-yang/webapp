@@ -24,11 +24,10 @@
         let flag = 0
         let originpath
         let path
-        let currentPage
-        let totalPage
+        let currentPage = 1
+        let totalPage = 1
         let PageSize
-        let totalRecord
-        let targetPage
+        let totalRecord = 0
         $(function () {
             $("#modalgoodsfile").change(function () {
                 flag = 1
@@ -51,6 +50,23 @@
             }
             return url;
         }
+
+        /*清除表单*/
+        function deleteTable() {
+            document.getElementById("goods_list").remove()
+            document.getElementById("pageResult").remove()
+            let table = document.getElementById("scoreTable")
+            let tbody = document.createElement("tbody")
+            let pageResultBox = document.getElementById("pageResultBox")
+            let pageResult = document.createElement("p")
+            tbody.id = "goods_list"
+            pageResult.id="pageResult"
+            let row = document.createElement("tr")
+            let cell1 = document.createElement("td")
+            table.appendChild(tbody)
+            pageResultBox.appendChild(pageResult)
+        }
+
         /*向后端发送更新数据*/
         function updategoods() {
             let id = document.getElementById("modalgoodsid").value;
@@ -76,31 +92,60 @@
                         alert('image upload successful!')
                         request("http://127.0.0.1:8080/goods/update", `id=${id}&name=${name}&cost=${cost}&number=${number}&ean=${ean}&description=${description}&path=${path}`, res => {
                             alert(res.message)
-                            window.location.reload();
+                            deleteTable()
+                            selectgoods()
+                            document.getElementById('goodsmodal').style.display='none'
                         })
                     }
                 })
             } else {
                 request("http://127.0.0.1:8080/goods/update", `id=${id}&name=${name}&cost=${cost}&number=${number}&ean=${ean}&description=${description}&path=${originpath}`, res => {
                     alert(res.message)
-                    window.location.reload();
+                    deleteTable()
+                    selectgoods()
+                    document.getElementById('goodsmodal').style.display='none'
                 })
             }
         }
+
+        function firstPage() {
+            currentPage=1
+            deleteTable()
+        }
+
+        function previousPage() {
+            if(currentPage>1){
+                currentPage=currentPage-1
+            }
+            deleteTable()
+        }
+
+        function nextPage() {
+            if(currentPage<totalPage)
+                currentPage=currentPage+1
+            deleteTable()
+        }
+
+        function lastPage() {
+            currentPage=totalPage
+            deleteTable()
+        }
+
         /*查询并生成表单*/
         function selectgoods() {
-            request("http://127.0.0.1:8080/goods/selectall", ``, res => {
-                currentPage=res.currentPage
-                totalPage=res.totalPage
-                PageSize=res.pageSize
-                totalRecord=res.totalRecord
+            request("http://127.0.0.1:8080/goods/selectpage", `currentPage=${currentPage}`, res => {
+                currentPage = res.currentPage
+                totalPage = res.totalPage
+                PageSize = res.pageSize
+                totalRecord = res.totalRecord
                 let table = document.getElementById("goods_list")
                 /*生成表单并打印数据与操作按钮*/
-                let goodsList=res.dataList
-                document.getElementById("pageResult").append("共有"+totalRecord+"条记录 共"+totalPage+"页 当前"+currentPage+"页")
-                for(let i=0;i<totalRecord;i++)
-                {
-                    if(i>=PageSize)
+                let goodsList = res.dataList
+                let j=0
+                document.getElementById("pageResult").append("共有" + totalRecord + "条记录 共" + totalPage + "页 当前第" + currentPage + "页")
+                for (let i = 0; i < totalRecord; i++) {
+                    j = j + 1
+                    if (j > PageSize)
                         break
                     let row = document.createElement("tr")
                     let cell1 = document.createElement("td")
@@ -143,7 +188,8 @@
                         let gid = this.getAttribute("id")
                         request("http://127.0.0.1:8080/goods/delete", `id=${gid}`, res => {
                             alert(res.message)
-                            window.location.reload();
+                            deleteTable()
+                            selectgoods()
                         })
                     }
                     cell1.appendChild(document.createTextNode(goodsList[i].id))
@@ -164,10 +210,6 @@
             })
         }
 
-        function firstpage(){
-            targetPage=0
-            request()
-        }
     </script>
 </head>
 <body class="app sidebar-mini rtl" onload='selectgoods()'>
@@ -335,12 +377,14 @@
 
                             </tbody>
                         </table>
-                        <p id="pageResult"/>
+                        <div id="pageResultBox">
+                            <p id="pageResult"/>
+                        </div>
                         <div style="text-align: center">
-                        <a href="#" onclick="firstPage();">首页</a>&nbsp;&nbsp;
-                        <a href="#" onclick="nextPage();">下一页</a>&nbsp;&nbsp;
-                        <a href="#" onclick="previousPage();">上一页</a>&nbsp;&nbsp;
-                        <a href="#" onblur="lastPage();">尾页</a>
+                            <a href="#" onclick="firstPage();selectgoods();">首页</a>&nbsp;&nbsp;
+                            <a href="#" onclick="nextPage();selectgoods();">下一页</a>&nbsp;&nbsp;
+                            <a href="#" onclick="previousPage();selectgoods();">上一页</a>&nbsp;&nbsp;
+                            <a href="#" onclick="lastPage();selectgoods();">尾页</a>
                         </div>
                     </div>
                 </div>
@@ -349,7 +393,7 @@
     </div>
 </main>
 <div id="goodsmodal" class="modal">
-<!--    商品详情拟态框　　-->
+    <!--    商品详情拟态框　　-->
     <form class="modal-content animate">
         <div class="imgcontainer">
             <!-- 点击×号，隐藏模态框-->
