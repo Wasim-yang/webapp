@@ -71,12 +71,14 @@
                         alert('image upload successful!')
                         request("http://127.0.0.1:8080/goods/update", `id=${id}&name=${name}&cost=${cost}&number=${number}&ean=${ean}&description=${description}&path=${path}`, res => {
                             alert(res.message)
+                            window.location.reload();
                         })
                     }
                 })
             } else {
                 request("http://127.0.0.1:8080/goods/update", `id=${id}&name=${name}&cost=${cost}&number=${number}&ean=${ean}&description=${description}&path=${originpath}`, res => {
                     alert(res.message)
+                    window.location.reload();
                 })
             }
         }
@@ -127,6 +129,7 @@
                         let gid = this.getAttribute("id")
                         request("http://127.0.0.1:8080/goods/delete", `id=${gid}`, res => {
                             alert(res.message)
+                            window.location.reload();
                         })
                     }
                     cell1.appendChild(document.createTextNode(goods.id))
