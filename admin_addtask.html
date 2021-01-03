@@ -29,8 +29,9 @@
             let descp = document.getElementById("taskDescription").value
             let deadline = document.getElementById("taskDl").value
             // 前后端分离
-            request("http://127.0.0.1:8080/taskk/insertt",
-                `tname=${name}&tdescription=${descp}&trequirement=${require}$taward=${award}&ttype=${type}&tdeadline=${deadline}`, res => {
+            //     `tname=${name}&tdescription=${descp}&trequirement=${require}taward=${award}&ttype=${type}&tdeadline=${deadline}`
+            request("http://127.0.0.1:8080/task/insert",
+                `tname=${name}&tdescription=${descp}&trequirement=${require}&taward=${award}&ttype=${type}&tdeadline=${deadline}`, res => {
                     alert(res.message)
                 })
         }
