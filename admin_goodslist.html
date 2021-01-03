@@ -39,6 +39,72 @@
             });
         })
 
+        function selectgoodsbyid() {
+            let id = document.getElementById("selectgoodsid").value
+            request("http://127.0.0.1:8080/goods/selectid", `id=${id}`, res => {
+                let table = document.getElementById("goods_list")
+                /*生成表单并打印数据与操作按钮*/
+                let row = document.createElement("tr")
+                let cell1 = document.createElement("td")
+                let cell2 = document.createElement("td")
+                let cell3 = document.createElement("td")
+                let cell4 = document.createElement("td")
+                let cell5 = document.createElement("td")
+                let cell6 = document.createElement("td")
+                let seebutton = document.createElement("button")
+                let deletebutton = document.createElement("button")
+                seebutton.type = "button"
+                deletebutton.type = "button"
+                seebutton.className = "btn btn-primary"
+                deletebutton.className = "btn btn-danger"
+                deletebutton.style = "margin-right: -40px;margin-left: 10px"
+                seebutton.appendChild(document.createTextNode("查看"))
+                deletebutton.appendChild(document.createTextNode("删除"))
+                seebutton.setAttribute("id", res.id)
+                seebutton.setAttribute("name", res.name)
+                seebutton.setAttribute("cost", res.cost)
+                seebutton.setAttribute("number", res.number)
+                seebutton.setAttribute("ean", res.ean)
+                seebutton.setAttribute("description", res.description)
+                seebutton.setAttribute("image", res.path)
+                deletebutton.setAttribute("id", res.id)
+                seebutton.onclick = function () {
+                    document.getElementById("modalgoodsid").value = seebutton.getAttribute("id")
+                    document.getElementById("modalgoodsname").value = seebutton.getAttribute("name")
+                    document.getElementById("modalgoodscost").value = seebutton.getAttribute("cost")
+                    document.getElementById("modalgoodsnumber").value = seebutton.getAttribute("number")
+                    document.getElementById("modalgoodsean").value = seebutton.getAttribute("ean")
+                    document.getElementById("modalgoodsdescription").value = seebutton.getAttribute("description")
+                    originpath = seebutton.getAttribute("image")
+                    $("#modalgoodsimage").attr("src", seebutton.getAttribute("image"));
+                    document.getElementById('goodsmodal').style.display = 'block'
+                }
+                /*删除按钮-删除改项数据*/
+                deletebutton.onclick = function () {
+                    let gid = this.getAttribute("id")
+                    request("http://127.0.0.1:8080/goods/delete", `id=${gid}`, res => {
+                        alert(res.message)
+                        deleteTable()
+                        selectgoods()
+                    })
+                }
+                cell1.appendChild(document.createTextNode(res.id))
+                cell2.appendChild(document.createTextNode(res.name))
+                cell3.appendChild(document.createTextNode(res.cost))
+                cell4.appendChild(document.createTextNode(res.number))
+                cell5.appendChild(document.createTextNode(res.ean))
+                cell6.appendChild(seebutton)
+                cell6.appendChild(deletebutton)
+                row.appendChild(cell1)
+                row.appendChild(cell2)
+                row.appendChild(cell3)
+                row.appendChild(cell4)
+                row.appendChild(cell5)
+                row.appendChild(cell6)
+                table.appendChild(row)
+            })
+        }
+
         function getObjectURL(file) {
             var url = null;
             if (window.createObjectURL != undefined) {
@@ -60,14 +126,13 @@
             let pageResultBox = document.getElementById("pageResultBox")
             let pageResult = document.createElement("p")
             tbody.id = "goods_list"
-            pageResult.id="pageResult"
+            pageResult.id = "pageResult"
             let row = document.createElement("tr")
             let cell1 = document.createElement("td")
             table.appendChild(tbody)
             pageResultBox.appendChild(pageResult)
         }
 
-        /*向后端发送更新数据*/
         function updategoods() {
             let id = document.getElementById("modalgoodsid").value;
             let name = document.getElementById("modalgoodsname").value;
@@ -94,7 +159,7 @@
                             alert(res.message)
                             deleteTable()
                             selectgoods()
-                            document.getElementById('goodsmodal').style.display='none'
+                            document.getElementById('goodsmodal').style.display = 'none'
                         })
                     }
                 })
@@ -103,32 +168,42 @@
                     alert(res.message)
                     deleteTable()
                     selectgoods()
-                    document.getElementById('goodsmodal').style.display='none'
+                    document.getElementById('goodsmodal').style.display = 'none'
                 })
             }
         }
 
         function firstPage() {
-            currentPage=1
+            currentPage = 1
             deleteTable()
         }
 
         function previousPage() {
-            if(currentPage>1){
-                currentPage=currentPage-1
+            if (currentPage > 1) {
+                currentPage = currentPage - 1
             }
             deleteTable()
         }
 
         function nextPage() {
-            if(currentPage<totalPage)
-                currentPage=currentPage+1
+            if (currentPage < totalPage)
+                currentPage = currentPage + 1
             deleteTable()
         }
 
         function lastPage() {
-            currentPage=totalPage
+            currentPage = totalPage
             deleteTable()
+        }
+
+        function uploadPage() {
+            let page = document.getElementById("selectgoodspage").value
+            if (page >= 1 && page <= totalPage) {
+                deleteTable()
+                currentPage = page
+                selectgoods()
+            } else
+                alert("输入的页面超出范围")
         }
 
         /*查询并生成表单*/
@@ -141,7 +216,7 @@
                 let table = document.getElementById("goods_list")
                 /*生成表单并打印数据与操作按钮*/
                 let goodsList = res.dataList
-                let j=0
+                let j = 0
                 document.getElementById("pageResult").append("共有" + totalRecord + "条记录 共" + totalPage + "页 当前第" + currentPage + "页")
                 for (let i = 0; i < totalRecord; i++) {
                     j = j + 1
@@ -353,10 +428,20 @@
                 <form class="form-group col-md-12" id="courseList">
                     <div class="row">
                         <div class="col-lg-2">
-                            <input class="form-control" type="text" name="teacher" placeholder="查询商品">
+                            <input class="form-control" type="text" id="selectgoodsid" placeholder="查询商品"/>
                         </div>
                         <div class="col-lg-3">
-                            <button class="btn btn-primary" id="#" type="button">查询</button>
+                            <button class="btn btn-primary" id="selectgoods_id" type="button"
+                                    onclick="deleteTable();selectgoodsbyid()">查询
+                            </button>
+                        </div>
+                        <div class="col-lg-2">
+                            <input class="form-control" type="text" id="selectgoodspage" placeholder="跳转到第几页"/>
+                        </div>
+                        <div class="col-lg-3">
+                            <button class="btn btn-primary" id="selectgoods_page" type="button"
+                                    onclick="uploadPage()">查询
+                            </button>
                         </div>
                     </div>
                 </form>
@@ -400,7 +485,6 @@
             <span onclick="document.getElementById('goodsmodal').style.display='none'" class="close"
                   title="Close Modal">×</span>
         </div>
-
         <div class="container">
             <div class="imagebox">
                 <label><b>商品图片</b></label>
