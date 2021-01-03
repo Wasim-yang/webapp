@@ -18,14 +18,86 @@
     <script src="js/bootstrap.min.js"></script>
     <script src="js/main.js"></script>
     <script type="text/javascript" src="js/Control.js"></script>
+    <script src="js/request.js"></script>
     <!-- Data table plugin-->
     <script type="text/javascript" src="/js/plugins/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="/js/plugins/dataTables.bootstrap.min.js"></script>
     <script type="text/javascript">$('#scoreTable').DataTable();</script>
     <script>
+        /*查询并生成表单*/
+        function selecttask() {
+            request("http://127.0.0.1:8080/task/selectAll", ``, res => {
+                let table = document.getElementById("task_list")
+                /*生成表单并打印数据与操作按钮*/
+                res.forEach(task => {
+                    let row = document.createElement("tr")
+                    let cell1 = document.createElement("td")
+                    let cell2 = document.createElement("td")
+                    let cell3 = document.createElement("td")
+                    let cell4 = document.createElement("td")
+                    let cell5 = document.createElement("td")
+                    let cell6 = document.createElement("td")
+                    let cell7 = document.createElement("td")
+                    let seebutton = document.createElement("button")
+                    let deletebutton = document.createElement("button")
+                    seebutton.type = "button"
+                    deletebutton.type = "button"
+                    seebutton.className = "btn btn-primary"
+                    deletebutton.className = "btn btn-danger"
+                    deletebutton.style = "margin-right: -40px;margin-left: 10px"
+                    seebutton.appendChild(document.createTextNode("查看"))
+                    deletebutton.appendChild(document.createTextNode("删除"))
+                    /*为查看按钮提前注入数据*/
+                    seebutton.setAttribute("id", task.tid)
+                    seebutton.setAttribute("name", task.tname)
+                    seebutton.setAttribute("description", task.tdescription)
+                    seebutton.setAttribute("requirement", task.trequirement)
+                    seebutton.setAttribute("award", task.taward)
+                    seebutton.setAttribute("type", task.ttype)
+                    seebutton.setAttribute("deadline", task.tdeadline)
+                    //为删除按钮添加tid
+                    deletebutton.setAttribute("id", task.tid)
+                    /*查看按钮-在拟态框中显示详细数据*/
+                    seebutton.onclick = function () {
+                        document.getElementById("modaltaskid").value = seebutton.getAttribute("id")
+                        document.getElementById("modaltaskname").value = seebutton.getAttribute("name")
+                        document.getElementById("modaltaskdescription").value = seebutton.getAttribute("description")
+                        document.getElementById("modaltaskrequirement").value = seebutton.getAttribute("requirement")
+                        document.getElementById("modaltaskaward").value = seebutton.getAttribute("award")
+                        document.getElementById("modaltasktype").value = seebutton.getAttribute("type")
+                        document.getElementById("modaltaskdeadline").value = seebutton.getAttribute("deadline")
+                        // $("#modalgoodsimage").attr("src", seebutton.getAttribute("image"));
+                        document.getElementById('taskmodal').style.display = 'block'
+                    }
+                    /*删除按钮-删除改项数据*/
+                    deletebutton.onclick = function () {
+                        let tid = this.getAttribute("tid")
+                        request("http://127.0.0.1:8080/task/delete", `tid=${tid}`, res => {
+                            alert(res.message)
+                        })
+                    }
+                    cell1.appendChild(document.createTextNode(task.tid))
+                    cell2.appendChild(document.createTextNode(task.ttype))
+                    cell3.appendChild(document.createTextNode(task.tname))
+                    cell4.appendChild(document.createTextNode(task.trequirement))
+                    cell5.appendChild(document.createTextNode(task.tdeadline))
+                    cell6.appendChild(document.createTextNode(task.taward))
+                    cell7.appendChild(seebutton)
+                    cell7.appendChild(deletebutton)
+                    row.appendChild(cell1)
+                    row.appendChild(cell2)
+                    row.appendChild(cell3)
+                    row.appendChild(cell4)
+                    row.appendChild(cell5)
+                    row.appendChild(cell6)
+                    row.appendChild(cell7)
+                    table.appendChild(row)
+                })
+            })
+        }
     </script>
 </head>
-<body class="app sidebar-mini rtl">
+<body class="app sidebar-mini rtl" onload="selecttask()">
 <!-- Navbar-->
 <header class="navbar navbar-dark bg-dark shadow fixed-top ">
     <!--左侧-->
@@ -181,12 +253,15 @@
                             <thead>
                             <tr>
                                 <th>任务编号</th>
+                                <th>任务类型</th>
                                 <th>任务名称</th>
                                 <th>任务要求</th>
-                                <th>可获碳积分</th>
+                                <th>截止时间</th>
+                                <th>任务奖励</th>
+                                <th>操作</th>
                             </tr>
                             </thead>
-                            <tbody id="course_list">
+                            <tbody id="task_list">
                             </tbody>
                         </table>
                     </div>
@@ -195,6 +270,45 @@
         </div>
     </div>
 </main>
+<div id="taskmodal" class="modal">
+    <!--    商品详情拟态框　　-->
+    <form class="modal-content animate">
+        <div class="imgcontainer">
+            <!-- 点击×号，隐藏模态框-->
+            <span onclick="document.getElementById('taskmodal').style.display='none'" class="close"
+                  title="Close Modal">×</span>
+        </div>
+
+        <div class="container">
+            <label><b>任务编号</b></label>
+            <input type="text" id="modaltaskid" style=" width: 80%;" required disabled><br>
+
+            <label><b>任务名称</b></label>
+            <input type="text" id="modaltaskname" style=" width: 80%;" required><br>
+
+            <label><b>任务类型</b></label>
+            <input type="text" id="modaltasktype" style=" width: 80%;" required><br>
+
+            <label><b>任务要求</b></label>
+            <input type="text" id="modaltaskrequirement" style=" width: 80%;" required><br>
+
+            <label><b>截止时间</b></label>
+            <input type="text" id="modaltaskdeadline" style=" width: 80%;" required><br>
+
+            <label><b>任务奖励</b></label>
+            <input type="text" id="modaltaskaward" style=" width: 80%;" required><br>
+
+            <label><b>任务描述</b></label>
+            <textarea id="modaltaskdescription" cols="100" rows="3"
+                      class="form-control" required></textarea>
+            <button type="button" style="margin-top: 10px;" onclick="updatetask()">保存修改</button>
+        </div>
+
+        <div class="container" style="background-color:#f1f1f1">
+            <!-- 点击cancel按钮，把模态框隐藏-->
+        </div>
+    </form>
+</div>
 
 </body>
 </html>
