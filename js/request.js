@@ -10,6 +10,7 @@ function request(url, body, callback) {
     fetch(formRequest).then(response => {
         let result = response.json()
         result.then(res => {
+            // 返回值
             callback(res)
         })
     })
