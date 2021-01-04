@@ -11,6 +11,8 @@
     <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
     <!-- Font-icon css-->
     <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
+    <!-- 插件 -->
+    <link rel="stylesheet" href="css/plugins/bootstrap-datetimepicker.min.css">
 
     <!-- Essential javascripts for application to work-->
     <script src="js/jquery-3.2.1.min.js"></script>
@@ -18,8 +20,9 @@
     <script src="js/bootstrap.min.js"></script>
     <script src="js/main.js"></script>
     <script type="text/javascript" src="js/Control.js"></script>
-    <script src="js/request.js"></script>
     <!-- Data table plugin-->
+    <script src="js/request.js"></script>
+    <script type="text/javascript" src="js/plugins/bootstrap-datetimepicker.js"></script>
 
     <script>
         // 分页处理全局变量
@@ -63,7 +66,7 @@
                     //待转换的参数
                     let ttype = task[i].ttype
                     let t = task[i].tdeadline
-                    let tdeadline = t.substring(0,10).replace(/-/g,"/")
+                    let tdeadline = t.substring(0,16).replace(/-/g,"/")
                     let bicycle = document.createElement("i")
                     let subway = document.createElement("i")
                     let bus = document.createElement("i")
@@ -92,7 +95,7 @@
                     seebutton.setAttribute("type", ttype)
                     seebutton.setAttribute("deadline", tdeadline)
                     //为删除按钮添加tid
-                    deletebutton.setAttribute("id", task.tid)
+                    deletebutton.setAttribute("id", task[i].tid)
                     /*查看按钮-在拟态框中显示详细数据*/
                     seebutton.onclick = function () {
                         document.getElementById("modaltaskid").value = seebutton.getAttribute("id")
@@ -496,6 +499,28 @@
         </div>
     </form>
 </div>
+<script>
+    /*日历*/
+    $('#modaltaskdeadline').datetimepicker({
+        forceParse: 0,//设置为0，时间不会跳转1899，会显示当前时间。
+        language: 'zh-CN',//显示中文
+        // startdate: new Date(),//开始时间
+        format: 'yyyy/mm/dd hh:ii',//显示格式
+        minView: 0,//设置只显示到月份
+        initialDate: new Date(),//初始化当前日期
+        autoclose: true,//选中自动关闭
+        todayBtn: true,//显示今日按钮
+        todayHighlight: true//近日日期高亮
+        /*        weekStart: 1,
+                todayBtn:  1,
+                autoclose: 1,
+                todayHighlight: 1,
+                startView: 2,
+                forceParse: 0,
+                showMeridian: 1*/
+    });
+    $("#taskDl").datetimepicker("setDate", new Date());  //设置显示默认当天的时间
+</script>
 
 </body>
 </html>
