@@ -20,9 +20,7 @@
     <script type="text/javascript" src="js/Control.js"></script>
     <script src="js/request.js"></script>
     <!-- Data table plugin-->
-    <script type="text/javascript" src="/js/plugins/jquery.dataTables.min.js"></script>
-    <script type="text/javascript" src="/js/plugins/dataTables.bootstrap.min.js"></script>
-    <script type="text/javascript">$('#scoreTable').DataTable();</script>
+
     <script>
         /*查询并生成表单*/
         function selecttask() {
@@ -66,12 +64,11 @@
                         document.getElementById("modaltaskaward").value = seebutton.getAttribute("award")
                         document.getElementById("modaltasktype").value = seebutton.getAttribute("type")
                         document.getElementById("modaltaskdeadline").value = seebutton.getAttribute("deadline")
-                        // $("#modalgoodsimage").attr("src", seebutton.getAttribute("image"));
                         document.getElementById('taskmodal').style.display = 'block'
                     }
                     /*删除按钮-删除改项数据*/
                     deletebutton.onclick = function () {
-                        let tid = this.getAttribute("tid")
+                        let tid = this.getAttribute("id")
                         request("http://127.0.0.1:8080/task/delete", `tid=${tid}`, res => {
                             alert(res.message)
                         })
@@ -94,6 +91,26 @@
                     table.appendChild(row)
                 })
             })
+        }
+
+        /*向后端发送更新数据*/
+        function updatetask() {
+            let id = document.getElementById("modaltaskid").value;
+            let name = document.getElementById("modaltaskname").value;
+            let type = document.getElementById("modaltasktype").value;
+            let require = document.getElementById("modaltaskrequirement").value;
+            let award = document.getElementById("modaltaskaward").value;
+            let descp = document.getElementById("modaltaskdescription").value;
+            let deadline = document.getElementById("modaltaskdeadline").value;
+            request("http://127.0.0.1:8080/task/update", `tname=${name}&tdescription=${descp}&trequirement=${require}&taward=${award}&ttype=${type}&tdeadline=${deadline}`, res => {
+                alert(res.message)
+            })
+        }
+        
+        function tasksearch() {
+            let id = document.getElementById("searchid").value;
+            request("http://127.0.0.1:8080/task/search", `tid={id}`, res => {
+                alert(res.message)
         }
     </script>
 </head>
@@ -227,10 +244,10 @@
         <div>
             <h1><i class="fa fa-book"></i> 任务列表</h1>
         </div>
-<!--        <ul class="app-breadcrumb breadcrumb">-->
-<!--            <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>-->
-<!--            <li class="breadcrumb-item"><a href="#">任务列表</a></li>-->
-<!--        </ul>-->
+        <!--        <ul class="app-breadcrumb breadcrumb">-->
+        <!--            <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>-->
+        <!--            <li class="breadcrumb-item"><a href="#">任务列表</a></li>-->
+        <!--        </ul>-->
     </div>
     <div class="row">
         <div class="col-md-12">
@@ -239,11 +256,11 @@
                     <div class="row">
                         <div class="col-lg-2">
                             <!--<label>教师姓名</label>-->
-                            <input class="form-control" type="text" name="teacher" placeholder="查询任务">
+                            <input class="form-control" type="text" name="teacher"  id = "searchid" placeholder="查询任务">
                         </div>
                         <div class="col-lg-3">
                             <!--<input class="form-control" type="submit" value="查询">-->
-                            <button class="btn btn-primary" id="select_course" type="button" >查询</button>
+                            <button class="btn btn-primary" id="select_course" type="button" onclick="tasksearch()">查询</button>
                         </div>
                     </div>
                 </form>
