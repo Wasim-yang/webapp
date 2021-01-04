@@ -30,7 +30,7 @@
             let deadline = document.getElementById("taskDl").value
             // 前后端分离
             request("http://127.0.0.1:8080/task/insert",
-                `tname=${name}&tdescription=${descp}&trequirement=${require}$taward=${award}&ttype=${type}&tdeadline=${deadline}`, res => {
+                `tname=${name}&tdescription=${descp}&trequirement=${require}&taward=${award}&ttype=${type}&tdeadline=${deadline}`, res => {
                     alert(res.message)
                 })
         }
@@ -154,7 +154,7 @@
                 <i id="span6" class="app-menu__icon fa fa-angle-up"></i></span></a>
         </li>
         <ul id="adminControl_6" style="display:none">
-            <li><a class="app-menu__item_child" href="admin_userlist.html">用户列表</a></li>
+            <li><a class="app-menu__item_child" href="#">用户列表</a></li>
             <li><a class="app-menu__item_child" href="#">处理用户反馈</a></li>
             <li><a class="app-menu__item_child" href="#">处理异常用户</a></li>
         </ul>
@@ -233,7 +233,7 @@
                     </div>
                     <div class="tile-footer">
                         <button class="btn btn-primary " type="button" style="margin-top: 20px"
-                                onclick="submit_task()">添加
+                                onclick="submit_task();">添加
                         </button>
                         <button class="btn btn-primary " type="reset" id="StudentsReset" style="margin-top: 20px">
                             重置

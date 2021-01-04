@@ -20,16 +20,29 @@
     <script type="text/javascript" src="js/Control.js"></script>
     <script src="js/request.js"></script>
     <!-- Data table plugin-->
-    <script type="text/javascript" src="/js/plugins/jquery.dataTables.min.js"></script>
-    <script type="text/javascript" src="/js/plugins/dataTables.bootstrap.min.js"></script>
-    <script type="text/javascript">$('#scoreTable').DataTable();</script>
+
     <script>
+        // 分页处理全局变量
+        let currentPage = 1
+        let totalPage = 1
+        let PageSize
+        let totalRecord = 0
         /*查询并生成表单*/
         function selecttask() {
-            request("http://127.0.0.1:8080/task/selectAll", ``, res => {
-                let table = document.getElementById("task_list")
-                /*生成表单并打印数据与操作按钮*/
-                res.forEach(task => {
+            request("http://127.0.0.1:8080/task/selectByPage", `currentPage=${currentPage}`, res => {
+                currentPage = res.currentPage
+                totalPage = res.totalPage
+                PageSize = res.pageSize
+                totalRecord = res.totalRecord
+                let table = document.getElementById("tbody_list")
+                let j = 0
+                document.getElementById("pageResult").append("共有" + totalRecord + "条记录 共" + totalPage + "页 当前第" + currentPage + "页")
+                let task = res.dataList
+                for (let i = 0; i < totalRecord; i++) {
+                    j = j + 1
+                    if (j > PageSize)
+                        break
+                    /*生成表单并打印数据与操作按钮*/
                     let row = document.createElement("tr")
                     let cell1 = document.createElement("td")
                     let cell2 = document.createElement("td")
@@ -47,14 +60,37 @@
                     deletebutton.style = "margin-right: -40px;margin-left: 10px"
                     seebutton.appendChild(document.createTextNode("查看"))
                     deletebutton.appendChild(document.createTextNode("删除"))
+                    //待转换的参数
+                    let ttype = task[i].ttype
+                    let t = task[i].tdeadline
+                    let tdeadline = t.substring(0,10).replace(/-/g,"/")
+                    let bicycle = document.createElement("i")
+                    let subway = document.createElement("i")
+                    let bus = document.createElement("i")
+                    let h_s = document.createElement("i")
+                    /*将类型转换为对应中午*/
+                    switch (ttype) {
+                        case 1:
+                            ttype = "自行车"
+                            break;
+                        case 2:
+                            ttype = "公交车"
+                            break;
+                        case 3:
+                            ttype = "地铁"
+                            break;
+                        case 4:
+                            ttype = "高铁"
+                            break;
+                    }
                     /*为查看按钮提前注入数据*/
-                    seebutton.setAttribute("id", task.tid)
-                    seebutton.setAttribute("name", task.tname)
-                    seebutton.setAttribute("description", task.tdescription)
-                    seebutton.setAttribute("requirement", task.trequirement)
-                    seebutton.setAttribute("award", task.taward)
-                    seebutton.setAttribute("type", task.ttype)
-                    seebutton.setAttribute("deadline", task.tdeadline)
+                    seebutton.setAttribute("id", task[i].tid)
+                    seebutton.setAttribute("name", task[i].tname)
+                    seebutton.setAttribute("description", task[i].tdescription)
+                    seebutton.setAttribute("requirement", task[i].trequirement)
+                    seebutton.setAttribute("award", task[i].taward)
+                    seebutton.setAttribute("type", ttype)
+                    seebutton.setAttribute("deadline", tdeadline)
                     //为删除按钮添加tid
                     deletebutton.setAttribute("id", task.tid)
                     /*查看按钮-在拟态框中显示详细数据*/
@@ -66,22 +102,23 @@
                         document.getElementById("modaltaskaward").value = seebutton.getAttribute("award")
                         document.getElementById("modaltasktype").value = seebutton.getAttribute("type")
                         document.getElementById("modaltaskdeadline").value = seebutton.getAttribute("deadline")
-                        // $("#modalgoodsimage").attr("src", seebutton.getAttribute("image"));
                         document.getElementById('taskmodal').style.display = 'block'
                     }
-                    /*删除按钮-删除改项数据*/
+                    /*删除按钮-删除个项数据*/
                     deletebutton.onclick = function () {
-                        let tid = this.getAttribute("tid")
+                        let tid = this.getAttribute("id")
                         request("http://127.0.0.1:8080/task/delete", `tid=${tid}`, res => {
                             alert(res.message)
+                            admin_deleteTable()
+                            selecttask()
                         })
                     }
-                    cell1.appendChild(document.createTextNode(task.tid))
-                    cell2.appendChild(document.createTextNode(task.ttype))
-                    cell3.appendChild(document.createTextNode(task.tname))
-                    cell4.appendChild(document.createTextNode(task.trequirement))
-                    cell5.appendChild(document.createTextNode(task.tdeadline))
-                    cell6.appendChild(document.createTextNode(task.taward))
+                    cell1.appendChild(document.createTextNode(task[i].tid))
+                    cell2.appendChild(document.createTextNode(ttype))
+                    cell3.appendChild(document.createTextNode(task[i].tname))
+                    cell4.appendChild(document.createTextNode(task[i].trequirement))
+                    cell5.appendChild(document.createTextNode(tdeadline))
+                    cell6.appendChild(document.createTextNode(task[i].taward))
                     cell7.appendChild(seebutton)
                     cell7.appendChild(deletebutton)
                     row.appendChild(cell1)
@@ -92,8 +129,139 @@
                     row.appendChild(cell6)
                     row.appendChild(cell7)
                     table.appendChild(row)
-                })
+                }
             })
+        }
+
+        /*向后端发送更新数据*/
+        function updatetask() {
+            let id = document.getElementById("modaltaskid").value;
+            let name = document.getElementById("modaltaskname").value;
+            let type = document.getElementById("modaltasktype").value;
+            switch (type) {
+                case "自行车":
+                    type = 1;
+                    break;
+                case "公交车":
+                    type = 2;
+                    break;
+                case "地铁":
+                    type = 3;
+                    break;
+                case "高铁":
+                    type = 4;
+                    break;
+            }
+            let require = document.getElementById("modaltaskrequirement").value;
+            let award = document.getElementById("modaltaskaward").value;
+            let descp = document.getElementById("modaltaskdescription").value;
+            let deadline = document.getElementById("modaltaskdeadline").value;
+            request("http://127.0.0.1:8080/task/update", `tid=${id}&tname=${name}&tdescription=${descp}&trequirement=${require}&taward=${award}&ttype=${type}&tdeadline=${deadline}`, res => {
+                alert(res.message)
+                admin_deleteTable()
+                selecttask()
+            })
+        }
+
+        function tasksearch() {
+            let id = document.getElementById("searchid").value;
+            request("http://127.0.0.1:8080/task/selectOne", `tid=${id}`, task => {
+                let table = document.getElementById("tbody_list")
+                /*生成表单并打印数据与操作按钮*/
+                let row = document.createElement("tr")
+                let cell1 = document.createElement("td")
+                let cell2 = document.createElement("td")
+                let cell3 = document.createElement("td")
+                let cell4 = document.createElement("td")
+                let cell5 = document.createElement("td")
+                let cell6 = document.createElement("td")
+                let cell7 = document.createElement("td")
+                let seebutton = document.createElement("button")
+                let deletebutton = document.createElement("button")
+                seebutton.type = "button"
+                deletebutton.type = "button"
+                seebutton.className = "btn btn-primary"
+                deletebutton.className = "btn btn-danger"
+                deletebutton.style = "margin-right: -40px;margin-left: 10px"
+                seebutton.appendChild(document.createTextNode("查看"))
+                deletebutton.appendChild(document.createTextNode("删除"))
+                let ttype = task.ttype
+                let bicycle = document.createElement("i")
+                let subway = document.createElement("i")
+                let bus = document.createElement("i")
+                let h_s = document.createElement("i")
+                /*将类型转换为对应中午*/
+                switch (ttype) {
+                    case 1:
+                        ttype = "自行车"
+                        break;
+                    case 2:
+                        ttype = "公交车"
+                        break;
+                    case 3:
+                        ttype = "地铁"
+                        break;
+                    case 4:
+                        ttype = "高铁"
+                        break;
+                }
+                /*为查看按钮提前注入数据*/
+                seebutton.setAttribute("id", task.tid)
+                seebutton.setAttribute("name", task.tname)
+                seebutton.setAttribute("description", task.tdescription)
+                seebutton.setAttribute("requirement", task.trequirement)
+                seebutton.setAttribute("award", task.taward)
+                seebutton.setAttribute("type", ttype)
+                seebutton.setAttribute("deadline", task.tdeadline)
+                //为删除按钮添加tid
+                deletebutton.setAttribute("id", task.tid)
+                /*查看按钮-在拟态框中显示详细数据*/
+                seebutton.onclick = function () {
+                    document.getElementById("modaltaskid").value = seebutton.getAttribute("id")
+                    document.getElementById("modaltaskname").value = seebutton.getAttribute("name")
+                    document.getElementById("modaltaskdescription").value = seebutton.getAttribute("description")
+                    document.getElementById("modaltaskrequirement").value = seebutton.getAttribute("requirement")
+                    document.getElementById("modaltaskaward").value = seebutton.getAttribute("award")
+                    document.getElementById("modaltasktype").value = seebutton.getAttribute("type")
+                    document.getElementById("modaltaskdeadline").value = seebutton.getAttribute("deadline")
+                    document.getElementById('taskmodal').style.display = 'block'
+                }
+                /*删除按钮-删除个项数据*/
+                deletebutton.onclick = function () {
+                    let tid = this.getAttribute("id")
+                    request("http://127.0.0.1:8080/task/delete", `tid=${tid}`, res => {
+                        alert(res.message)
+                        admin_deleteTable()
+                        selecttask()
+                    })
+                }
+                cell1.appendChild(document.createTextNode(task.tid))
+                cell2.appendChild(document.createTextNode(ttype))
+                cell3.appendChild(document.createTextNode(task.tname))
+                cell4.appendChild(document.createTextNode(task.trequirement))
+                cell5.appendChild(document.createTextNode(task.tdeadline))
+                cell6.appendChild(document.createTextNode(task.taward))
+                cell7.appendChild(seebutton)
+                cell7.appendChild(deletebutton)
+                row.appendChild(cell1)
+                row.appendChild(cell2)
+                row.appendChild(cell3)
+                row.appendChild(cell4)
+                row.appendChild(cell5)
+                row.appendChild(cell6)
+                row.appendChild(cell7)
+                table.appendChild(row)
+            })
+        }
+
+        function uploadPage() {
+            let page = document.getElementById("selectpage").value
+            if (page >= 1 && page <= totalPage) {
+                admin_deleteTable()
+                currentPage = page
+                selecttask()
+            } else
+                alert("输入的页面超出范围")
         }
     </script>
 </head>
@@ -227,10 +395,10 @@
         <div>
             <h1><i class="fa fa-book"></i> 任务列表</h1>
         </div>
-<!--        <ul class="app-breadcrumb breadcrumb">-->
-<!--            <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>-->
-<!--            <li class="breadcrumb-item"><a href="#">任务列表</a></li>-->
-<!--        </ul>-->
+        <!--        <ul class="app-breadcrumb breadcrumb">-->
+        <!--            <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>-->
+        <!--            <li class="breadcrumb-item"><a href="#">任务列表</a></li>-->
+        <!--        </ul>-->
     </div>
     <div class="row">
         <div class="col-md-12">
@@ -239,17 +407,27 @@
                     <div class="row">
                         <div class="col-lg-2">
                             <!--<label>教师姓名</label>-->
-                            <input class="form-control" type="text" name="teacher" placeholder="查询任务">
+                            <input class="form-control" type="text" name="teacher" id="searchid" placeholder="查询任务">
                         </div>
                         <div class="col-lg-3">
                             <!--<input class="form-control" type="submit" value="查询">-->
-                            <button class="btn btn-primary" id="select_course" type="button" >查询</button>
+                            <button class="btn btn-primary" id="select_course" type="button"
+                                    onclick="admin_deleteTable();tasksearch();">查询
+                            </button>
+                        </div>
+                        <div class="col-lg-2">
+                            <input class="form-control" type="text" id="selectpage" placeholder="跳转到第几页"/>
+                        </div>
+                        <div class="col-lg-3">
+                            <button class="btn btn-primary" id="select_page" type="button"
+                                    onclick="uploadPage()">查询
+                            </button>
                         </div>
                     </div>
                 </form>
                 <div class="col-md-12">
                     <div class="tile-body">
-                        <table class="table table-hover table-bordered" id="scoreTable">
+                        <table class="table table-hover table-bordered" id="cTable">
                             <thead>
                             <tr>
                                 <th>任务编号</th>
@@ -261,9 +439,18 @@
                                 <th>操作</th>
                             </tr>
                             </thead>
-                            <tbody id="task_list">
+                            <tbody id="tbody_list">
                             </tbody>
                         </table>
+                        <div id="pageResultBox">
+                            <p id="pageResult"/>
+                        </div>
+                        <div style="text-align: center">
+                            <a href="#" onclick="admin_firstPage();selecttask();">首页</a>&nbsp;&nbsp;
+                            <a href="#" onclick="admin_previousPage();selecttask();">上一页</a>&nbsp;&nbsp;
+                            <a href="#" onclick="admin_nextPage();selecttask();">下一页</a>&nbsp;&nbsp;
+                            <a href="#" onclick="admin_lastPage();selecttask();">尾页</a>
+                        </div>
                     </div>
                 </div>
             </div>
