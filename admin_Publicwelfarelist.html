@@ -23,7 +23,7 @@
     <!--显示-->
     <script src="js/request.js"></script>
     <script>
-
+        // 分页处理全局变量
         let currentPage = 1
         let totalPage = 1
         let PageSize
@@ -89,9 +89,7 @@
                 table.appendChild(row)
             })
         }
-
-
-
+        /*按页号跳转*/
         function uploadPage() {
             let page = document.getElementById("selectwelfarepage").value
             if (page >= 1 && page <= totalPage) {
