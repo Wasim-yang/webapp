@@ -25,7 +25,7 @@
         /*查询并生成表单*/
         function selecttask() {
             request("http://127.0.0.1:8080/task/selectAll", ``, res => {
-                let table = document.getElementById("task_list")
+                let table = document.getElementById("tbody_list")
                 /*生成表单并打印数据与操作按钮*/
                 res.forEach(task => {
                     let row = document.createElement("tr")
@@ -92,6 +92,8 @@
                         let tid = this.getAttribute("id")
                         request("http://127.0.0.1:8080/task/delete", `tid=${tid}`, res => {
                             alert(res.message)
+                            admin_deleteTable()
+                            selecttask()
                         })
                     }
                     cell1.appendChild(document.createTextNode(task.tid))
@@ -132,6 +134,8 @@
             let id = document.getElementById("searchid").value;
             request("http://127.0.0.1:8080/task/search", `tid={id}`, res => {
                 alert(res.message)
+                admin_deleteTable()
+                selecttask()
             })
         }
     </script>
@@ -289,7 +293,7 @@
                 </form>
                 <div class="col-md-12">
                     <div class="tile-body">
-                        <table class="table table-hover table-bordered" id="scoreTable">
+                        <table class="table table-hover table-bordered" id="cTable">
                             <thead>
                             <tr>
                                 <th>任务编号</th>
@@ -301,7 +305,7 @@
                                 <th>操作</th>
                             </tr>
                             </thead>
-                            <tbody id="task_list">
+                            <tbody id="tbody_list">
                             </tbody>
                         </table>
                     </div>

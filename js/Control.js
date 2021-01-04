@@ -90,18 +90,18 @@ function ulControl_6() {
 
 /*清除表单*/
 function admin_deleteTable() {
-    document.getElementById("goods_list").remove()
-    document.getElementById("pageResult").remove()
-    let table = document.getElementById("scoreTable")
+    document.getElementById("tbody_list").remove()
+    // document.getElementById("pageResult").remove()
+    let table = document.getElementById("cTable")
     let tbody = document.createElement("tbody")
     let pageResultBox = document.getElementById("pageResultBox")
     let pageResult = document.createElement("p")
-    tbody.id = "goods_list"
+    tbody.id = "tbody_list"
     pageResult.id = "pageResult"
     let row = document.createElement("tr")
     let cell1 = document.createElement("td")
     table.appendChild(tbody)
-    pageResultBox.appendChild(pageResult)
+    // pageResultBox.appendChild(pageResult)
 }
 
 function updategoods() {
