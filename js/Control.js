@@ -90,58 +90,18 @@ function ulControl_6() {
 
 /*清除表单*/
 function admin_deleteTable() {
-    document.getElementById("goods_list").remove()
+    document.getElementById("tbody_list").remove()
     document.getElementById("pageResult").remove()
     let table = document.getElementById("scoreTable")
     let tbody = document.createElement("tbody")
     let pageResultBox = document.getElementById("pageResultBox")
     let pageResult = document.createElement("p")
-    tbody.id = "goods_list"
+    tbody.id = "tbody_list"
     pageResult.id = "pageResult"
     let row = document.createElement("tr")
     let cell1 = document.createElement("td")
     table.appendChild(tbody)
     pageResultBox.appendChild(pageResult)
-}
-
-function updategoods() {
-    let id = document.getElementById("modalgoodsid").value;
-    let name = document.getElementById("modalgoodsname").value;
-    let cost = document.getElementById("modalgoodscost").value;
-    let number = document.getElementById("modalgoodsnumber").value;
-    let ean = document.getElementById("modalgoodsean").value;
-    let description = document.getElementById("modalgoodsdescription").value;
-    if (flag == 1) {
-        let formData = new FormData();
-        formData.append('upload', $("#modalgoodsfile")[0].files[0]);
-        formData.append('originpath', originpath)
-        $.ajax({
-            url: "http://127.0.0.1:8080/upload/update",//后端接口
-            type: "post",
-            data: formData,
-            contentType: false,
-            processData: false,
-            mimeType: "multipart/form-data",
-            success: function (data) {
-                flag = 0
-                path = data
-                alert('image upload successful!')
-                request("http://127.0.0.1:8080/goods/update", `id=${id}&name=${name}&cost=${cost}&number=${number}&ean=${ean}&description=${description}&path=${path}`, res => {
-                    alert(res.message)
-                    admin_deleteTable()
-                    selectgoods()
-                    document.getElementById('goodsmodal').style.display = 'none'
-                })
-            }
-        })
-    } else {
-        request("http://127.0.0.1:8080/goods/update", `id=${id}&name=${name}&cost=${cost}&number=${number}&ean=${ean}&description=${description}&path=${originpath}`, res => {
-            alert(res.message)
-            admin_deleteTable()
-            selectgoods()
-            document.getElementById('goodsmodal').style.display = 'none'
-        })
-    }
 }
 
 function admin_firstPage() {
