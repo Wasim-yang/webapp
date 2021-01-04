@@ -84,6 +84,14 @@ form span{
     color: white;
     border: 1px solid #2764e7;
 }
+.form-signin select{
+    margin-bottom: 5px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    background: rgba(0,0,0,0.2);
+    color: white;
+    border: 1px solid #2764e7;
+}
 a:hover {
     color:white;
 }
@@ -120,6 +128,9 @@ a{
 }
 .btn-primary:active{
     transition-property:none;
+}
+#inputSex{
+
 }
 
 /*画布背景*/
