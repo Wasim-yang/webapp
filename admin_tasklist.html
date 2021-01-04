@@ -250,11 +250,11 @@
         }
 
         function uploadPage() {
-            let page = document.getElementById("selectgoodspage").value
+            let page = document.getElementById("selectpage").value
             if (page >= 1 && page <= totalPage) {
                 admin_deleteTable()
                 currentPage = page
-                selectgoods()
+                selecttask()
             } else
                 alert("输入的页面超出范围")
         }
