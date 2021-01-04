@@ -60,7 +60,10 @@
                     deletebutton.style = "margin-right: -40px;margin-left: 10px"
                     seebutton.appendChild(document.createTextNode("查看"))
                     deletebutton.appendChild(document.createTextNode("删除"))
+                    //待转换的参数
                     let ttype = task[i].ttype
+                    let t = task[i].tdeadline
+                    let tdeadline = t.substring(0,10).replace(/-/g,"/")
                     let bicycle = document.createElement("i")
                     let subway = document.createElement("i")
                     let bus = document.createElement("i")
@@ -87,7 +90,7 @@
                     seebutton.setAttribute("requirement", task[i].trequirement)
                     seebutton.setAttribute("award", task[i].taward)
                     seebutton.setAttribute("type", ttype)
-                    seebutton.setAttribute("deadline", task[i].tdeadline)
+                    seebutton.setAttribute("deadline", tdeadline)
                     //为删除按钮添加tid
                     deletebutton.setAttribute("id", task.tid)
                     /*查看按钮-在拟态框中显示详细数据*/
@@ -114,7 +117,7 @@
                     cell2.appendChild(document.createTextNode(ttype))
                     cell3.appendChild(document.createTextNode(task[i].tname))
                     cell4.appendChild(document.createTextNode(task[i].trequirement))
-                    cell5.appendChild(document.createTextNode(task[i].tdeadline))
+                    cell5.appendChild(document.createTextNode(tdeadline))
                     cell6.appendChild(document.createTextNode(task[i].taward))
                     cell7.appendChild(seebutton)
                     cell7.appendChild(deletebutton)
@@ -155,6 +158,8 @@
             let deadline = document.getElementById("modaltaskdeadline").value;
             request("http://127.0.0.1:8080/task/update", `tid=${id}&tname=${name}&tdescription=${descp}&trequirement=${require}&taward=${award}&ttype=${type}&tdeadline=${deadline}`, res => {
                 alert(res.message)
+                admin_deleteTable()
+                selecttask()
             })
         }
 
