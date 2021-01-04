@@ -24,10 +24,19 @@
     <script>
         /*查询并生成表单*/
         function selecttask() {
-            request("http://127.0.0.1:8080/task/selectAll", ``, res => {
+            request("http://127.0.0.1:8080/task/selectpage", `currentPage=${currentPage}`, res => {
+                currentPage = res.currentPage
+                totalPage = res.totalPage
+                PageSize = res.pageSize
+                totalRecord = res.totalRecord
                 let table = document.getElementById("tbody_list")
-                /*生成表单并打印数据与操作按钮*/
-                res.forEach(task => {
+                let j = 0
+                document.getElementById("pageResult").append("共有" + totalRecord + "条记录 共" + totalPage + "页 当前第" + currentPage + "页")
+                for (let i = 0; i < totalRecord; i++) {
+                    j = j + 1
+                    if (j > PageSize)
+                        break
+                    /*生成表单并打印数据与操作按钮*/
                     let row = document.createElement("tr")
                     let cell1 = document.createElement("td")
                     let cell2 = document.createElement("td")
@@ -36,7 +45,6 @@
                     let cell5 = document.createElement("td")
                     let cell6 = document.createElement("td")
                     let cell7 = document.createElement("td")
-
                     let seebutton = document.createElement("button")
                     let deletebutton = document.createElement("button")
                     seebutton.type = "button"
@@ -49,8 +57,8 @@
                     let ttype = task.ttype
                     let bicycle = document.createElement("i")
                     let subway = document.createElement("i")
-                    let  bus= document.createElement("i")
-                    let  h_s= document.createElement("i")
+                    let bus = document.createElement("i")
+                    let h_s = document.createElement("i")
                     /*将类型转换为对应中午*/
                     switch (ttype) {
                         case 1:
@@ -87,7 +95,7 @@
                         document.getElementById("modaltaskdeadline").value = seebutton.getAttribute("deadline")
                         document.getElementById('taskmodal').style.display = 'block'
                     }
-                    /*删除按钮-删除改项数据*/
+                    /*删除按钮-删除个项数据*/
                     deletebutton.onclick = function () {
                         let tid = this.getAttribute("id")
                         request("http://127.0.0.1:8080/task/delete", `tid=${tid}`, res => {
@@ -112,7 +120,7 @@
                     row.appendChild(cell6)
                     row.appendChild(cell7)
                     table.appendChild(row)
-                })
+                }
             })
         }
 
@@ -133,9 +141,91 @@
         function tasksearch() {
             let id = document.getElementById("searchid").value;
             request("http://127.0.0.1:8080/task/search", `tid={id}`, res => {
-                alert(res.message)
-                admin_deleteTable()
-                selecttask()
+                let table = document.getElementById("tbody_list")
+                /*生成表单并打印数据与操作按钮*/
+                let row = document.createElement("tr")
+                let cell1 = document.createElement("td")
+                let cell2 = document.createElement("td")
+                let cell3 = document.createElement("td")
+                let cell4 = document.createElement("td")
+                let cell5 = document.createElement("td")
+                let cell6 = document.createElement("td")
+                let cell7 = document.createElement("td")
+                let seebutton = document.createElement("button")
+                let deletebutton = document.createElement("button")
+                seebutton.type = "button"
+                deletebutton.type = "button"
+                seebutton.className = "btn btn-primary"
+                deletebutton.className = "btn btn-danger"
+                deletebutton.style = "margin-right: -40px;margin-left: 10px"
+                seebutton.appendChild(document.createTextNode("查看"))
+                deletebutton.appendChild(document.createTextNode("删除"))
+                let ttype = task.ttype
+                let bicycle = document.createElement("i")
+                let subway = document.createElement("i")
+                let bus = document.createElement("i")
+                let h_s = document.createElement("i")
+                /*将类型转换为对应中午*/
+                switch (ttype) {
+                    case 1:
+                        ttype = "自行车"
+                        break;
+                    case 2:
+                        ttype = "公交车"
+                        break;
+                    case 3:
+                        ttype = "地铁"
+                        break;
+                    case 4:
+                        ttype = "高铁"
+                        break;
+                }
+                /*为查看按钮提前注入数据*/
+                seebutton.setAttribute("id", task.tid)
+                seebutton.setAttribute("name", task.tname)
+                seebutton.setAttribute("description", task.tdescription)
+                seebutton.setAttribute("requirement", task.trequirement)
+                seebutton.setAttribute("award", task.taward)
+                seebutton.setAttribute("type", ttype)
+                seebutton.setAttribute("deadline", task.tdeadline)
+                //为删除按钮添加tid
+                deletebutton.setAttribute("id", task.tid)
+                /*查看按钮-在拟态框中显示详细数据*/
+                seebutton.onclick = function () {
+                    document.getElementById("modaltaskid").value = seebutton.getAttribute("id")
+                    document.getElementById("modaltaskname").value = seebutton.getAttribute("name")
+                    document.getElementById("modaltaskdescription").value = seebutton.getAttribute("description")
+                    document.getElementById("modaltaskrequirement").value = seebutton.getAttribute("requirement")
+                    document.getElementById("modaltaskaward").value = seebutton.getAttribute("award")
+                    document.getElementById("modaltasktype").value = seebutton.getAttribute("type")
+                    document.getElementById("modaltaskdeadline").value = seebutton.getAttribute("deadline")
+                    document.getElementById('taskmodal').style.display = 'block'
+                }
+                /*删除按钮-删除个项数据*/
+                deletebutton.onclick = function () {
+                    let tid = this.getAttribute("id")
+                    request("http://127.0.0.1:8080/task/delete", `tid=${tid}`, res => {
+                        alert(res.message)
+                        admin_deleteTable()
+                        selecttask()
+                    })
+                }
+                cell1.appendChild(document.createTextNode(task.tid))
+                cell2.appendChild(document.createTextNode(ttype))
+                cell3.appendChild(document.createTextNode(task.tname))
+                cell4.appendChild(document.createTextNode(task.trequirement))
+                cell5.appendChild(document.createTextNode(task.tdeadline))
+                cell6.appendChild(document.createTextNode(task.taward))
+                cell7.appendChild(seebutton)
+                cell7.appendChild(deletebutton)
+                row.appendChild(cell1)
+                row.appendChild(cell2)
+                row.appendChild(cell3)
+                row.appendChild(cell4)
+                row.appendChild(cell5)
+                row.appendChild(cell6)
+                row.appendChild(cell7)
+                table.appendChild(row)
             })
         }
     </script>
@@ -286,7 +376,16 @@
                         </div>
                         <div class="col-lg-3">
                             <!--<input class="form-control" type="submit" value="查询">-->
-                            <button class="btn btn-primary" id="select_course" type="button" onclick="tasksearch()">查询
+                            <button class="btn btn-primary" id="select_course" type="button"
+                                    onclick="admin_deleteTable();tasksearch();">查询
+                            </button>
+                        </div>
+                        <div class="col-lg-2">
+                            <input class="form-control" type="text" id="selectpage" placeholder="跳转到第几页"/>
+                        </div>
+                        <div class="col-lg-3">
+                            <button class="btn btn-primary" id="select_page" type="button"
+                                    onclick="uploadPage()">查询
                             </button>
                         </div>
                     </div>
@@ -308,6 +407,15 @@
                             <tbody id="tbody_list">
                             </tbody>
                         </table>
+                        <div id="pageResultBox">
+                            <p id="pageResult"/>
+                        </div>
+                        <div style="text-align: center">
+                            <a href="#" onclick="admin_firstPage();selecttask();">首页</a>&nbsp;&nbsp;
+                            <a href="#" onclick="admin_previousPage();selecttask();">上一页</a>&nbsp;&nbsp;
+                            <a href="#" onclick="admin_nextPage();selecttask();">下一页</a>&nbsp;&nbsp;
+                            <a href="#" onclick="admin_lastPage();selecttask();">尾页</a>
+                        </div>
                     </div>
                 </div>
             </div>
