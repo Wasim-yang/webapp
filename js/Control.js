@@ -92,7 +92,7 @@ function ulControl_6() {
 function admin_deleteTable() {
     document.getElementById("tbody_list").remove()
     document.getElementById("pageResult").remove()
-    let table = document.getElementById("scoreTable")
+    let table = document.getElementById("cTable")
     let tbody = document.createElement("tbody")
     let pageResultBox = document.getElementById("pageResultBox")
     let pageResult = document.createElement("p")
