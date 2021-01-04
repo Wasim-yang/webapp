@@ -11,7 +11,6 @@
     <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
     <!-- Font-icon css-->
     <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
-
     <!-- Essential javascripts for application to work-->
     <script src="js/jquery-3.2.1.min.js"></script>
     <script src="js/popper.min.js"></script>
@@ -19,12 +18,181 @@
     <script src="js/main.js"></script>
     <script type="text/javascript" src="js/Control.js"></script>
     <!-- Data table plugin-->
-    <script type="text/javascript" src="/js/plugins/jquery.dataTables.min.js"></script>
-    <script type="text/javascript" src="/js/plugins/dataTables.bootstrap.min.js"></script>
-    <script type="text/javascript">$('#scoreTable').DataTable();</script>
 
+
+    <!--显示-->
+    <script src="js/request.js"></script>
+    <script>
+        // 分页处理全局变量
+        let currentPage = 1
+        let totalPage = 1
+        let PageSize
+        let totalRecord = 0
+        // 按id查询
+        function selectwelfarebyid() {
+            let wid = document.getElementById("selectwelfareid").value
+            request("http://127.0.0.1:8080/welfare/selectid", `wid=${wid}`, res => {
+                let table = document.getElementById("tbody_list")
+                /*生成表单并打印数据与操作按钮*/
+                let row = document.createElement("tr")
+                let cell1 = document.createElement("td")
+                let cell2 = document.createElement("td")
+                let cell3 = document.createElement("td")
+                let cell4 = document.createElement("td")
+                let cell5 = document.createElement("td")
+                let cell6 = document.createElement("td")
+                let seebutton = document.createElement("button")
+                let deletebutton = document.createElement("button")
+                seebutton.type = "button"
+                deletebutton.type = "button"
+                seebutton.className = "btn btn-primary"
+                deletebutton.className = "btn btn-danger"
+                deletebutton.style = "margin-right: -40px;margin-left: 10px"
+                seebutton.appendChild(document.createTextNode("查看"))
+                deletebutton.appendChild(document.createTextNode("删除"))
+                seebutton.setAttribute("wid", res.wid)
+                seebutton.setAttribute("wname", res.wname)
+                seebutton.setAttribute("wtotal", res.wtotal)
+                seebutton.setAttribute("wgain", res.wgain)
+                seebutton.setAttribute("wdescription", res.wdescription)
+                deletebutton.setAttribute("wid", res.wid)
+                seebutton.onclick = function () {
+                    document.getElementById("modalwelfareid").value = seebutton.getAttribute("wid")
+                    document.getElementById("modalwelfarename").value = seebutton.getAttribute("wname")
+                    document.getElementById("modalwelfaretotal").value = seebutton.getAttribute("wtotal")
+                    document.getElementById("modalwelfaregain").value = seebutton.getAttribute("wgain")
+                    document.getElementById("modalwelfaredescription").value = seebutton.getAttribute("wdescription")
+                    document.getElementById('welfaremodal').style.display = 'block'
+                }
+                /*删除按钮-删除改项数据*/
+                deletebutton.onclick = function () {
+                    let wid = this.getAttribute("wid")
+                    request("http://127.0.0.1:8080/welfare/delete", `wid=${wid}`, res => {
+                        alert(res.message)
+                        admin_deleteTable()
+                        selectwelfare()
+                    })
+                }
+                cell1.appendChild(document.createTextNode(res.wid))
+                cell2.appendChild(document.createTextNode(res.wname))
+                cell3.appendChild(document.createTextNode(res.wtotal))
+                cell4.appendChild(document.createTextNode(res.wgain))
+                cell5.appendChild(document.createTextNode(res.wdescription))
+                cell6.appendChild(seebutton)
+                cell6.appendChild(deletebutton)
+                row.appendChild(cell1)
+                row.appendChild(cell2)
+                row.appendChild(cell3)
+                row.appendChild(cell4)
+                row.appendChild(cell5)
+                row.appendChild(cell6)
+                table.appendChild(row)
+            })
+        }
+        /*按页号跳转*/
+        function uploadPage() {
+            let page = document.getElementById("selectwelfarepage").value
+            if (page >= 1 && page <= totalPage) {
+                admin_deleteTable()
+                currentPage = page
+                selectwelfare()
+            } else
+                alert("输入的页面超出范围")
+        }
+
+        /*向后端发送更新数据*/
+        function updatewelfare() {
+            let wid = document.getElementById("modalwelfareid").value;
+            let wname = document.getElementById("modalwelfarename").value;
+            let wtotal = document.getElementById("modalwelfaretotal").value;
+            let wgain = document.getElementById("modalwelfaregain").value;
+            let wdescription = document.getElementById("modalwelfaredescription").value;
+            request("http://127.0.0.1:8080/welfare/update",
+                `wid=${wid}&wname=${wname}&wtotal=${wtotal}&wgain=${wgain}&wdescription=${wdescription}`, res => {
+                    alert(res.message)
+                    admin_deleteTable()
+                    selectwelfare()
+                    document.getElementById('welfaremodal').style.display = 'none'
+                })
+        }
+        /*查询并生成表单*/
+        function selectwelfare() {
+            request("http://127.0.0.1:8080/welfare/selectpage", `currentPage=${currentPage}`, res => {
+                currentPage = res.currentPage
+                totalPage = res.totalPage
+                PageSize = res.pageSize
+                totalRecord = res.totalRecord
+                let table = document.getElementById("tbody_list")
+                /*生成表单并打印数据与操作按钮*/
+                let welfareList = res.dataList
+                let j = 0
+                document.getElementById("pageResult").append("共有" + totalRecord + "条记录 共" + totalPage + "页 当前第" + currentPage + "页")
+                for (let i = 0; i < totalRecord; i++) {
+                    j = j + 1
+                    if (j > PageSize)
+                        break
+                    let row = document.createElement("tr")
+                    let cell1 = document.createElement("td")
+                    let cell2 = document.createElement("td")
+                    let cell3 = document.createElement("td")
+                    let cell4 = document.createElement("td")
+                    let cell5 = document.createElement("td")
+                    let cell6 = document.createElement("td")
+                    let seebutton = document.createElement("button")
+                    let deletebutton = document.createElement("button")
+                    seebutton.type = "button"
+                    deletebutton.type = "button"
+                    seebutton.className = "btn btn-primary"
+                    deletebutton.className = "btn btn-danger"
+                    deletebutton.style = "margin-right: -40px;margin-left: 10px"
+                    seebutton.appendChild(document.createTextNode("查看"))
+                    deletebutton.appendChild(document.createTextNode("删除"))
+                    seebutton.setAttribute("wid", welfareList[i].wid)
+                    seebutton.setAttribute("wname", welfareList[i].wname)
+                    seebutton.setAttribute("wtotal", welfareList[i].wtotal)
+                    seebutton.setAttribute("wgain", welfareList[i].wgain)
+                    seebutton.setAttribute("wdescription", welfareList[i].wdescription)
+                    deletebutton.setAttribute("wid", welfareList[i].wid)
+                    /*查看按钮-在拟态框中显示详细数据*/
+                    seebutton.onclick = function () {
+                        document.getElementById("modalwelfareid").value = seebutton.getAttribute("wid")
+                        document.getElementById("modalwelfarename").value = seebutton.getAttribute("wname")
+                        document.getElementById("modalwelfaretotal").value = seebutton.getAttribute("wtotal")
+                        document.getElementById("modalwelfaregain").value = seebutton.getAttribute("wgain")
+                        document.getElementById("modalwelfaredescription").value = seebutton.getAttribute("wdescription")
+                        document.getElementById('welfaremodal').style.display = 'block'
+                    }
+                    /*删除按钮-删除改项数据*/
+                    deletebutton.onclick = function () {
+                        let wid = this.getAttribute("wid");
+                        request("http://127.0.0.1:8080/welfare/delete", `wid=${wid}`, res => {
+                            alert(res.message)
+                            admin_deleteTable()
+                            selectwelfare()
+                        })
+                    }
+                    cell1.appendChild(document.createTextNode(welfareList[i].wid))
+                    cell2.appendChild(document.createTextNode(welfareList[i].wname))
+                    cell3.appendChild(document.createTextNode(welfareList[i].wtotal))
+                    cell4.appendChild(document.createTextNode(welfareList[i].wgain))
+                    cell5.appendChild(document.createTextNode(welfareList[i].wdescription))
+                    cell6.appendChild(seebutton)
+                    cell6.appendChild(deletebutton)
+                    row.appendChild(cell1)
+                    row.appendChild(cell2)
+                    row.appendChild(cell3)
+                    row.appendChild(cell4)
+                    row.appendChild(cell5)
+                    row.appendChild(cell6)
+                    table.appendChild(row)
+                }
+
+                })
+            }
+
+    </script>
 </head>
-<body class="app sidebar-mini rtl">
+<body class="app sidebar-mini rtl" onload='selectwelfare()'>
 <!-- Navbar-->
 <header class="navbar navbar-dark bg-dark shadow fixed-top ">
     <!--左侧-->
@@ -154,10 +322,10 @@
         <div>
             <h1><i class="fa fa-building"></i> 公益列表</h1>
         </div>
-<!--                <ul class="app-breadcrumb breadcrumb">-->
-<!--                    <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>-->
-<!--                    <li class="breadcrumb-item"><a href="#">公益列表</a></li>-->
-<!--                </ul>-->
+        <!--                <ul class="app-breadcrumb breadcrumb">-->
+        <!--                    <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>-->
+        <!--                    <li class="breadcrumb-item"><a href="#">公益列表</a></li>-->
+        <!--                </ul>-->
     </div>
     <div class="row">
         <div class="col-md-12">
@@ -165,34 +333,88 @@
                 <form class="form-group col-md-12" id="courseList">
                     <div class="row">
                         <div class="col-lg-2">
-                            <input class="form-control" type="text" name="#" placeholder="查询公益项目">
+                            <input class="form-control" type="text" id="selectwelfareid" name="#" placeholder="查询公益项目">
                         </div>
                         <div class="col-lg-3">
-                            <button class="btn btn-primary" id="#" type="button" >查询</button>
+                            <button class="btn btn-primary"
+                                    onclick="admin_deleteTable();selectwelfarebyid()"
+                                    id="selectwelfare_id" type="button" >查询</button>
+                        </div>
+                        <div class="col-lg-2">
+                             <input class="form-control" type="text" id="selectwelfarepage" placeholder="跳转到第几页"/>
+                        </div>
+                        <div class="col-lg-3">
+                            <button class="btn btn-primary" id="selectwelfare_page" type="button"
+                                    onclick="uploadPage()">查询
+                            </button>
                         </div>
                     </div>
                 </form>
                 <div class="col-md-12">
                     <div class="tile-body">
-                        <table class="table table-hover table-bordered" id="scoreTable">
+                        <table class="table table-hover table-bordered" id="cTable">
                             <thead>
                             <tr>
                                 <th>项目编号</th>
                                 <th>项目名称</th>
-                                <th>项目描述</th>
                                 <th>启动条件</th>
                                 <th>已获碳积分</th>
+                                <th>项目描述</th>
+                                <th>操作</th>
                             </tr>
                             </thead>
-                            <tbody id="departments_list">
+                            <tbody id="tbody_list">
                             </tbody>
                         </table>
+                        <div id="pageResultBox">
+                            <p id="pageResult"/>
+                        </div>
+                        <div style="text-align: center">
+                            <a href="#" onclick="admin_firstPage();selectwelfare();">首页</a>&nbsp;&nbsp;
+                            <a href="#" onclick="admin_previousPage();selectwelfare();">上一页</a>&nbsp;&nbsp;
+                            <a href="#" onclick="admin_nextPage();selectwelfare();">下一页</a>&nbsp;&nbsp;
+                            <a href="#" onclick="admin_lastPage();selectwelfare();">尾页</a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </main>
+<div id="welfaremodal" class="modal">
+    <!--    公益详情拟态框　　-->
+    <form class="modal-content animate">
+        <div class="imgcontainer">
+            <!-- 点击×号，隐藏模态框-->
+            <span onclick="document.getElementById('welfaremodal').style.display='none'" class="close"
+                  title="Close Modal">×</span>
+        </div>
 
+        <div class="container">
+
+            <label><b>项目编号</b></label>
+            <input type="text" id="modalwelfareid" style=" width: 80%;" required disabled><br>
+
+            <label><b>项目名称</b></label>
+            <input type="text" id="modalwelfarename" style=" width: 80%;" required><br>
+
+            <label><b>启动条件</b></label>
+            <input type="text" id="modalwelfaretotal" style=" width: 80%;" required><br>
+
+            <label><b>已获碳积分</b></label>
+            <input type="text" id="modalwelfaregain" style=" width: 80%;" required><br>
+
+            <label><b>项目描述</b></label>
+            <textarea id="modalwelfaredescription" cols="100" rows="3"
+                      class="form-control" required></textarea>
+
+            <button type="button" style="margin-top: 10px;" onclick="updatewelfare()">保存修改</button>
+        </div>
+
+        <div class="container" style="background-color:#f1f1f1">
+            <!-- 点击cancel按钮，把模态框隐藏-->
+        </div>
+    </form>
+</div>
 </body>
 </html>

@@ -20,6 +20,92 @@
 
     <script src="js/request.js"></script>
     <script>
+        // 分页处理全局变量
+        let currentPage = 1
+        let totalPage = 1
+        let PageSize
+        let totalRecord = 0
+        /*按id搜索*/
+        function selectusrbyid() {
+            let id = document.getElementById("selectusrid").value
+            request("http://127.0.0.1:8080/usr/selectNoPid", `id=${id}`, res => {
+                let table = document.getElementById("tbody_list")
+                /*生成表单并打印数据与操作按钮*/
+                let row = document.createElement("tr")
+                let cell1 = document.createElement("td")
+                let cell2 = document.createElement("td")
+                let cell3 = document.createElement("td")
+                let cell4 = document.createElement("td")
+                let cell5 = document.createElement("td")
+                let cell6 = document.createElement("td")
+                let cell7 = document.createElement("td")
+                let seebutton = document.createElement("button")
+                let deletebutton = document.createElement("button")
+                seebutton.type = "button"
+                deletebutton.type = "button"
+                seebutton.className = "btn btn-primary"
+                deletebutton.className = "btn btn-danger"
+                deletebutton.style = "margin-right: -40px;margin-left: 10px"
+                seebutton.appendChild(document.createTextNode("查看"))
+                deletebutton.appendChild(document.createTextNode("删除"))
+                seebutton.setAttribute("id", res.uid)
+                seebutton.setAttribute("name", res.uname)
+                seebutton.setAttribute("sex", res.usex)
+                seebutton.setAttribute("age", res.uage)
+                seebutton.setAttribute("address", res.uaddress)
+                seebutton.setAttribute("cintegral", res.ucintegral)
+                deletebutton.setAttribute("id", res.uid)
+                seebutton.onclick = function () {
+                    document.getElementById("modalusrid").value = seebutton.getAttribute("id")
+                    document.getElementById("modalusrname").value = seebutton.getAttribute("name")
+                    document.getElementById("modalusrsex").value = seebutton.getAttribute("sex")
+                    document.getElementById("modalusrage").value = seebutton.getAttribute("age")
+                    document.getElementById("modalusraddress").value = seebutton.getAttribute("address")
+                    document.getElementById("modalusrcintegral").value = seebutton.getAttribute("cintegral")
+                    document.getElementById('usrmodal').style.display = 'block'
+                }
+                /*删除按钮-删除改项数据*/
+                deletebutton.onclick = function () {
+                    let gid = this.getAttribute("id")
+                    request("http://127.0.0.1:8080/usr/delete", `id=${gid}`, res => {
+                        alert(res.message)
+                        admin_deleteTable()
+                        selectusr()
+                    })
+                }
+                cell1.appendChild(document.createTextNode(res.uid))
+                cell2.appendChild(document.createTextNode(res.uname))
+                //性别显示 0-“男”，1-“女”
+                if(res.usex === 0)
+                    cell3.appendChild(document.createTextNode("男"));
+                else
+                    cell3.appendChild(document.createTextNode("女"));
+                cell4.appendChild(document.createTextNode(res.uage))
+                cell5.appendChild(document.createTextNode(res.uaddress))
+                cell6.appendChild(document.createTextNode(res.ucintegral))
+                cell7.appendChild(seebutton)
+                cell7.appendChild(deletebutton)
+                row.appendChild(cell1)
+                row.appendChild(cell2)
+                row.appendChild(cell3)
+                row.appendChild(cell4)
+                row.appendChild(cell5)
+                row.appendChild(cell6)
+                row.appendChild(cell7)
+                table.appendChild(row)
+            })
+        }
+        /*按页号跳转*/
+        function uploadPage() {
+            let page = document.getElementById("selectusrpage").value
+            if (page >= 1 && page <= totalPage) {
+                admin_deleteTable()
+                currentPage = page
+                selectusr()
+            } else
+                alert("输入的页面超出范围")
+        }
+
         /*向后端发送更新数据*/
         function updateusr() {
             let id = document.getElementById("modalusrid").value;
@@ -30,15 +116,27 @@
             let cintegral = document.getElementById("modalusrcintegral").value;
             request("http://127.0.0.1:8080/usr/updateNoP", `id=${id}&name=${name}&sex=${sex}&age=${age}&address=${address}&cintegral=${cintegral}`, res => {
                 alert(res.message)
-                window.location.reload();
+                admin_deleteTable()
+                selectusr()
+                document.getElementById('usrmodal').style.display = 'none'
             })
         }
         /*查询并生成表单*/
         function selectusr() {
-            request("http://127.0.0.1:8080/usr/selectNoP", ``, res => {
-                let table = document.getElementById("usr_list")
+            request("http://127.0.0.1:8080/usr/selectNoPpage", `currentPage=${currentPage}`, res => {
+                currentPage = res.currentPage
+                totalPage = res.totalPage
+                PageSize = res.pageSize
+                totalRecord = res.totalRecord
+                let table = document.getElementById("tbody_list")
                 /*生成表单并打印数据与操作按钮*/
-                res.forEach(usr => {
+                let usrList = res.dataList
+                let j = 0
+                document.getElementById("pageResult").append("共有" + totalRecord + "条记录 共" + totalPage + "页 当前第" + currentPage + "页")
+                for (let i = 0; i < totalRecord; i++) {
+                    j = j + 1
+                    if (j > PageSize)
+                        break
                     let row = document.createElement("tr")
                     let cell1 = document.createElement("td")
                     let cell2 = document.createElement("td")
@@ -56,13 +154,13 @@
                     deletebutton.style = "margin-right: -40px;margin-left: 10px"
                     seebutton.appendChild(document.createTextNode("查看"))
                     deletebutton.appendChild(document.createTextNode("删除"))
-                    seebutton.setAttribute("id", usr.uid)
-                    seebutton.setAttribute("name", usr.uname)
-                    seebutton.setAttribute("sex", usr.usex)
-                    seebutton.setAttribute("age", usr.uage)
-                    seebutton.setAttribute("address", usr.uaddress)
-                    seebutton.setAttribute("cintegral", usr.ucintegral)
-                    deletebutton.setAttribute("id", usr.uid)
+                    seebutton.setAttribute("id", usrList[i].uid)
+                    seebutton.setAttribute("name", usrList[i].uname)
+                    seebutton.setAttribute("sex", usrList[i].usex)
+                    seebutton.setAttribute("age", usrList[i].uage)
+                    seebutton.setAttribute("address", usrList[i].uaddress)
+                    seebutton.setAttribute("cintegral", usrList[i].ucintegral)
+                    deletebutton.setAttribute("id", usrList[i].uid)
                     /*查看按钮-在拟态框中显示详细数据*/
                     seebutton.onclick = function () {
                         document.getElementById("modalusrid").value = seebutton.getAttribute("id")
@@ -78,19 +176,20 @@
                         let id = this.getAttribute("id")
                         request("http://127.0.0.1:8080/usr/delete", `id=${id}`, res => {
                             alert(res.message)
-                            window.location.reload();
+                            admin_deleteTable()
+                            selectusr()
                         })
                     }
-                    cell1.appendChild(document.createTextNode(usr.uid))
-                    cell2.appendChild(document.createTextNode(usr.uname))
+                    cell1.appendChild(document.createTextNode(usrList[i].uid))
+                    cell2.appendChild(document.createTextNode(usrList[i].uname))
                     //性别显示 0-“男”，1-“女”
-                    if(usr.usex === 0)
+                    if (usrList[i].usex === 0)
                         cell3.appendChild(document.createTextNode("男"));
                     else
                         cell3.appendChild(document.createTextNode("女"));
-                    cell4.appendChild(document.createTextNode(usr.uage))
-                    cell5.appendChild(document.createTextNode(usr.uaddress))
-                    cell6.appendChild(document.createTextNode(usr.ucintegral))
+                    cell4.appendChild(document.createTextNode(usrList[i].uage))
+                    cell5.appendChild(document.createTextNode(usrList[i].uaddress))
+                    cell6.appendChild(document.createTextNode(usrList[i].ucintegral))
                     cell7.appendChild(seebutton)
                     cell7.appendChild(deletebutton)
                     row.appendChild(cell1)
@@ -101,7 +200,7 @@
                     row.appendChild(cell6)
                     row.appendChild(cell7)
                     table.appendChild(row)
-                })
+                }
             })
         }
     </script>
@@ -247,16 +346,25 @@
                 <form class="form-group col-md-12" id="courseList">
                     <div class="row">
                         <div class="col-lg-2">
-                            <input class="form-control" type="text" name="teacher" placeholder="查询用户">
+                            <input class="form-control" type="text" id="selectusrid" placeholder="查询用户">
                         </div>
                         <div class="col-lg-3">
-                            <button class="btn btn-primary" id="#" type="button">查询</button>
+                            <button class="btn btn-primary" id="#" type="button"
+                            onclick="admin_deleteTable();selectusrbyid()">查询</button>
+                        </div>
+                        <div class="col-lg-2">
+                            <input class="form-control" type="text" id="selectusrpage" placeholder="跳转到第几页"/>
+                        </div>
+                        <div class="col-lg-3">
+                            <button class="btn btn-primary" id="selectusr_page" type="button"
+                                    onclick="uploadPage()">查询
+                            </button>
                         </div>
                     </div>
                 </form>
                 <div class="col-md-12">
                     <div class="tile-body">
-                        <table class="table table-hover table-bordered" id="usrTable">
+                        <table class="table table-hover table-bordered" id="cTable">
                             <thead>
                             <tr>
                                 <th>账号</th>
@@ -268,10 +376,19 @@
                                 <th>操作</th>
                             </tr>
                             </thead>
-                            <tbody id="usr_list">
+                            <tbody id="tbody_list">
 
                             </tbody>
                         </table>
+                        <div id="pageResultBox">
+                            <p id="pageResult"/>
+                        </div>
+                        <div style="text-align: center">
+                            <a href="#" onclick="admin_firstPage();selectusr();">首页</a>&nbsp;&nbsp;
+                            <a href="#" onclick="admin_previousPage();selectusr();">上一页</a>&nbsp;&nbsp;
+                            <a href="#" onclick="admin_nextPage();selectusr();">下一页</a>&nbsp;&nbsp;
+                            <a href="#" onclick="admin_lastPage();selectusr();">尾页</a>
+                        </div>
                     </div>
                 </div>
             </div>
