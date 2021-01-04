@@ -19,14 +19,11 @@
     <!-- Data table plugin-->
     <script src="js/request.js"></script>
     <script>
-        <!--更改拟态框图片-->
+        //图片操作全局变量
         let flag = 0
         let originpath
         let path
-        let currentPage = 1
-        let totalPage = 1
-        let PageSize
-        let totalRecord = 0
+        /*更改图片处理*/
         $(function () {
             $("#modalgoodsfile").change(function () {
                 flag = 1
@@ -38,6 +35,23 @@
             });
         })
 
+        function getObjectURL(file) {
+            var url = null;
+            if (window.createObjectURL != undefined) {
+                url = window.createObjectURL(file);
+            } else if (window.URL != undefined) { // mozilla(firefox)
+                url = window.URL.createObjectURL(file);
+            } else if (window.webkitURL != undefined) { // webkit or chrome
+                url = window.webkitURL.createObjectURL(file);
+            }
+            return url;
+        }
+        // 分页处理全局变量
+        let currentPage = 1
+        let totalPage = 1
+        let PageSize
+        let totalRecord = 0
+        /*按id搜索*/
         function selectgoodsbyid() {
             let id = document.getElementById("selectgoodsid").value
             request("http://127.0.0.1:8080/goods/selectid", `id=${id}`, res => {
@@ -83,7 +97,7 @@
                     let gid = this.getAttribute("id")
                     request("http://127.0.0.1:8080/goods/delete", `id=${gid}`, res => {
                         alert(res.message)
-                        deleteTable()
+                        admin_deleteTable()
                         selectgoods()
                     })
                 }
@@ -103,102 +117,11 @@
                 table.appendChild(row)
             })
         }
-
-        function getObjectURL(file) {
-            var url = null;
-            if (window.createObjectURL != undefined) {
-                url = window.createObjectURL(file);
-            } else if (window.URL != undefined) { // mozilla(firefox)
-                url = window.URL.createObjectURL(file);
-            } else if (window.webkitURL != undefined) { // webkit or chrome
-                url = window.webkitURL.createObjectURL(file);
-            }
-            return url;
-        }
-
-        /*清除表单*/
-        function deleteTable() {
-            document.getElementById("goods_list").remove()
-            document.getElementById("pageResult").remove()
-            let table = document.getElementById("scoreTable")
-            let tbody = document.createElement("tbody")
-            let pageResultBox = document.getElementById("pageResultBox")
-            let pageResult = document.createElement("p")
-            tbody.id = "goods_list"
-            pageResult.id = "pageResult"
-            let row = document.createElement("tr")
-            let cell1 = document.createElement("td")
-            table.appendChild(tbody)
-            pageResultBox.appendChild(pageResult)
-        }
-
-        function updategoods() {
-            let id = document.getElementById("modalgoodsid").value;
-            let name = document.getElementById("modalgoodsname").value;
-            let cost = document.getElementById("modalgoodscost").value;
-            let number = document.getElementById("modalgoodsnumber").value;
-            let ean = document.getElementById("modalgoodsean").value;
-            let description = document.getElementById("modalgoodsdescription").value;
-            if (flag == 1) {
-                let formData = new FormData();
-                formData.append('upload', $("#modalgoodsfile")[0].files[0]);
-                formData.append('originpath', originpath)
-                $.ajax({
-                    url: "http://127.0.0.1:8080/upload/update",//后端接口
-                    type: "post",
-                    data: formData,
-                    contentType: false,
-                    processData: false,
-                    mimeType: "multipart/form-data",
-                    success: function (data) {
-                        flag = 0
-                        path = data
-                        alert('image upload successful!')
-                        request("http://127.0.0.1:8080/goods/update", `id=${id}&name=${name}&cost=${cost}&number=${number}&ean=${ean}&description=${description}&path=${path}`, res => {
-                            alert(res.message)
-                            deleteTable()
-                            selectgoods()
-                            document.getElementById('goodsmodal').style.display = 'none'
-                        })
-                    }
-                })
-            } else {
-                request("http://127.0.0.1:8080/goods/update", `id=${id}&name=${name}&cost=${cost}&number=${number}&ean=${ean}&description=${description}&path=${originpath}`, res => {
-                    alert(res.message)
-                    deleteTable()
-                    selectgoods()
-                    document.getElementById('goodsmodal').style.display = 'none'
-                })
-            }
-        }
-
-        function firstPage() {
-            currentPage = 1
-            deleteTable()
-        }
-
-        function previousPage() {
-            if (currentPage > 1) {
-                currentPage = currentPage - 1
-            }
-            deleteTable()
-        }
-
-        function nextPage() {
-            if (currentPage < totalPage)
-                currentPage = currentPage + 1
-            deleteTable()
-        }
-
-        function lastPage() {
-            currentPage = totalPage
-            deleteTable()
-        }
-
+        /*按页号跳转*/
         function uploadPage() {
             let page = document.getElementById("selectgoodspage").value
             if (page >= 1 && page <= totalPage) {
-                deleteTable()
+                admin_deleteTable()
                 currentPage = page
                 selectgoods()
             } else
@@ -262,7 +185,7 @@
                         let gid = this.getAttribute("id")
                         request("http://127.0.0.1:8080/goods/delete", `id=${gid}`, res => {
                             alert(res.message)
-                            deleteTable()
+                            admin_deleteTable()
                             selectgoods()
                         })
                     }
@@ -431,7 +354,7 @@
                         </div>
                         <div class="col-lg-3">
                             <button class="btn btn-primary" id="selectgoods_id" type="button"
-                                    onclick="deleteTable();selectgoodsbyid()">查询
+                                    onclick="admin_deleteTable();selectgoodsbyid()">查询
                             </button>
                         </div>
                         <div class="col-lg-2">
@@ -465,10 +388,10 @@
                             <p id="pageResult"/>
                         </div>
                         <div style="text-align: center">
-                            <a href="#" onclick="firstPage();selectgoods();">首页</a>&nbsp;&nbsp;
-                            <a href="#" onclick="nextPage();selectgoods();">下一页</a>&nbsp;&nbsp;
-                            <a href="#" onclick="previousPage();selectgoods();">上一页</a>&nbsp;&nbsp;
-                            <a href="#" onclick="lastPage();selectgoods();">尾页</a>
+                            <a href="#" onclick="admin_firstPage();selectgoods();">首页</a>&nbsp;&nbsp;
+                            <a href="#" onclick="admin_nextPage();selectgoods();">下一页</a>&nbsp;&nbsp;
+                            <a href="#" onclick="admin_previousPage();selectgoods();">上一页</a>&nbsp;&nbsp;
+                            <a href="#" onclick="admin_lastPage();selectgoods();">尾页</a>
                         </div>
                     </div>
                 </div>
