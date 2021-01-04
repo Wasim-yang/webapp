@@ -9,25 +9,36 @@
     <!-- Main CSS-->
     <link rel="stylesheet" type="text/css" href="css/Login_main.css">
     <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
-    <!-- Font-icon css-->
     <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
-
     <!-- Essential javascripts for application to work-->
     <script src="js/jquery-3.2.1.min.js"></script>
     <script src="js/popper.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/main.js"></script>
     <script type="text/javascript" src="js/Control.js"></script>
-    <script src="js/request.js"></script>
     <!-- Data table plugin-->
 
+    <script src="js/request.js"></script>
     <script>
+        /*向后端发送更新数据*/
+        function updateusr() {
+            let id = document.getElementById("modalusrid").value;
+            let name = document.getElementById("modalusrname").value;
+            let sex = document.getElementById("modalusrsex").value;
+            let age = document.getElementById("modalusrage").value;
+            let address = document.getElementById("modalusraddress").value;
+            let cintegral = document.getElementById("modalusrcintegral").value;
+            request("http://127.0.0.1:8080/usr/updateNoP", `id=${id}&name=${name}&sex=${sex}&age=${age}&address=${address}&cintegral=${cintegral}`, res => {
+                alert(res.message)
+                window.location.reload();
+            })
+        }
         /*查询并生成表单*/
-        function selecttask() {
-            request("http://127.0.0.1:8080/task/selectAll", ``, res => {
-                let table = document.getElementById("task_list")
+        function selectusr() {
+            request("http://127.0.0.1:8080/usr/selectNoP", ``, res => {
+                let table = document.getElementById("usr_list")
                 /*生成表单并打印数据与操作按钮*/
-                res.forEach(task => {
+                res.forEach(usr => {
                     let row = document.createElement("tr")
                     let cell1 = document.createElement("td")
                     let cell2 = document.createElement("td")
@@ -36,7 +47,6 @@
                     let cell5 = document.createElement("td")
                     let cell6 = document.createElement("td")
                     let cell7 = document.createElement("td")
-
                     let seebutton = document.createElement("button")
                     let deletebutton = document.createElement("button")
                     seebutton.type = "button"
@@ -46,60 +56,41 @@
                     deletebutton.style = "margin-right: -40px;margin-left: 10px"
                     seebutton.appendChild(document.createTextNode("查看"))
                     deletebutton.appendChild(document.createTextNode("删除"))
-                    let ttype = task.ttype
-                    let bicycle = document.createElement("i")
-                    let subway = document.createElement("i")
-                    let  bus= document.createElement("i")
-                    let  h_s= document.createElement("i")
-                    /*将类型转换为对应中午*/
-                    switch (ttype) {
-                        case 1:
-                            ttype = "自行车"
-                            break;
-                        case 2:
-                            ttype = "公交车"
-                            break;
-                        case 3:
-                            ttype = "地铁"
-                            break;
-                        case 4:
-                            ttype = "高铁"
-                            break;
-                    }
-                    /*为查看按钮提前注入数据*/
-                    seebutton.setAttribute("id", task.tid)
-                    seebutton.setAttribute("name", task.tname)
-                    seebutton.setAttribute("description", task.tdescription)
-                    seebutton.setAttribute("requirement", task.trequirement)
-                    seebutton.setAttribute("award", task.taward)
-                    seebutton.setAttribute("type", ttype)
-                    seebutton.setAttribute("deadline", task.tdeadline)
-                    //为删除按钮添加tid
-                    deletebutton.setAttribute("id", task.tid)
+                    seebutton.setAttribute("id", usr.uid)
+                    seebutton.setAttribute("name", usr.uname)
+                    seebutton.setAttribute("sex", usr.usex)
+                    seebutton.setAttribute("age", usr.uage)
+                    seebutton.setAttribute("address", usr.uaddress)
+                    seebutton.setAttribute("cintegral", usr.ucintegral)
+                    deletebutton.setAttribute("id", usr.uid)
                     /*查看按钮-在拟态框中显示详细数据*/
                     seebutton.onclick = function () {
-                        document.getElementById("modaltaskid").value = seebutton.getAttribute("id")
-                        document.getElementById("modaltaskname").value = seebutton.getAttribute("name")
-                        document.getElementById("modaltaskdescription").value = seebutton.getAttribute("description")
-                        document.getElementById("modaltaskrequirement").value = seebutton.getAttribute("requirement")
-                        document.getElementById("modaltaskaward").value = seebutton.getAttribute("award")
-                        document.getElementById("modaltasktype").value = seebutton.getAttribute("type")
-                        document.getElementById("modaltaskdeadline").value = seebutton.getAttribute("deadline")
-                        document.getElementById('taskmodal').style.display = 'block'
+                        document.getElementById("modalusrid").value = seebutton.getAttribute("id")
+                        document.getElementById("modalusrname").value = seebutton.getAttribute("name")
+                        document.getElementById("modalusrsex").value = seebutton.getAttribute("sex")
+                        document.getElementById("modalusrage").value = seebutton.getAttribute("age")
+                        document.getElementById("modalusraddress").value = seebutton.getAttribute("address")
+                        document.getElementById("modalusrcintegral").value = seebutton.getAttribute("cintegral")
+                        document.getElementById('usrmodal').style.display = 'block'
                     }
                     /*删除按钮-删除改项数据*/
                     deletebutton.onclick = function () {
-                        let tid = this.getAttribute("id")
-                        request("http://127.0.0.1:8080/task/delete", `tid=${tid}`, res => {
+                        let id = this.getAttribute("id")
+                        request("http://127.0.0.1:8080/usr/delete", `id=${id}`, res => {
                             alert(res.message)
+                            window.location.reload();
                         })
                     }
-                    cell1.appendChild(document.createTextNode(task.tid))
-                    cell2.appendChild(document.createTextNode(ttype))
-                    cell3.appendChild(document.createTextNode(task.tname))
-                    cell4.appendChild(document.createTextNode(task.trequirement))
-                    cell5.appendChild(document.createTextNode(task.tdeadline))
-                    cell6.appendChild(document.createTextNode(task.taward))
+                    cell1.appendChild(document.createTextNode(usr.uid))
+                    cell2.appendChild(document.createTextNode(usr.uname))
+                    //性别显示 0-“男”，1-“女”
+                    if(usr.usex === 0)
+                        cell3.appendChild(document.createTextNode("男"));
+                    else
+                        cell3.appendChild(document.createTextNode("女"));
+                    cell4.appendChild(document.createTextNode(usr.uage))
+                    cell5.appendChild(document.createTextNode(usr.uaddress))
+                    cell6.appendChild(document.createTextNode(usr.ucintegral))
                     cell7.appendChild(seebutton)
                     cell7.appendChild(deletebutton)
                     row.appendChild(cell1)
@@ -113,30 +104,9 @@
                 })
             })
         }
-
-        /*向后端发送更新数据*/
-        function updatetask() {
-            let id = document.getElementById("modaltaskid").value;
-            let name = document.getElementById("modaltaskname").value;
-            let type = document.getElementById("modaltasktype").value;
-            let require = document.getElementById("modaltaskrequirement").value;
-            let award = document.getElementById("modaltaskaward").value;
-            let descp = document.getElementById("modaltaskdescription").value;
-            let deadline = document.getElementById("modaltaskdeadline").value;
-            request("http://127.0.0.1:8080/task/update", `tid=${id}&tname=${name}&tdescription=${descp}&trequirement=${require}&taward=${award}&ttype=${type}&tdeadline=${deadline}`, res => {
-                alert(res.message)
-            })
-        }
-
-        function tasksearch() {
-            let id = document.getElementById("searchid").value;
-            request("http://127.0.0.1:8080/task/search", `tid={id}`, res => {
-                alert(res.message)
-            })
-        }
     </script>
 </head>
-<body class="app sidebar-mini rtl" onload="selecttask()">
+<body class="app sidebar-mini rtl" onload='selectusr()'>
 <!-- Navbar-->
 <header class="navbar navbar-dark bg-dark shadow fixed-top ">
     <!--左侧-->
@@ -214,11 +184,11 @@
         <!--任务管理-->
         <li onclick="ulControl_2();" id="father_adminControl_2">
             <a class="app-menu__item" href="#"><i class="app-menu__icon fa fa-user"></i><span class="app-menu__label">&nbsp;&nbsp;任务管理</span>
-                <i id="span2" class="app-menu__icon fa fa-angle-down"></i></span></a>
+                <i id="span2" class="app-menu__icon fa fa-angle-up"></i></span></a>
         </li>
-        <ul id="adminControl_2" style="">
+        <ul id="adminControl_2" style="display:none">
             <li><a class="app-menu__item_child" href="admin_addtask.html">新增任务</a></li>
-            <li><a class="app-menu__item_child active" href="admin_tasklist.html">任务列表</a></li>
+            <li><a class="app-menu__item_child" href="admin_tasklist.html">任务列表</a></li>
         </ul>
         <!--公益管理-->
         <li onclick="ulControl_3();" id="father_adminControl_3">
@@ -234,7 +204,7 @@
             <a class="app-menu__item" href="#"><i class="app-menu__icon fa fa-user"></i><span class="app-menu__label">&nbsp;&nbsp;商品管理</span>
                 <i id="span4" class="app-menu__icon fa fa-angle-up"></i></span></a>
         </li>
-        <ul id="adminControl_4" style="display:none">
+        <ul id="adminControl_4" style="display: none">
             <li><a class="app-menu__item_child" href="admin_addgoods.html">新增商品</a></li>
             <li><a class="app-menu__item_child" href="admin_goodslist.html">商品列表</a></li>
             <li><a class="app-menu__item_child" href="#">兑换列表</a></li>
@@ -251,24 +221,24 @@
         <!--用户信息管理-->
         <li onclick="ulControl_6();" id="father_adminControl_6">
             <a class="app-menu__item" href="#"><i class="app-menu__icon fa fa-user"></i><span class="app-menu__label">&nbsp;&nbsp;用户信息管理</span>
-                <i id="span6" class="app-menu__icon fa fa-angle-up"></i></span></a>
+                <i id="span6" class="app-menu__icon fa fa-angle-down"></i></span></a>
         </li>
-        <ul id="adminControl_6" style="display:none">
-            <li><a class="app-menu__item_child" href="admin_userlist.html">用户列表</a></li>
+        <ul id="adminControl_6" style="">
+            <li><a class="app-menu__item_child active" href="admin_userlist.html">用户列表</a></li>
             <li><a class="app-menu__item_child" href="#">处理用户反馈</a></li>
             <li><a class="app-menu__item_child" href="#">处理异常用户</a></li>
         </ul>
     </ul>
 </aside>
-<!--任务列表-->
+<!--用户列表-->
 <main class="app-content">
     <div class="app-title">
         <div>
-            <h1><i class="fa fa-book"></i> 任务列表</h1>
+            <h1><i class="fa fa fa-align-left"></i>用户列表</h1>
         </div>
         <!--        <ul class="app-breadcrumb breadcrumb">-->
         <!--            <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>-->
-        <!--            <li class="breadcrumb-item"><a href="#">任务列表</a></li>-->
+        <!--            <li class="breadcrumb-item"><a href="/admin_score.html">添加商品</a></li>-->
         <!--        </ul>-->
     </div>
     <div class="row">
@@ -277,31 +247,29 @@
                 <form class="form-group col-md-12" id="courseList">
                     <div class="row">
                         <div class="col-lg-2">
-                            <!--<label>教师姓名</label>-->
-                            <input class="form-control" type="text" name="teacher" id="searchid" placeholder="查询任务">
+                            <input class="form-control" type="text" name="teacher" placeholder="查询用户">
                         </div>
                         <div class="col-lg-3">
-                            <!--<input class="form-control" type="submit" value="查询">-->
-                            <button class="btn btn-primary" id="select_course" type="button" onclick="tasksearch()">查询
-                            </button>
+                            <button class="btn btn-primary" id="#" type="button">查询</button>
                         </div>
                     </div>
                 </form>
                 <div class="col-md-12">
                     <div class="tile-body">
-                        <table class="table table-hover table-bordered" id="scoreTable">
+                        <table class="table table-hover table-bordered" id="usrTable">
                             <thead>
                             <tr>
-                                <th>任务编号</th>
-                                <th>任务类型</th>
-                                <th>任务名称</th>
-                                <th>任务要求</th>
-                                <th>截止时间</th>
-                                <th>任务奖励</th>
+                                <th>账号</th>
+                                <th>名称</th>
+                                <th>性别</th>
+                                <th>年龄</th>
+                                <th>住址</th>
+                                <th>碳积分</th>
                                 <th>操作</th>
                             </tr>
                             </thead>
-                            <tbody id="task_list">
+                            <tbody id="usr_list">
+
                             </tbody>
                         </table>
                     </div>
@@ -310,38 +278,36 @@
         </div>
     </div>
 </main>
-<div id="taskmodal" class="modal">
+<div id="usrmodal" class="modal">
     <!--    商品详情拟态框　　-->
     <form class="modal-content animate">
         <div class="imgcontainer">
             <!-- 点击×号，隐藏模态框-->
-            <span onclick="document.getElementById('taskmodal').style.display='none'" class="close"
+            <span onclick="document.getElementById('usrmodal').style.display='none'" class="close"
                   title="Close Modal">×</span>
         </div>
 
         <div class="container">
-            <label><b>任务编号</b></label>
-            <input type="text" id="modaltaskid" style=" width: 80%;" required disabled><br>
+            <label><b>账号&nbsp;&nbsp;&nbsp;</b></label>
+            <input type="text" id="modalusrid" style=" width: 80%;" required disabled><br>
 
-            <label><b>任务名称</b></label>
-            <input type="text" id="modaltaskname" style=" width: 80%;" required><br>
+            <label><b>名称&nbsp;&nbsp;&nbsp;</b></label>
+            <input type="text" id="modalusrname" style=" width: 80%;" required><br>
+            <label><b>性别&nbsp;&nbsp;&nbsp;</b></label>
+            <select id="modalusrsex" required style="width: 8%;">
+                <option value = "0">男</option>
+                <option value = "1">女</option>
+            </select><br>
+            <label><b>年龄&nbsp;&nbsp;&nbsp;</b></label>
+            <input type="text" id="modalusrage" style=" width: 80%;" required><br>
 
-            <label><b>任务类型</b></label>
-            <input type="text" id="modaltasktype" style=" width: 80%;" required><br>
+            <label><b>住址&nbsp;&nbsp;&nbsp;</b></label>
+            <input type="text" id="modalusraddress" style=" width: 80%;" required><br>
 
-            <label><b>任务要求</b></label>
-            <input type="text" id="modaltaskrequirement" style=" width: 80%;" required><br>
+            <label><b>碳积分</b></label>
+            <input type="text" id="modalusrcintegral" style=" width: 80%;" required><br>
 
-            <label><b>截止时间</b></label>
-            <input type="text" id="modaltaskdeadline" style=" width: 80%;" required><br>
-
-            <label><b>任务奖励</b></label>
-            <input type="text" id="modaltaskaward" style=" width: 80%;" required><br>
-
-            <label><b>任务描述</b></label>
-            <textarea id="modaltaskdescription" cols="100" rows="3"
-                      class="form-control" required></textarea>
-            <button type="button" style="margin-top: 10px;" onclick="updatetask()">保存修改</button>
+            <button type="button" style="margin-top: 10px;" onclick="updateusr()">保存修改</button>
         </div>
 
         <div class="container" style="background-color:#f1f1f1">
@@ -349,6 +315,5 @@
         </div>
     </form>
 </div>
-
 </body>
 </html>

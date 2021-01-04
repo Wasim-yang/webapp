@@ -20,10 +20,11 @@
 
     <script src="js/request.js"></script>
     <script>
-        <!--更改拟态框图片-->
+        //图片操作全局变量
         let flag = 0
         let originpath
         let path
+        /*更改图片处理*/
         $(function () {
             $("#modalgoodsfile").change(function () {
                 flag = 1
@@ -46,46 +47,104 @@
             }
             return url;
         }
-        /*向后端发送更新数据*/
-        function updategoods() {
-            let id = document.getElementById("modalgoodsid").value;
-            let name = document.getElementById("modalgoodsname").value;
-            let cost = document.getElementById("modalgoodscost").value;
-            let number = document.getElementById("modalgoodsnumber").value;
-            let ean = document.getElementById("modalgoodsean").value;
-            let description = document.getElementById("modalgoodsdescription").value;
-            if (flag == 1) {
-                let formData = new FormData();
-                formData.append('upload', $("#modalgoodsfile")[0].files[0]);
-                formData.append('originpath', originpath)
-                $.ajax({
-                    url: "http://127.0.0.1:8080/upload/update",//后端接口
-                    type: "post",
-                    data: formData,
-                    contentType: false,
-                    processData: false,
-                    mimeType: "multipart/form-data",
-                    success: function (data) {
-                        flag = 0
-                        path = data
-                        alert('image upload successful!')
-                        request("http://127.0.0.1:8080/goods/update", `id=${id}&name=${name}&cost=${cost}&number=${number}&ean=${ean}&description=${description}&path=${path}`, res => {
-                            alert(res.message)
-                        })
-                    }
-                })
-            } else {
-                request("http://127.0.0.1:8080/goods/update", `id=${id}&name=${name}&cost=${cost}&number=${number}&ean=${ean}&description=${description}&path=${originpath}`, res => {
-                    alert(res.message)
-                })
-            }
-        }
-        /*查询并生成表单*/
-        function selectgoods() {
-            request("http://127.0.0.1:8080/goods/select", ``, res => {
+        // 分页处理全局变量
+        let currentPage = 1
+        let totalPage = 1
+        let PageSize
+        let totalRecord = 0
+        /*按id搜索*/
+        function selectgoodsbyid() {
+            let id = document.getElementById("selectgoodsid").value
+            request("http://127.0.0.1:8080/goods/selectid", `id=${id}`, res => {
                 let table = document.getElementById("goods_list")
                 /*生成表单并打印数据与操作按钮*/
-                res.forEach(goods => {
+                let row = document.createElement("tr")
+                let cell1 = document.createElement("td")
+                let cell2 = document.createElement("td")
+                let cell3 = document.createElement("td")
+                let cell4 = document.createElement("td")
+                let cell5 = document.createElement("td")
+                let cell6 = document.createElement("td")
+                let seebutton = document.createElement("button")
+                let deletebutton = document.createElement("button")
+                seebutton.type = "button"
+                deletebutton.type = "button"
+                seebutton.className = "btn btn-primary"
+                deletebutton.className = "btn btn-danger"
+                deletebutton.style = "margin-right: -40px;margin-left: 10px"
+                seebutton.appendChild(document.createTextNode("查看"))
+                deletebutton.appendChild(document.createTextNode("删除"))
+                seebutton.setAttribute("id", res.gid)
+                seebutton.setAttribute("name", res.gname)
+                seebutton.setAttribute("cost", res.gcost)
+                seebutton.setAttribute("number", res.gnumber)
+                seebutton.setAttribute("ean", res.gean)
+                seebutton.setAttribute("description", res.gdescription)
+                seebutton.setAttribute("image", res.gimage)
+                deletebutton.setAttribute("id", res.gid)
+                seebutton.onclick = function () {
+                    document.getElementById("modalgoodsid").value = seebutton.getAttribute("id")
+                    document.getElementById("modalgoodsname").value = seebutton.getAttribute("name")
+                    document.getElementById("modalgoodscost").value = seebutton.getAttribute("cost")
+                    document.getElementById("modalgoodsnumber").value = seebutton.getAttribute("number")
+                    document.getElementById("modalgoodsean").value = seebutton.getAttribute("ean")
+                    document.getElementById("modalgoodsdescription").value = seebutton.getAttribute("description")
+                    originpath = seebutton.getAttribute("image")
+                    $("#modalgoodsimage").attr("src", seebutton.getAttribute("image"));
+                    document.getElementById('goodsmodal').style.display = 'block'
+                }
+                /*删除按钮-删除改项数据*/
+                deletebutton.onclick = function () {
+                    let gid = this.getAttribute("id")
+                    request("http://127.0.0.1:8080/goods/delete", `id=${gid}`, res => {
+                        alert(res.message)
+                        admin_deleteTable()
+                        selectgoods()
+                    })
+                }
+                cell1.appendChild(document.createTextNode(res.gid))
+                cell2.appendChild(document.createTextNode(res.gname))
+                cell3.appendChild(document.createTextNode(res.gcost))
+                cell4.appendChild(document.createTextNode(res.gnumber))
+                cell5.appendChild(document.createTextNode(res.gean))
+                cell6.appendChild(seebutton)
+                cell6.appendChild(deletebutton)
+                row.appendChild(cell1)
+                row.appendChild(cell2)
+                row.appendChild(cell3)
+                row.appendChild(cell4)
+                row.appendChild(cell5)
+                row.appendChild(cell6)
+                table.appendChild(row)
+            })
+        }
+        /*按页号跳转*/
+        function uploadPage() {
+            let page = document.getElementById("selectgoodspage").value
+            if (page >= 1 && page <= totalPage) {
+                admin_deleteTable()
+                currentPage = page
+                selectgoods()
+            } else
+                alert("输入的页面超出范围")
+        }
+
+        /*查询并生成表单*/
+        function selectgoods() {
+            request("http://127.0.0.1:8080/goods/selectpage", `currentPage=${currentPage}`, res => {
+                currentPage = res.currentPage
+                totalPage = res.totalPage
+                PageSize = res.pageSize
+                totalRecord = res.totalRecord
+                let table = document.getElementById("goods_list")
+                /*生成表单并打印数据与操作按钮*/
+                let goodsList = res.dataList
+                let j = 0
+                document.getElementById("pageResult").append("共有" + totalRecord + "条记录 共" + totalPage + "页 当前第" + currentPage + "页")
+                for (let i = 0; i < totalRecord; i++) {
+                    j = j + 1
+                    if (j > PageSize)
+                        break
                     let row = document.createElement("tr")
                     let cell1 = document.createElement("td")
                     let cell2 = document.createElement("td")
@@ -102,14 +161,14 @@
                     deletebutton.style = "margin-right: -40px;margin-left: 10px"
                     seebutton.appendChild(document.createTextNode("查看"))
                     deletebutton.appendChild(document.createTextNode("删除"))
-                    seebutton.setAttribute("id", goods.id)
-                    seebutton.setAttribute("name", goods.name)
-                    seebutton.setAttribute("cost", goods.cost)
-                    seebutton.setAttribute("number", goods.number)
-                    seebutton.setAttribute("ean", goods.ean)
-                    seebutton.setAttribute("description", goods.description)
-                    seebutton.setAttribute("image", goods.path)
-                    deletebutton.setAttribute("id", goods.id)
+                    seebutton.setAttribute("id", goodsList[i].gid)
+                    seebutton.setAttribute("name", goodsList[i].gname)
+                    seebutton.setAttribute("cost", goodsList[i].gcost)
+                    seebutton.setAttribute("number", goodsList[i].gnumber)
+                    seebutton.setAttribute("ean", goodsList[i].gean)
+                    seebutton.setAttribute("description", goodsList[i].gdescription)
+                    seebutton.setAttribute("image", goodsList[i].gimage)
+                    deletebutton.setAttribute("id", goodsList[i].gid)
                     /*查看按钮-在拟态框中显示详细数据*/
                     seebutton.onclick = function () {
                         document.getElementById("modalgoodsid").value = seebutton.getAttribute("id")
@@ -127,13 +186,15 @@
                         let gid = this.getAttribute("id")
                         request("http://127.0.0.1:8080/goods/delete", `id=${gid}`, res => {
                             alert(res.message)
+                            admin_deleteTable()
+                            selectgoods()
                         })
                     }
-                    cell1.appendChild(document.createTextNode(goods.id))
-                    cell2.appendChild(document.createTextNode(goods.name))
-                    cell3.appendChild(document.createTextNode(goods.cost))
-                    cell4.appendChild(document.createTextNode(goods.number))
-                    cell5.appendChild(document.createTextNode(goods.ean))
+                    cell1.appendChild(document.createTextNode(goodsList[i].gid))
+                    cell2.appendChild(document.createTextNode(goodsList[i].gname))
+                    cell3.appendChild(document.createTextNode(goodsList[i].gcost))
+                    cell4.appendChild(document.createTextNode(goodsList[i].gnumber))
+                    cell5.appendChild(document.createTextNode(goodsList[i].gean))
                     cell6.appendChild(seebutton)
                     cell6.appendChild(deletebutton)
                     row.appendChild(cell1)
@@ -143,9 +204,10 @@
                     row.appendChild(cell5)
                     row.appendChild(cell6)
                     table.appendChild(row)
-                })
+                }
             })
         }
+
     </script>
 </head>
 <body class="app sidebar-mini rtl" onload='selectgoods()'>
@@ -266,7 +328,7 @@
                 <i id="span6" class="app-menu__icon fa fa-angle-up"></i></span></a>
         </li>
         <ul id="adminControl_6" style="display:none">
-            <li><a class="app-menu__item_child" href="#">用户列表</a></li>
+            <li><a class="app-menu__item_child" href="admin_userlist.html">用户列表</a></li>
             <li><a class="app-menu__item_child" href="#">处理用户反馈</a></li>
             <li><a class="app-menu__item_child" href="#">处理异常用户</a></li>
         </ul>
@@ -289,10 +351,20 @@
                 <form class="form-group col-md-12" id="courseList">
                     <div class="row">
                         <div class="col-lg-2">
-                            <input class="form-control" type="text" name="teacher" placeholder="查询商品">
+                            <input class="form-control" type="text" id="selectgoodsid" placeholder="查询商品"/>
                         </div>
                         <div class="col-lg-3">
-                            <button class="btn btn-primary" id="#" type="button">查询</button>
+                            <button class="btn btn-primary" id="selectgoods_id" type="button"
+                                    onclick="admin_deleteTable();selectgoodsbyid()">查询
+                            </button>
+                        </div>
+                        <div class="col-lg-2">
+                            <input class="form-control" type="text" id="selectgoodspage" placeholder="跳转到第几页"/>
+                        </div>
+                        <div class="col-lg-3">
+                            <button class="btn btn-primary" id="selectgoods_page" type="button"
+                                    onclick="uploadPage()">查询
+                            </button>
                         </div>
                     </div>
                 </form>
@@ -313,6 +385,15 @@
 
                             </tbody>
                         </table>
+                        <div id="pageResultBox">
+                            <p id="pageResult"/>
+                        </div>
+                        <div style="text-align: center">
+                            <a href="#" onclick="admin_firstPage();selectgoods();">首页</a>&nbsp;&nbsp;
+                            <a href="#" onclick="admin_nextPage();selectgoods();">下一页</a>&nbsp;&nbsp;
+                            <a href="#" onclick="admin_previousPage();selectgoods();">上一页</a>&nbsp;&nbsp;
+                            <a href="#" onclick="admin_lastPage();selectgoods();">尾页</a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -320,14 +401,13 @@
     </div>
 </main>
 <div id="goodsmodal" class="modal">
-<!--    商品详情拟态框　　-->
+    <!--    商品详情拟态框　　-->
     <form class="modal-content animate">
         <div class="imgcontainer">
             <!-- 点击×号，隐藏模态框-->
             <span onclick="document.getElementById('goodsmodal').style.display='none'" class="close"
                   title="Close Modal">×</span>
         </div>
-
         <div class="container">
             <div class="imagebox">
                 <label><b>商品图片</b></label>
@@ -358,10 +438,6 @@
                       class="form-control" required></textarea>
 
             <button type="button" style="margin-top: 10px;" onclick="updategoods()">保存修改</button>
-        </div>
-
-        <div class="container" style="background-color:#f1f1f1">
-            <!-- 点击cancel按钮，把模态框隐藏-->
         </div>
     </form>
 </div>
