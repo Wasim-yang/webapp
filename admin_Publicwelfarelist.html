@@ -69,7 +69,7 @@
                     let wid = this.getAttribute("wid")
                     request("http://127.0.0.1:8080/welfare/delete", `wid=${wid}`, res => {
                         alert(res.message)
-                        deleteTable()
+                        admin_deleteTable()
                         selectwelfare()
                     })
                 }
@@ -90,49 +90,12 @@
             })
         }
 
-        /*清除表单*/
-        function deleteTable() {
-            document.getElementById("tbody_list").remove()
-            document.getElementById("pageResult").remove()
-            let table = document.getElementById("ctable")
-            let tbody = document.createElement("tbody")
-            let pageResultBox = document.getElementById("pageResultBox")
-            let pageResult = document.createElement("p")
-            tbody.id = "tbody_list"
-            pageResult.id = "pageResult"
-            let row = document.createElement("tr")
-            let cell1 = document.createElement("td")
-            table.appendChild(tbody)
-            pageResultBox.appendChild(pageResult)
-        }
 
-        function firstPage() {
-            currentPage = 1
-            deleteTable()
-        }
-
-        function previousPage() {
-            if (currentPage > 1) {
-                currentPage = currentPage - 1
-            }
-            deleteTable()
-        }
-
-        function nextPage() {
-            if (currentPage < totalPage)
-                currentPage = currentPage + 1
-            deleteTable()
-        }
-
-        function lastPage() {
-            currentPage = totalPage
-            deleteTable()
-        }
 
         function uploadPage() {
             let page = document.getElementById("selectwelfarepage").value
             if (page >= 1 && page <= totalPage) {
-                deleteTable()
+                admin_deleteTable()
                 currentPage = page
                 selectwelfare()
             } else
@@ -149,7 +112,7 @@
             request("http://127.0.0.1:8080/welfare/update",
                 `wid=${wid}&wname=${wname}&wtotal=${wtotal}&wgain=${wgain}&wdescription=${wdescription}`, res => {
                     alert(res.message)
-                    deleteTable()
+                    admin_deleteTable()
                     selectwelfare()
                     document.getElementById('welfaremodal').style.display = 'none'
                 })
@@ -207,7 +170,7 @@
                         let wid = this.getAttribute("wid");
                         request("http://127.0.0.1:8080/welfare/delete", `wid=${wid}`, res => {
                             alert(res.message)
-                            deleteTable()
+                            admin_deleteTable()
                             selectwelfare()
                         })
                     }
@@ -377,7 +340,7 @@
                         </div>
                         <div class="col-lg-3">
                             <button class="btn btn-primary"
-                                    onclick="deleteTable();selectwelfarebyid()"
+                                    onclick="admin_deleteTable();selectwelfarebyid()"
                                     id="selectwelfare_id" type="button" >查询</button>
                         </div>
                         <div class="col-lg-2">
@@ -409,10 +372,10 @@
                             <p id="pageResult"/>
                         </div>
                         <div style="text-align: center">
-                            <a href="#" onclick="firstPage();selectwelfare();">首页</a>&nbsp;&nbsp;
-                            <a href="#" onclick="previousPage();selectwelfare();">上一页</a>&nbsp;&nbsp;
-                            <a href="#" onclick="nextPage();selectwelfare();">下一页</a>&nbsp;&nbsp;
-                            <a href="#" onclick="lastPage();selectwelfare();">尾页</a>
+                            <a href="#" onclick="admin_firstPage();selectwelfare();">首页</a>&nbsp;&nbsp;
+                            <a href="#" onclick="admin_previousPage();selectwelfare();">上一页</a>&nbsp;&nbsp;
+                            <a href="#" onclick="admin_nextPage();selectwelfare();">下一页</a>&nbsp;&nbsp;
+                            <a href="#" onclick="admin_lastPage();selectwelfare();">尾页</a>
                         </div>
                     </div>
                 </div>
