@@ -18,23 +18,22 @@
     <script src="js/bootstrap.min.js"></script>
     <script src="js/main.js"></script>
     <script type="text/javascript" src="js/Control.js"></script>
+    <script src="js/request.js"></script>
     <!-- Data table plugin-->
-    <script type="text/javascript" src="/js/plugins/jquery.dataTables.min.js"></script>
-    <script type="text/javascript" src="/js/plugins/dataTables.bootstrap.min.js"></script>
-    <script type="text/javascript">$('#scoreTable').DataTable();</script>
     <script>
         function submit_task() {
             let name = document.getElementById("taskName").value
-            let requirement = document.getElementById("taskRequirement").value
-            let award = document.getElementById("taskAward").value
-            let description= document.getElementById("taskDescription").value
             let type = document.getElementById("taskType").value
+            let award = document.getElementById("taskAward").value
+            let require = document.getElementById("taskRequire").value
+            let descp = document.getElementById("taskDescription").value
+            let deadline = document.getElementById("taskDl").value
+            // 前后端分离
             request("http://127.0.0.1:8080/task/insert",
-                `name=${name}&requirement=${requirement}&award=${award}&type=${type}&description=${description}`, res => {
+                `tname=${name}&tdescription=${descp}&trequirement=${require}$taward=${award}&ttype=${type}&tdeadline=${deadline}`, res => {
                     alert(res.message)
                 })
         }
-
     </script>
 </head>
 <body class="app sidebar-mini rtl">
@@ -176,52 +175,69 @@
         <div class="col-md-12">
             <div class="tile">
                 <form class="form-group col-md-12" id="courseList">
-                    <div>
-                        <div class="col-lg-4">
+                    <div class="row">
+                        <div class="col-lg-3">
                             <div class="form-inline">
                                 <div class="form-group">
-                                    <label>出行方式</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <select class="form-control" id="taskType" required>
-                                        <option disabled selected>请选择出行方式</option>
-                                        <option>步行</option>
-                                        <option>公交出行</option>
-                                        <option>骑行</option>
-                                        <option>地铁出行</option>
+                                    <span class="fa fa-star-o">&nbsp;&nbsp;&nbsp;</span>
+                                    <label>任务名称&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                                    <input class="form-control" type="text" name="taskname" id="taskName"
+                                           placeholder="请输入任务名称" required>
+                                </div>
+                            </div>
+                            <div class="form-inline">
+                                <div class="form-group">
+                                    <span class="fa fa-star-o">&nbsp;&nbsp;&nbsp;</span>
+                                    <label>任务类型&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                                    <select class="form-control" name="insertTime" id="taskType" required>
+                                        <option disabled selected>请选择任务类型</option>
+                                        <option value="1">自行车</option>
+                                        <option value="2">公交车</option>
+                                        <option value="3">地铁</option>
+                                        <option value="4">高铁</option>
                                     </select>
                                 </div>
+                            </div>
+                            <div class="form-inline">
                                 <div class="form-group">
-                                    <label>任务名称</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <input class="form-control" id="taskName" type="text" placeholder="请输入任务名称">
+                                    <span class="fa fa-star-o">&nbsp;&nbsp;&nbsp;</span>
+                                    <label>任务要求&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                                    <input class="form-control" type="text" name="taskrequire" id="taskRequire"
+                                           placeholder="请输入完成任务所需里程" required>
                                 </div>
+                            </div>
+                            <div class="form-inline">
                                 <div class="form-group">
-                                    <label>任务要求</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <input class="form-control" id="taskRequirement" type="text" placeholder="请输入任务要求">
+                                    <span class="fa fa-star-o">&nbsp;&nbsp;&nbsp;</span>
+                                    <label>截止时间&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                                    <input class="form-control" type="text" name="taskdeadline" id="taskDl"
+                                           placeholder="请输入任务截止时间" required>
                                 </div>
+                            </div>
+                            <div class="form-inline">
                                 <div class="form-group">
-                                    <label>奖励碳积分</label>&nbsp;&nbsp;
-                                    <input class="form-control" id="taskAward" type="text" name="teacher"
-                                           placeholder="请输入奖励碳积分数">
+                                    <span class="fa fa-star-o">&nbsp;&nbsp;&nbsp;</span>
+                                    <label>任务奖励&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                                    <input class="form-control" type="text" name="taskaward" id="taskAward"
+                                           placeholder="请输入任务奖励碳积分数" required>
                                 </div>
                             </div>
                         </div>
-                        <!--                        <div class="col-lg-3">-->
-                        <!--                            <input class=" btn btn-primary" style="position: relative ;top: 32px" type="submit" value="添加">-->
-                        <!--                        </div>-->
-                        <div class="row">
-                            <div class="col-lg-12 placeholder">
-                                <span class="fa fa-pencil">&nbsp;</span>
-                                <label for="taskDescription">商品简介:</label>
-                                <textarea name="Introduction" name="taskDescription" id="taskDescription" cols="100"
-                                          rows="4"
-                                          class="form-control" placeholder="请输入"></textarea>
-                                <button class="btn btn-primary " type="button" style="margin-top: 20px"
-                                        onclick="submit_task()">提交
-                                </button>
-                                <button class="btn btn-primary " type="reset" id="StudentsReset" style="margin-top: 20px">
-                                    重置
-                                </button>
-                            </div>
+                        <div class="col-lg-12 ">
+                            <span class="fa fa-pencil">&nbsp;&nbsp;</span>
+                            <label for="taskdescription">任务描述</label>
+                            <textarea name="Introduction" name="taskdescription" id="taskDescription" cols="100"
+                                      rows="4"
+                                      class="form-control" placeholder="请输入详细任务描述"></textarea>
                         </div>
+                    </div>
+                    <div class="tile-footer">
+                        <button class="btn btn-primary " type="button" style="margin-top: 20px"
+                                onclick="submit_task()">添加
+                        </button>
+                        <button class="btn btn-primary " type="reset" id="StudentsReset" style="margin-top: 20px">
+                            重置
+                        </button>
                     </div>
                 </form>
             </div>
