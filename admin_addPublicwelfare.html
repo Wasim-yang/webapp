@@ -175,8 +175,9 @@
         <div class="col-md-12">
             <div class="tile">
                 <form class="form-group col-md-12" id="list" method="post">
-                    <div>
-                        <div class="col-lg-4">
+                    <div class="row">
+                        <div>
+                            <div class="col-lg-4">
                             <div class="form-inline">
                                 <div class="form-group">
                                     <label>项目名称</label>&nbsp;&nbsp;
@@ -184,26 +185,47 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-4">
-                            <div class="form-inline">
-                                <div class="form-group">
-                                    <label>项目描述</label>&nbsp;&nbsp;
-                                    <input class="form-control" type="text" id="welfareDescription" name="name" placeholder="请输入项目描述" required>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4">
+                            <div class="col-lg-4">
                             <div class="form-inline">
                                 <div class="form-group">
                                     <label>启动条件</label>&nbsp;&nbsp;
                                     <input class="form-control" type="text" id="welfareTotal" name="name" placeholder="请输入启动条件" required>
                                 </div>
                             </div>
-
+                        </div>
+<!--                            <div class="col-lg-4">-->
+<!--                            <div class="form-inline">-->
+<!--                                <div class="form-group">-->
+<!--                                    <label>项目描述</label>&nbsp;&nbsp;-->
+<!--                                    <input class="form-control" type="text" id="welfareDescription" name="name" placeholder="请输入项目描述" required>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
                         </div>
                     </div>
-                    <div class="tile-footer"><button class="btn btn-primary" id="insert"  onclick="submit_welfare()" type="button" >添加</button>
-                        <button class="btn btn-primary" id="" type="button" >重置</button></div>
+                    <div class="row">
+                        &nbsp;
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12 placeholder">
+                            <span class="fa fa-pencil">&nbsp;</span>
+                            <label for="welfareDescription">项目描述:</label>
+                            <textarea name="Introduction" name="welfaredescription" id="welfareDescription" cols="100"
+                                      rows="4"
+                                      class="form-control" placeholder="请输入"></textarea>
+                            <button class="btn btn-primary " type="button" style="margin-top: 20px"
+                                    onclick="submit_welfare()">提交
+                            </button>
+                            <button class="btn btn-primary " type="reset" id="welfareReset" style="margin-top: 20px">
+                                重置
+                            </button>
+                        </div>
+                    </div>
+
+<!--                    <div class="tile-footer">-->
+<!--                        <button class="btn btn-primary" id="insert"  onclick="submit_welfare()" type="button" >添加</button>-->
+<!--                        <button class="btn btn-primary" id="" type="reset" >重置</button>-->
+<!--                    </div>-->
                 </form>
             </div>
         </div>

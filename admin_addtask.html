@@ -29,7 +29,7 @@
             let descp = document.getElementById("taskDescription").value
             let deadline = document.getElementById("taskDl").value
             // 前后端分离
-            request("http://127.0.0.1:8080/taskk/insertt",
+            request("http://127.0.0.1:8080/task/insert",
                 `tname=${name}&tdescription=${descp}&trequirement=${require}$taward=${award}&ttype=${type}&tdeadline=${deadline}`, res => {
                     alert(res.message)
                 })
@@ -233,7 +233,7 @@
                     </div>
                     <div class="tile-footer">
                         <button class="btn btn-primary " type="button" style="margin-top: 20px"
-                                onclick="submit_task();">添加
+                                onclick="submit_task()">添加
                         </button>
                         <button class="btn btn-primary " type="reset" id="StudentsReset" style="margin-top: 20px">
                             重置
