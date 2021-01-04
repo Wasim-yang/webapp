@@ -35,6 +35,14 @@
                 }
             });
         })
+        window.onpageshow = function(){
+            request("http://127.0.0.1:8080/authorization",``,res=>{
+
+            })
+        };
+        //function authorization(){
+
+       // }
 
         function getObjectURL(file) {
             var url = null;
