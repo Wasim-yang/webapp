@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <meta name="description" content="个人碳积分管理系统">
+
+    <title>用户登录界面</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="css/signin.css" rel="stylesheet">
+</head>
+
+<body>
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">绿色出行app</a>
+        </div>
+    </div>
+</nav>
+<div>
+    <canvas id="canvas"></canvas>
+</div>
+<div class="login_background">
+    <div class="container" style="padding-top:70px">
+        <!--登录表单-->
+        <form class="form-signin" action="Controller?action=login"
+              id="login" method="post">
+
+            <span class="glyphicon glyphicon-user"></span>
+
+            <div class="rightline"></div>
+            <h3 class="form-signin-heading">用户登录</h3>
+            <div class="leftline"></div>
+
+            <label for="loginName" class="sr-only">用户名</label>
+            <input type="text" id="loginName" class="form-control"
+                   name="Name" placeholder="用户名" required autofocus>
+            <label for="loginPassword" class="sr-only">密码</label>
+            <input type="password" id="loginPassword" class="form-control"
+                   name="Password" placeholder="密码" required>
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" value="remember-me"> 记住我
+                    <a href="#" class="" style="padding-left: 85px;"><u>忘记用户名/密码？</u></a>
+                </label>
+            </div>
+            <button class="btn btn-lg btn-primary btn-block" type="submit">登&nbsp;&nbsp;录</button>
+            <button class="btn btn-lg btn-primary btn-block" type="button"
+                    onclick="changeLoginToRegistered();">注&nbsp;&nbsp;册</button>
+            <button type="reset" id="loginReset" style="display: none;"></button>
+        </form>
+        <!--注册表单-->
+        <form class="form-signin form-hidden" action="#"
+              id="registered"  method="post">
+
+            <span class="glyphicon glyphicon-education"></span>
+
+            <div class="rightline"></div>
+            <h3 class="form-signin-heading">用户注册</h3>
+            <div class="leftline"></div>
+
+            <label for="inputName" class="sr-only">用户名</label>
+            <input type="text" id="inputName" class="form-control"
+                   name="Name" placeholder="用户名" required autofocus>
+            <label for="inputPassword" class="sr-only">密码</label>
+            <input type="password" id="inputPassword" class="form-control"
+                   name="Password" placeholder="密码" required>
+            <label for="inputVerification" class="sr-only">暗码</label>
+            <input type="text" id="inputVerification" class="form-control"
+                   name="Verification" placeholder="管理员暗码(必填:1234)" required>
+            <button class="btn btn-lg btn-primary btn-block" type="button"
+                    style="margin-top: 50px" onclick="startSearch();">注&nbsp;&nbsp;册</button>
+            <button class="btn btn-lg btn-primary btn-block" type="button"
+                    onclick="changeRegisteredToLogin();">返&nbsp;&nbsp;回</button>
+            <button type="reset" id="inputReset" style="display: none;"></button>
+        </form>
+    </div> <!-- /container -->
+</div>
+<script type="text/javascript" src="js/signin.js"></script>
+
+<!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
+<script src="lib/jquery/jquery.min.js"></script>
+<!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
+<script src="lib/bootstrap/js/bootstrap.min.js"></script>
+</body>
+</html>
