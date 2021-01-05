@@ -101,21 +101,21 @@
                 alert("输入的页面超出范围")
         }
         /*向后端发送更新数据*/
-    function updatecoupons() {
-            let id = document.getElementById("modalcouponsid").value;
-            let name = document.getElementById("modalcouponsname").value;
-            let discount = document.getElementById("modalcouponsdiscount").value;
-            let expoints = document.getElementById("modalcouponsexpoints").value;
-            let description = document.getElementById("modalcouponsdescription").value;
-            request("http://127.0.0.1:8080/coupon/update", `id=${id}&name=${name}&discount=${discount}&expoints=${expoints}&description=${description}`,
-                res => {
-            alert(res.message)
-            admin_deleteTable()
-            selectcoupons()
-            })
-    }
-    /*查询并生成表单*/
-    function selectcoupons() {
+        function updatecoupons() {
+                let id = document.getElementById("modalcouponsid").value;
+                let name = document.getElementById("modalcouponsname").value;
+                let discount = document.getElementById("modalcouponsdiscount").value;
+                let expoints = document.getElementById("modalcouponsexpoints").value;
+                let description = document.getElementById("modalcouponsdescription").value;
+                request("http://127.0.0.1:8080/coupon/update", `id=${id}&name=${name}&discount=${discount}&expoints=${expoints}&description=${description}`,
+                    res => {
+                alert(res.message)
+                admin_deleteTable()
+                selectcoupons()
+                })
+        }
+        /*查询并生成表单*/
+        function selectcoupons() {
                 request("http://127.0.0.1:8080/coupon/selectpage", `currentpage=${currentPage}`,
                     res => {
                 currentPage = res.currentPage
@@ -329,10 +329,11 @@
                 <form class="form-group col-md-12" id="courseList">
                     <div class="row">
                         <div class="col-lg-2">
-                            <input class="form-control" type="text" name="selectcoupons" placeholder="查询优惠券">
+                            <input class="form-control" type="text" id="selectcouponsid" placeholder="查询优惠券">
                         </div>
                         <div class="col-lg-3">
-                            <button class="btn btn-primary" id="selectcouponsid" type="button" onclick="selectcouponsbyid()">查询</button>
+                            <button class="btn btn-primary" id="selectcoupons" type="button"
+                                    onclick="admin_deleteTable();selectcouponsbyid()">查询</button>
                         </div>
                         <div class="col-lg-2">
                             <input class="form-control" type="text" id="selectcouponspage" placeholder="跳转到第几页"/>
