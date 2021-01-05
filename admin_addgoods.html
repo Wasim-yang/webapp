@@ -27,7 +27,7 @@
             let formData = new FormData();
             formData.append('upload', $("#goodsfile")[0].files[0]);
             $.ajax({
-                url: "http://127.0.0.1:8080/upload",//文档接口
+                url: "http://127.0.0.1:8080/admin/upload",//文档接口
                 type: "post",
                 data: formData,
                 contentType: false,
@@ -41,7 +41,7 @@
                     let number = document.getElementById("goodNumber").value
                     let ean = document.getElementById("goodEAN").value
                     let description = document.getElementById("goodsdescription").value
-                    request("http://127.0.0.1:8080/goods/insert",
+                    request("http://127.0.0.1:8080/admin/goods/insert",
                         `name=${name}&cost=${cost}&number=${number}&ean=${ean}&description=${description}&path=${path}`, res => {
                             alert(res.message)
                         })
