@@ -6,6 +6,28 @@
 	position: absolute;
 }
 
+.welfare_body{
+	margin:0;
+	padding: 0;
+	background: url("../images/user_welfare.jpg");
+	background-size:cover;
+	position: absolute;
+}
+
+.coupons_body{
+	 margin:0;
+	 padding: 0;
+	 background: url("../images/user_coupons.jpg");
+	 background-size:cover;
+	 position: absolute;
+ }
+.goods_body{
+	margin:0;
+	padding: 0;
+	background: url("../images/user_goods.jpg");
+	background-size:cover;
+	position: absolute;
+}
 .jd_view {
 	width: 100%;
 	height: 100%;
