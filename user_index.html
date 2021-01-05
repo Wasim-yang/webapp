@@ -112,14 +112,10 @@
             </div>
         </div>
     </div>
-    <!-- 顶部导航面板 小屏和超小屏可见 start-->
-    <nav id="fixed" class="navbar navbar-inverse visible-sm visible-xs fixednav">
+    <!-- 顶部导航面板 start-->
+    <nav class="navbar navbar-inverse visible-sm visible-xs">
         <div class="container-fluid">
-            <!-- 导航栏 三斜杠-->
             <div class="navbar-header">
-                <!--                <div class="logo">
-                                </div>-->
-                <a href="user_index.html"><img src="images/logo.png" alt="Main Logo" width="100" height="46"></a>
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
                         data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
                     <span class="sr-only">Toggle navigation</span>
@@ -128,35 +124,40 @@
                     <span class="icon-bar"></span>
                 </button>
             </div>
-            <!-- sm 小按钮-->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     <li class="active"><a href="javascript:;"><i class="glyphicon glyphicon-map-marker"></i>北京 <span
                             class="sr-only">(current)</span></a></li>
-                    <li><a href="index.html">首页</a></li>
+                    <li><a href="user_index.html">我的趣购</a></li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                            aria-expanded="false">个人中心<span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="login.html">用户登录</a>
+                            <li><a href="login.html">你好,请登录</a>
                                 <a href="register.html">免费注册</a>
                             </li>
+                            <li><a href="javascript:;">我的订单</a></li>
+                            <li><a href="user_index.html">我的趣购</a></li>
                             <li role="separator" class="divider"></li>
-                            <li><a href="javascript:;">我的积分</a></li>
+                            <li><a href="javascript:;">趣购会员</a></li>
                             <li role="separator" class="divider"></li>
-                            <li><a href="javascript:;">我的好友</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="javascript:;">我的成就</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="javascript:;">服务与反馈</a></li>
+                            <li><a href="javascript:;">企业采购</a></li>
+                            <li><a href="javascript:;">客户服务</a></li>
+                            <li><a href="javascript:;">网站导航</a></li>
                         </ul>
                     </li>
                 </ul>
-
+                <form class="navbar-form navbar-left">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search">
+                    </div>
+                    <button type="submit" class="btn btn-danger"><i class="glyphicon glyphicon-search"></i></button>
+                </form>
                 <ul class="nav navbar-nav navbar-right">
+                    <li><a href="cart.html">购物车</a></li>
                     <li class="dropdown">
                         <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" role="button"
-                           aria-haspopup="true" aria-expanded="false">积分商城<span class="caret"></span></a>
+                           aria-haspopup="true" aria-expanded="false">随便逛逛<span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             <li>
                                 <a href="javascript:;">家用电器</a>
@@ -173,21 +174,45 @@
                             <li>
                                 <a href="javascript:;">服装鞋靴</a>
                             </li>
+                            <li>
+                                <a href="javascript:;">美妆个护</a>
+                            </li>
+                            <li>
+                                <a href="javascript:;">钟表珠宝</a>
+                            </li>
+                            <li>
+                                <a href="javascript:;">运动户外</a>
+                            </li>
+                            <li>
+                                <a href="javascript:;">汽车用品</a>
+                            </li>
+                            <li>
+                                <a href="javascript:;">母婴玩具</a>
+                            </li>
+                            <li>
+                                <a href="javascript:;">食品生鲜</a>
+                            </li>
+                            <li>
+                                <a href="javascript:;">鲜花绿植</a>
+                            </li>
+                            <li>
+                                <a href="javascript:;">医药保健</a>
+                            </li>
+                            <li>
+                                <a href="javascript:;">图书音像</a>
+                            </li>
+                            <li>
+                                <a href="javascript:;">住宿旅游</a>
+                            </li>
+                            <li>
+                                <a href="javascript:;">理财保险</a>
+                            </li>
                         </ul>
                     </li>
-                    <li><a href="cart.html">购物车</a></li>
                 </ul>
-                <!-- 搜索 -->
-                <form class="navbar-form navbar-left">
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="查询">
-                    </div>
-                    <button type="submit" class="btn btn-danger"><i class="glyphicon glyphicon-search"></i></button>
-                </form>
             </div>
         </div>
     </nav>
-
     <!-- 顶部导航菜单 end-->
 </div>
 <!-- 顶部导航 end -->
@@ -262,7 +287,7 @@
                     <div class="container-fluid">
                         <div class="row">
                             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                                <a href="user_checkin.html"><img src="images/index/attend3.png" alt=""
+                                <a href="#"><img src="images/index/attend3.png" alt=""
                                                          class="img-rounded img-responsive center-block"></a>
                                 <label class="label_h">签到</label>
                             </div>
