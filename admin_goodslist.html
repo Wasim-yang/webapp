@@ -128,10 +128,49 @@
             } else
                 alert("输入的页面超出范围")
         }
-
+        /*向后端发送更新数据*/
+        function updategoods() {
+            let id = document.getElementById("modalgoodsid").value;
+            let name = document.getElementById("modalgoodsname").value;
+            let cost = document.getElementById("modalgoodscost").value;
+            let number = document.getElementById("modalgoodsnumber").value;
+            let ean = document.getElementById("modalgoodsean").value;
+            let description = document.getElementById("modalgoodsdescription").value;
+            if (flag == 1) {
+                let formData = new FormData();
+                formData.append('upload', $("#modalgoodsfile")[0].files[0]);
+                formData.append('originpath', originpath)
+                $.ajax({
+                    url: "http://127.0.0.1:8080/upload/update",//后端接口
+                    type: "post",
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    mimeType: "multipart/form-data",
+                    success: function (data) {
+                        flag = 0
+                        path = data
+                        alert('image upload successful!')
+                        request("http://127.0.0.1:8080/goods/update", `id=${id}&name=${name}&cost=${cost}&number=${number}&ean=${ean}&description=${description}&path=${path}`, res => {
+                            alert(res.message)
+                            admin_deleteTable()
+                            selectgoods()
+                            document.getElementById('goodsmodal').style.display = 'none'
+                        })
+                    }
+                })
+            } else {
+                request("http://127.0.0.1:8080/goods/update", `id=${id}&name=${name}&cost=${cost}&number=${number}&ean=${ean}&description=${description}&path=${originpath}`, res => {
+                    alert(res.message)
+                    admin_deleteTable()
+                    selectgoods()
+                    document.getElementById('goodsmodal').style.display = 'none'
+                })
+            }
+        }
         /*查询并生成表单*/
         function selectgoods() {
-            request("http://127.0.0.1:8080/goods/selectPage", `currentPage=${currentPage}`, res => {
+            request("http://127.0.0.1:8080/goods/selectpage", `currentPage=${currentPage}`, res => {
                 currentPage = res.currentPage
                 totalPage = res.totalPage
                 PageSize = res.pageSize
@@ -207,46 +246,6 @@
                 }
             })
         }
-        function updategoods() {
-            let id = document.getElementById("modalgoodsid").value;
-            let name = document.getElementById("modalgoodsname").value;
-            let cost = document.getElementById("modalgoodscost").value;
-            let number = document.getElementById("modalgoodsnumber").value;
-            let ean = document.getElementById("modalgoodsean").value;
-            let description = document.getElementById("modalgoodsdescription").value;
-            if (flag == 1) {
-                let formData = new FormData();
-                formData.append('upload', $("#modalgoodsfile")[0].files[0]);
-                formData.append('originpath', originpath)
-                $.ajax({
-                    url: "http://127.0.0.1:8080/upload/update",//后端接口
-                    type: "post",
-                    data: formData,
-                    contentType: false,
-                    processData: false,
-                    mimeType: "multipart/form-data",
-                    success: function (data) {
-                        flag = 0
-                        path = data
-                        alert('image upload successful!')
-                        request("http://127.0.0.1:8080/goods/update", `id=${id}&name=${name}&cost=${cost}&number=${number}&ean=${ean}&description=${description}&path=${path}`, res => {
-                            alert(res.message)
-                            admin_deleteTable()
-                            selectgoods()
-                            document.getElementById('goodsmodal').style.display = 'none'
-                        })
-                    }
-                })
-            } else {
-                request("http://127.0.0.1:8080/goods/update", `id=${id}&name=${name}&cost=${cost}&number=${number}&ean=${ean}&description=${description}&path=${originpath}`, res => {
-                    alert(res.message)
-                    admin_deleteTable()
-                    selectgoods()
-                    document.getElementById('goodsmodal').style.display = 'none'
-                })
-            }
-        }
-
     </script>
 </head>
 <body class="app sidebar-mini rtl" onload='selectgoods()'>
@@ -294,7 +293,7 @@
                 搜索
             </button>
         </form>
-        <a href="index.html" class="btn btn-outline-light ml-4">
+        <a href="admin_login.html" class="btn btn-outline-light ml-4">
             <svg class="bi bi-power" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor"
                  xmlns="http://www.w3.org/2000/svg">
                 <path fill-rule="evenodd" d="M5.578 4.437a5 5 0 1 0 4.922.044l.5-.866a6 6 0 1 1-5.908-.053l.486.875z"
@@ -429,8 +428,8 @@
                         </div>
                         <div style="text-align: center">
                             <a href="#" onclick="admin_firstPage();selectgoods();">首页</a>&nbsp;&nbsp;
-                            <a href="#" onclick="admin_nextPage();selectgoods();">下一页</a>&nbsp;&nbsp;
                             <a href="#" onclick="admin_previousPage();selectgoods();">上一页</a>&nbsp;&nbsp;
+                            <a href="#" onclick="admin_nextPage();selectgoods();">下一页</a>&nbsp;&nbsp;
                             <a href="#" onclick="admin_lastPage();selectgoods();">尾页</a>
                         </div>
                     </div>

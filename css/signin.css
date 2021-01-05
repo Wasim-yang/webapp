@@ -1,0 +1,169 @@
+/*总体布局*/
+body {
+    padding-top: 40px;
+    padding-bottom: 40px;
+    background-color: #eeeeee;
+}
+form{
+    background-color: rgba(0, 0, 0, 0.45);
+    border-radius: 10px;
+}
+/*图标定位*/
+form span{
+    position: absolute;
+    left: 40%;
+    top: -50px;
+}
+/*图标样式*/
+form span{
+    font-size:60px;
+    color: rgba(255, 255, 255, 0.6);
+}
+/*标题样式,定位*/
+.form-signin-heading{
+    color: white;
+    position: relative;
+    left: 33%;
+}
+/*css配合div实现渐变线*/
+.rightline{
+    height: 1px;
+    width: 30%;
+    background: linear-gradient(to left, #2764e7, #2764e7,rgba(255,255,255,0));
+    position: relative;
+    top: 34px;
+
+}
+.leftline{
+    height: 1px;
+    width: 30%;
+    background: linear-gradient(to right, #2764e7, #2764e7,rgba(255,255,255,0));
+    position: relative;
+    left: 71%;
+    bottom: 44px;
+}
+/*表单样式*/
+.form-signin {
+    max-width: 330px;
+    padding: 30px 30px 60px 30px;
+    margin: 0 auto;
+}
+.form-signin .form-signin-heading,
+.form-signin .checkbox {
+    margin-bottom: 30px;
+}
+.form-signin .checkbox {
+    font-weight: normal;
+    color: white;
+}
+.form-signin .form-control {
+    position: relative;
+    height: auto;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 10px;
+    font-size: 16px;
+}
+.form-signin .form-control:focus {
+    z-index: 2;
+}
+.form-signin input[type="text"] {
+    margin-bottom: 5px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    background: rgba(0,0,0,0.2);
+    color: white;
+    border: 1px solid #2764e7;
+}
+.form-signin input[type="password"] {
+    margin-bottom: 10px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    background: rgba(0,0,0,0.2);
+    color: white;
+    border: 1px solid #2764e7;
+}
+.form-signin select{
+    margin-bottom: 5px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    background: rgba(0,0,0,0.2);
+    color: white;
+    border: 1px solid #2764e7;
+}
+a:hover {
+    color:white;
+}
+a{
+    color: #6e6e6e;
+}
+/*按钮样式*/
+.form-signin button{
+    margin-bottom: 10px;
+}
+
+.btn-primary{
+    color: #337ab7;
+    background: rgba(0, 0, 0, 0.1);
+    border-color: #2764e7;
+
+}
+.btn-primary:focus,
+.btn-primary.focus {
+    color: #337ab7;
+    background: rgba(0, 0, 0, 0.1);
+    border-color: #2764e7;
+
+}
+.btn-primary:hover {
+    color: #337ab7;
+    background: rgba(0, 0, 0, 0.2);
+    border-color: #2764e7;
+    /*变化大小*/
+    width: 80%;
+    margin-left: 10%;
+    transition-property:all;
+    transition-duration: 0.75s;
+}
+.btn-primary:active{
+    transition-property:none;
+}
+#inputSex{
+
+}
+
+/*画布背景*/
+canvas {
+  position: fixed;        /*基于浏览器定位*/
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+/*表单变化*/
+.form-hidden{
+    position: absolute;
+    margin-top: -500px;
+    transform: rotateX(90deg);
+    opacity: 0;
+}
+.changeLeave{
+    transform: rotateX(90deg);
+    opacity: 0;
+    transition: 1s;
+    transform-origin: center bottom;
+}
+.changeCome{
+    transform: rotateX(0deg);
+    opacity: 1;
+    transition-duration: 1s;
+    transform-origin: center bottom;
+}
+/*背景*/
+#canvas{
+    background-image: url("../images/1.jpg");
+    background-repeat:no-repeat;
+    background-size:100% 101%;
+    -moz-background-size:100% 101%;
+}
+
