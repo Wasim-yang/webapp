@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
     <title>个人碳积分管理系统</title>
     <link rel="icon" href="./images/weblogo.png" type="image/png" sizes="128*128">
@@ -11,18 +11,27 @@
     <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
     <!-- Font-icon css-->
     <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
-
     <!-- Essential javascripts for application to work-->
     <script src="js/jquery-3.2.1.min.js"></script>
     <script src="js/popper.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/main.js"></script>
     <script type="text/javascript" src="js/Control.js"></script>
+    <script src="js/request.js"></script>
     <!-- Data table plugin-->
-    <script type="text/javascript" src="/js/plugins/jquery.dataTables.min.js"></script>
-    <script type="text/javascript" src="/js/plugins/dataTables.bootstrap.min.js"></script>
-    <script type="text/javascript">$('#scoreTable').DataTable();</script>
-
+    <script>
+    function submit_coupons() {
+                let name = document.getElementById("couponsName").value
+                let discount = document.getElementById("couponsDiscount").value
+                let expoints = document.getElementById("couponsExpoints").value
+                let description=document.getElementById("couponsDescription").value
+                request("http://127.0.0.1:8080/coupon/insert",
+                    `name=${name}&discount=${discount}&expoints=${expoints}&description=${description}`,
+                    res => {
+                        alert(res.message)
+                    })
+            }
+    </script>
 </head>
 <body class="app sidebar-mini rtl">
 <!-- Navbar-->
@@ -161,25 +170,12 @@
                 <form class="form-group col-md-12" id="insert_list">
                     <div class="form-group">
                         <div class="">
-                            <div class="col-lg-3">
-                                <div class="form-inline">
-                                    <div class="form-group">
-                                        <label>有效期</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                        <select class="form-control" name="insertTime" required>
-                                            <option disabled selected>请选择有效期</option>
-                                            <option>7天</option>
-                                            <option>10天</option>
-                                            <option>15天</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-
                             <div class="col-lg-3" >
                                 <div class="form-inline">
                                     <div class="form-group">
                                         <label style="float:left">优惠券名称</label>&nbsp;&nbsp;
-                                        <input class="form-control" type="text" name="insertName" placeholder="请输入优惠券名称" required>
+                                        <input class="form-control" type="text" name="couponsname" id="couponsName"
+                                               placeholder="请输入优惠券名称" required>
                                     </div>
                                 </div>
 
@@ -188,7 +184,10 @@
                                 <div class="form-inline">
                                     <div class="form-group">
                                         <label style="float:left">折扣度</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                        <input class="form-control" type="text" name="insertDis" placeholder="请输入折扣度" required>
+                                        <input class="form-control" type="text" name="couponsdiscount" id="couponsDiscount"
+                                               placeholder="请输入折扣度"
+                                               onkeyup="this.value=this.value.replace(/[^\d.]/g,'')"
+                                               required>
                                     </div>
                                 </div>
 
@@ -197,19 +196,25 @@
                                 <div class="form-inline">
                                     <div class="form-group">
                                         <label style="float:left">兑换积分</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                        <input class="form-control" type="text" name="insertCscore" placeholder="请输入兑换积分" required>
+                                        <input class="form-control" type="text" name="couponsexpoints" id="couponsExpoints"
+                                               placeholder="请输入兑换积分"
+                                               onkeyup="this.value=this.value.replace(/[^\d.]/g,'')"
+                                               required>
                                     </div>
                                 </div>
-
                             </div>
-
-
                         </div>
                     </div>
-
+                    <div class="row">
+                        <div class="col-lg-12 placeholder">
+                            <span class="fa fa-pencil">&nbsp;</span>
+                            <label for="couponsdescription">优惠券简介:</label>
+                            <textarea name="couponsdescription" id="couponsDescription" cols="100"
+                                      rows="4"
+                                      class="form-control" placeholder="请输入"></textarea>
                     <div class="tile-footer">
-                        <button class="btn btn-primary" id="insert_course" type="button" >添加</button>
-                        <button class="btn btn-primary" id="" type="button" >重置</button>
+                        <button class="btn btn-primary" type="button" onclick="submit_coupons()">添加</button>
+                        <button class="btn btn-primary" type="reset" id="reset">重置</button>
                     </div>
                 </form>
             </div>
