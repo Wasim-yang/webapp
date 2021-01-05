@@ -22,11 +22,12 @@
     <!-- Data table plugin-->
     <script>
         let path
+
         function submit_good() {
             let formData = new FormData();
             formData.append('upload', $("#goodsfile")[0].files[0]);
             $.ajax({
-                url: "http://127.0.0.1:8080/upload",//文档接口
+                url: "http://127.0.0.1:8080/admin/upload",//文档接口
                 type: "post",
                 data: formData,
                 contentType: false,
@@ -40,7 +41,7 @@
                     let number = document.getElementById("goodNumber").value
                     let ean = document.getElementById("goodEAN").value
                     let description = document.getElementById("goodsdescription").value
-                    request("http://127.0.0.1:8080/goods/insert",
+                    request("http://127.0.0.1:8080/admin/goods/insert",
                         `name=${name}&cost=${cost}&number=${number}&ean=${ean}&description=${description}&path=${path}`, res => {
                             alert(res.message)
                         })
@@ -74,7 +75,7 @@
         }
     </script>
 </head>
-<body class="app sidebar-mini rtl">
+<body class="app sidebar-mini rtl" onpageshow="admin_authorization()">
 <!-- Navbar-->
 <header class="navbar navbar-dark bg-dark shadow fixed-top ">
     <!--左侧-->

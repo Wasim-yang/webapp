@@ -15,23 +15,42 @@
     <!-- Custom styles for this template -->
     <link href="css/signin.css" rel="stylesheet">
     <script src="js/request.js"></script>
+
     <script>
-        function usr_login() {
+
+        function userlogin() {
             let id = document.getElementById("loginId").value
             let password = document.getElementById("loginPassword").value
-            request("http://127.0.0.1:8080/usr/login",
-                `id=${id}&password=${password}`, res => {
-                    alert(res.message)
-                })
+            $.ajax({
+                url: "http://127.0.0.1:8080/usr/login",
+                type: "POST",
+                dataType: 'json',
+                data: {"id": id, "password": password},
+                xhrFields: {withCredentials: true},
+                success: function (data) {
+                    if (data.code == 200) {
+                        window.location.href = "user_index.html"
+                    }
+                },
+                error: function (data) {
+                    alert("failed")
+                }
+            });
         }
-        function usr_register() {
-            let id = document.getElementById("inputId").value
-            let password = document.getElementById("inputPassword").value
-            request("http://127.0.0.1:8080/usr/login",
-                `id=${id}&password=${password}`, res => {
-                    alert(res.message)
-                })
-        }
+
+
+        /* function userlogin() {
+             let id = document.getElementById("loginId").value
+             let password = document.getElementById("loginPassword").value
+             request("http://127.0.0.1:8080/usr/login", `id=${id}&password=${password}`, res => {
+                 if (res.code == 200) {
+                     uid = res.uid
+                     window.location.href = "admin_addgoods.html"
+                 } else {
+                     alert("登陆失败，检查用户名和密码是否正确")
+                 }
+             })
+         }*/
     </script>
 </head>
 
@@ -56,35 +75,34 @@
 <div class="login_background">
     <div class="container" style="padding-top:70px">
         <!--登录表单-->
-        <form class="form-signin" id="login" >
-
+        <form class="form-signin" id="login">
             <span class="glyphicon glyphicon-user"></span>
 
             <div class="rightline"></div>
             <h3 class="form-signin-heading">用户登录</h3>
             <div class="leftline"></div>
 
-            <label for="loginId" class="sr-only">账号</label>
+            <label for="loginId" class="sr-only">用户名</label>
             <input type="text" id="loginId" class="form-control"
-                   name="Id" placeholder="账号" required autofocus>
+                   name="Name" placeholder="用户名" required autofocus>
             <label for="loginPassword" class="sr-only">密码</label>
             <input type="password" id="loginPassword" class="form-control"
                    name="Password" placeholder="密码" required>
             <div class="checkbox">
                 <label>
                     <input type="checkbox" value="remember-me"> 记住我
-                    <a href="#" class="" style="padding-left: 85px;"><u>忘记账号/密码？</u></a>
+                    <a href="#" class="" style="padding-left: 85px;"><u>忘记用户名/密码？</u></a>
                 </label>
             </div>
+            <button class="btn btn-lg btn-primary btn-block" type="button" onclick="userlogin()">登&nbsp;&nbsp;录</button>
             <button class="btn btn-lg btn-primary btn-block" type="button"
-                    onclick="usr_login()">登&nbsp;&nbsp;录</button>
-            <button class="btn btn-lg btn-primary btn-block" type="button"
-                    onclick="changeLoginToRegistered();">注&nbsp;&nbsp;册</button>
+                    onclick="changeLoginToRegistered();">注&nbsp;&nbsp;册
+            </button>
             <button type="reset" id="loginReset" style="display: none;"></button>
         </form>
         <!--注册表单-->
         <form class="form-signin form-hidden" action="#"
-              id="registered"  method="post">
+              id="registered" method="post">
 
             <span class="glyphicon glyphicon-education"></span>
 
@@ -92,17 +110,21 @@
             <h3 class="form-signin-heading">用户注册</h3>
             <div class="leftline"></div>
 
-            <label for="inputId" class="sr-only">账号</label>
-            <input type="text" id="inputId" class="form-control"
-                   name="inputId" placeholder="*账号" required autofocus>
+            <label for="inputName" class="sr-only">用户名</label>
+            <input type="text" id="inputName" class="form-control"
+                   name="Name" placeholder="用户名" required autofocus>
             <label for="inputPassword" class="sr-only">密码</label>
             <input type="password" id="inputPassword" class="form-control"
-                   name="Password" placeholder="*密码" required>
-
+                   name="Password" placeholder="密码" required>
+            <label for="inputVerification" class="sr-only">暗码</label>
+            <input type="text" id="inputVerification" class="form-control"
+                   name="Verification" placeholder="管理员暗码(必填:1234)" required>
             <button class="btn btn-lg btn-primary btn-block" type="button"
-                    style="margin-top: 50px" onclick="usr_register();">注&nbsp;&nbsp;册</button>
+                    style="margin-top: 50px" onclick="startSearch();">注&nbsp;&nbsp;册
+            </button>
             <button class="btn btn-lg btn-primary btn-block" type="button"
-                    onclick="changeRegisteredToLogin();">返&nbsp;&nbsp;回</button>
+                    onclick="changeRegisteredToLogin();">返&nbsp;&nbsp;回
+            </button>
             <button type="reset" id="inputReset" style="display: none;"></button>
         </form>
     </div> <!-- /container -->

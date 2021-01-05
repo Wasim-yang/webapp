@@ -15,3 +15,44 @@ function request(url, body, callback) {
         })
     })
 }
+
+function usr_authorization() {
+    $.ajax({
+        url: "http://127.0.0.1:8080/usr/authorization",
+        type: "POST",
+        contentType: false,
+        data: {},
+        xhrFields: {withCredentials: true},
+        success: function (data) {
+            if (data.code != 200) {
+                 alert("未登录")
+                 window.location.href="./user_login.html"
+            }
+            else
+                uid=data.uid
+        },
+        error: function (data) {
+            alert("failed")
+        }
+    });
+}
+
+function admin_authorization() {
+    $.ajax({
+        url: "http://127.0.0.1:8080/admin/authorization",
+        type: "POST",
+        contentType: false,
+        data: {},
+        xhrFields: {withCredentials: true},
+        success: function (data) {
+            if (data.code != 200) {
+                alert("未登录")
+                window.location.href = "./admin_login.html"
+            }
+        },
+        error: function (data) {
+            alert("failed")
+        }
+    });
+}
+

@@ -55,7 +55,7 @@
         /*按id搜索*/
         function selectgoodsbyid() {
             let id = document.getElementById("selectgoodsid").value
-            request("http://127.0.0.1:8080/goods/selectid", `id=${id}`, res => {
+            request("http://127.0.0.1:8080/admin/goods/selectid", `id=${id}`, res => {
                 let table = document.getElementById("tbody_list")
                 /*生成表单并打印数据与操作按钮*/
                 let row = document.createElement("tr")
@@ -141,7 +141,7 @@
                 formData.append('upload', $("#modalgoodsfile")[0].files[0]);
                 formData.append('originpath', originpath)
                 $.ajax({
-                    url: "http://127.0.0.1:8080/upload/update",//后端接口
+                    url: "http://127.0.0.1:8080/admin/upload/update",//后端接口
                     type: "post",
                     data: formData,
                     contentType: false,
@@ -151,7 +151,7 @@
                         flag = 0
                         path = data
                         alert('image upload successful!')
-                        request("http://127.0.0.1:8080/goods/update", `id=${id}&name=${name}&cost=${cost}&number=${number}&ean=${ean}&description=${description}&path=${path}`, res => {
+                        request("http://127.0.0.1:8080/admin/goods/update", `id=${id}&name=${name}&cost=${cost}&number=${number}&ean=${ean}&description=${description}&path=${path}`, res => {
                             alert(res.message)
                             admin_deleteTable()
                             selectgoods()
@@ -160,7 +160,7 @@
                     }
                 })
             } else {
-                request("http://127.0.0.1:8080/goods/update", `id=${id}&name=${name}&cost=${cost}&number=${number}&ean=${ean}&description=${description}&path=${originpath}`, res => {
+                request("http://127.0.0.1:8080/admin/goods/update", `id=${id}&name=${name}&cost=${cost}&number=${number}&ean=${ean}&description=${description}&path=${originpath}`, res => {
                     alert(res.message)
                     admin_deleteTable()
                     selectgoods()
@@ -170,7 +170,7 @@
         }
         /*查询并生成表单*/
         function selectgoods() {
-            request("http://127.0.0.1:8080/goods/selectpage", `currentPage=${currentPage}`, res => {
+            request("http://127.0.0.1:8080/admin/goods/selectpage", `currentPage=${currentPage}`, res => {
                 currentPage = res.currentPage
                 totalPage = res.totalPage
                 PageSize = res.pageSize
@@ -223,7 +223,7 @@
                     /*删除按钮-删除改项数据*/
                     deletebutton.onclick = function () {
                         let gid = this.getAttribute("id")
-                        request("http://127.0.0.1:8080/goods/delete", `id=${gid}`, res => {
+                        request("http://127.0.0.1:8080/admin/goods/delete", `id=${gid}`, res => {
                             alert(res.message)
                             admin_deleteTable()
                             selectgoods()
@@ -248,7 +248,7 @@
         }
     </script>
 </head>
-<body class="app sidebar-mini rtl" onload='selectgoods()'>
+<body class="app sidebar-mini rtl" onpageshow="admin_authorization()" onload='selectgoods()'>
 <!-- Navbar-->
 <header class="navbar navbar-dark bg-dark shadow fixed-top ">
     <!--左侧-->

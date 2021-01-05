@@ -9,17 +9,22 @@
     <link rel="stylesheet" type="text/css" href="lib/bootstrap/css/bootstrap.css">
     <link rel="stylesheet" type="text/css" href="css/main.css">
     <link rel="stylesheet" type="text/css" href="css/index.css">
-    <!--icon-->
     <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-    <script src="lib/html5shiv/html5shiv.min.js"></script>
-    <script src="lib/respond/respond.min.js"></script>
-    <![endif]-->
+    <script src="js/request.js"></script>
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/main.js"></script>
+    <script type="text/javascript" src="js/Control.js"></script>
+    <script>
+        let uid
+        function A(){
+            alert("A")
+        }
+    </script>
 </head>
 
-<body>
+<body onpageshow="usr_authorization()">
 <!-- 顶部导航 start -->
 <div id="top">
     <div class="topBar visible-md visible-lg">
@@ -587,7 +592,3 @@
 </body>
 
 </html>
-<script type="text/javascript" src="lib/jquery/jquery.js"></script>
-<script type="text/javascript" src="lib/bootstrap/js/bootstrap.js"></script>
-<script type="text/javascript" src="js/index.js"></script>
-<script type="text/javascript" src="js/main1.js"></script>
