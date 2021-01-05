@@ -9,7 +9,6 @@
     <title>签到</title>
     <link rel="stylesheet" type="text/css" href="lib/bootstrap/css/bootstrap.css">
     <link rel="stylesheet" type="text/css" href="css/main.css">
-    <link rel="stylesheet" type="text/css" href="css/index.css">
     <link rel="stylesheet" href="css/qiandao.css">
     <!--icon-->
     <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
@@ -306,57 +305,57 @@
 </body>
 <script type="text/javascript" src="lib/jquery/jquery.js"></script>
 <script type="text/javascript" src="lib/bootstrap/js/bootstrap.js"></script>
-<script type="text/javascript" src="js/index.js"></script>
 <script src="js/jquery-3.2.1.min.js"></script>
 <script src="js/request.js"></script>
+<!--<script src="js/checkin.js"></script>-->
 <script type="text/javascript">
     $(function () {
-
         let signFun = function () {
-            let dateArray = [2, 4, 6, 30] // 已签到
-            request("http://127.0.0.1:8080/calendar/selectAll", `tid=${tid}`, res => {
-                /*获取当前时间*/
-                let $currentDate = $(".current-date"),
-                    myDate = new Date();
-                let year = parseInt(myDate.getFullYear()),
-                    month = parseInt(myDate.getMonth()),
-                    day = parseInt(myDate.getDate())
-                //添加当前时间到html
-                $currentDate.text(myDate.getFullYear() + '年' + parseInt(myDate.getMonth() + 1) + '月' + myDate.getDate() + '日');
+            /*获取当前时间*/
+            let $currentDate = $(".current-date"),
+                myDate = new Date();
+            let uid = 1
+            let year = parseInt(myDate.getFullYear()),
+                month = parseInt(myDate.getMonth()),
+                day = parseInt(myDate.getDate())
+            //添加当前时间到html
+            $currentDate.text(myDate.getFullYear() + '年' + parseInt(myDate.getMonth() + 1) + '月' + myDate.getDate() + '日');
 
-                let monthFirst = new Date(myDate.getFullYear(), parseInt(myDate.getMonth()), 1).getDay();
+            let monthFirst = new Date(myDate.getFullYear(), parseInt(myDate.getMonth()), 1).getDay();
 
-                let d = new Date(myDate.getFullYear(), parseInt(myDate.getMonth() + 1), 0);
-                let totalDay = d.getDate(); //获取当前月的天数
+            let d = new Date(myDate.getFullYear(), parseInt(myDate.getMonth() + 1), 0);
+            let totalDay = d.getDate();
+            /*添加日历网格*/
+            // ul表格
+            let $dateBox = $("#js-qiandao-list"),
+                //  待添加的html
+                _html = '';
+            //生成日历网格
+            for (let i = 0; i < 42; i++) {
+                _html += ' <li><div class="qiandao-icon"></div></li>'
+            }
+            $dateBox.html(_html);
+            let $dateLi = $dateBox.find("li");
+            for (let i = 0; i < totalDay; i++) {
+                $dateLi.eq(i + monthFirst).addClass("date" + parseInt(i));
+            }//生成当月的日历
 
-                /*添加日历网格*/
-                // ul表格
-                let $dateBox = $("#js-qiandao-list"),
-                    //  待添加的html
-                    _html = '';
-                //生成日历网格
-                for (let i = 0; i < 42; i++) {
-                    _html += ' <li><div class="qiandao-icon"></div></li>'
-                }
-                $dateBox.html(_html);
-
-                let $dateLi = $dateBox.find("li");
-                for (let i = 0; i < totalDay; i++) {
-                    $dateLi.eq(i + monthFirst).addClass("date" + parseInt(i));
-                    for (let j = 0; j < dateArray.length; j++) {
-                        if (i == dateArray[j]) {
+            request("http://127.0.0.1:8080/cal/selectAll", `uid=${uid}&year=${year}&month=${month}`, res => {
+                    for (let j = 0; j < res.lenth; j++) {
+                        if (i == res[j].caday) {
                             $dateLi.eq(i + monthFirst).addClass("qiandao");
                         }
-                    }
-                } //生成当月的日历且含已签到
-            }
+                    }//添加已签到
+            });
+
+
             //为当前日期在网格上添加标记（able-qiandao）
             $(".date" + myDate.getDate()).addClass('able-qiandao');
 
             //签到按钮
             let $qiandaoBnt = $(".js-just-qiandao"),
-            //一个bool标识
-            _handle = true;
+                //一个bool标识
+                _handle = true;
             // 为所有已签到的日期添加标识
             $dateBox.on("click", "li", function () {
                 if ($(this).hasClass('able-qiandao') && _handle) {
@@ -381,6 +380,7 @@
                 //标识为false，不可再点击签到
                 _handle = false;
             }
+
             //为日历表格中的当前时间添加标识
             function qianDao() {
                 $(".date" + myDate.getDate()).addClass('qiandao');
@@ -399,6 +399,7 @@
 
         $("#js-qiandao-history").on("click", function () {
             openLayer("qiandao-history-layer", myFun);
+
             function myFun() {
                 console.log(1)
             } //打开弹窗返回函数
