@@ -22,6 +22,7 @@
     <!-- Data table plugin-->
     <script src="js/request.js"></script>
     <script type="text/javascript" src="js/plugins/bootstrap-datetimepicker.js"></script>
+    <script type="text/javascript" src="js/plugins/bootstrap-datetimepicker.zh-CN.js"></script>
     <script type="text/javascript">
         function submit_task() {
             let name = document.getElementById("taskName").value
@@ -214,6 +215,8 @@
                                     <label>截止时间&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
                                         <input class="form-control" type="text" name="taskdeadline" id="taskDl"
                                                placeholder="请输入任务截止时间">
+                                    <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                                    <span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>
                                     </div>
                             </div>
                             <div class="form-inline">
