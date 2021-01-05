@@ -34,7 +34,7 @@
                 processData: false,
                 mimeType: "multipart/form-data",
                 success: function (data) {
-                    path=data
+                    path = data
                     alert('image upload successful!')
                     let name = document.getElementById("goodName").value
                     let cost = document.getElementById("goodCost").value
@@ -146,7 +146,7 @@
                 <i id="span1" class="app-menu__icon fa fa-angle-up"></i></a>
         </li>
         <ul id="adminControl_1" style="display:none">
-            <li><a class="app-menu__item_child" href="#">个人信息</a></li>
+            <li><a class="app-menu__item_child" href="admin_index.html">账号信息</a></li>
             <li><a class="app-menu__item_child" href="#">修改密码</a></li>
             <li><a class="app-menu__item_child" href="#">注销账号</a></li>
         </ul>
@@ -270,15 +270,12 @@
                         <div class="col-lg-12 placeholder">
                             <span class="fa fa-pencil">&nbsp;</span>
                             <label for="goodsdescription">商品简介:</label>
-                            <textarea name="Introduction" name="goodsdescription" id="goodsdescription" cols="100"
-                                      rows="4"
-                                      class="form-control" placeholder="请输入"></textarea>
-                            <button class="btn btn-primary " type="button" style="margin-top: 20px"
-                                    onclick="submit_good()">提交
-                            </button>
-                            <button class="btn btn-primary " type="reset" id="StudentsReset" style="margin-top: 20px">
-                                重置
-                            </button>
+                            <textarea name="goodsdescription" id="goodsdescription" cols="100"
+                                      rows="4" class="form-control" placeholder="请输入"></textarea>
+                            <div class="tile-footer">
+                                <button class="btn btn-primary " type="button"  onclick="submit_good()">提交</button>
+                                <button class="btn btn-primary " type="reset" id="StudentsReset" >重置</button>
+                            </div>
                         </div>
                     </div>
                 </form>
