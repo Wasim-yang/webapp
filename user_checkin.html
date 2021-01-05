@@ -316,7 +316,7 @@
                 myDate = new Date();
             let uid = 1
             let year = parseInt(myDate.getFullYear()),
-                month = parseInt(myDate.getMonth()),
+                month = parseInt(myDate.getMonth() + 1),
                 day = parseInt(myDate.getDate())
             //添加当前时间到html
             $currentDate.text(myDate.getFullYear() + '年' + parseInt(myDate.getMonth() + 1) + '月' + myDate.getDate() + '日');
@@ -336,16 +336,18 @@
             }
             $dateBox.html(_html);
             let $dateLi = $dateBox.find("li");
-            for (let i = 0; i < totalDay; i++) {
-                $dateLi.eq(i + monthFirst).addClass("date" + parseInt(i));
-            }//生成当月的日历
+
 
             request("http://127.0.0.1:8080/cal/selectAll", `uid=${uid}&year=${year}&month=${month}`, res => {
-                    for (let j = 0; j < res.lenth; j++) {
+                for (let i = 0; i < totalDay; i++) {
+                    $dateLi.eq(i + monthFirst).addClass("date" + parseInt(i));
+                    for (let j = 0; j < res.length; j++) {
                         if (i == res[j].caday) {
                             $dateLi.eq(i + monthFirst).addClass("qiandao");
                         }
-                    }//添加已签到
+                    }
+                }//生成当月的日历并添加已签到日期标识
+
             });
 
 
