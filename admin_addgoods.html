@@ -22,6 +22,7 @@
     <!-- Data table plugin-->
     <script>
         let path
+
         function submit_good() {
             let formData = new FormData();
             formData.append('upload', $("#goodsfile")[0].files[0]);
@@ -74,7 +75,7 @@
         }
     </script>
 </head>
-<body class="app sidebar-mini rtl">
+<body class="app sidebar-mini rtl" onpageshow="usr_authorization()">
 <!-- Navbar-->
 <header class="navbar navbar-dark bg-dark shadow fixed-top ">
     <!--左侧-->

@@ -16,10 +16,29 @@
     <!--[if lt IE 9]>
     <script src="lib/html5shiv/html5shiv.min.js"></script>
     <script src="lib/respond/respond.min.js"></script>
+    <script src="js/request.js"></script>
     <![endif]-->
+    <script>
+        let uid
+        function authorization () {
+            request("http://127.0.0.1:8080/authorization", ``, res=> {
+                alert("A")
+                if (res.code != 200) {
+                    alert("未登录,请返回登录页面")
+                    window.location.href = "user_login.html"
+                } else {
+                    uid = res.uid
+                }
+            })
+        }
+
+        function A(){
+            alert("A")
+        }
+    </script>
 </head>
 
-<body>
+<body onload="A()">
 <!-- 顶部导航 start -->
 <div id="top">
     <div class="topBar visible-md visible-lg">

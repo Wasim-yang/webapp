@@ -35,14 +35,6 @@
                 }
             });
         })
-        window.onpageshow = function(){
-            request("http://127.0.0.1:8080/authorization",``,res=>{
-
-            })
-        };
-        //function authorization(){
-
-       // }
 
         function getObjectURL(file) {
             var url = null;
@@ -178,7 +170,7 @@
         }
         /*查询并生成表单*/
         function selectgoods() {
-            request("http://127.0.0.1:8080/goods/selectPage", `currentPage=${currentPage}`, res => {
+            request("http://127.0.0.1:8080/goods/selectpage", `currentPage=${currentPage}`, res => {
                 currentPage = res.currentPage
                 totalPage = res.totalPage
                 PageSize = res.pageSize
