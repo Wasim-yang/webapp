@@ -26,8 +26,10 @@ function usr_authorization() {
         success: function (data) {
             if (data.code != 200) {
                  alert("未登录")
-                window.location.href="./user_login.html"
+                 window.location.href="./user_login.html"
             }
+            else
+                uid=data.uid
         },
         error: function (data) {
             alert("failed")
