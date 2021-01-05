@@ -25,7 +25,7 @@ function usr_authorization() {
         xhrFields: {withCredentials: true},
         success: function (data) {
             if (data.code != 200) {
-                 alert("未登录")
+                 alert("未登录，请您先登录！")
                  window.location.href="./user_login.html"
             }
             else
@@ -46,7 +46,7 @@ function admin_authorization() {
         xhrFields: {withCredentials: true},
         success: function (data) {
             if (data.code != 200) {
-                alert("未登录")
+                alert("未登录，请您先登录！")
                 window.location.href = "./admin_login.html"
             }
         },
