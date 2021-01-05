@@ -30,9 +30,6 @@ function usr_authorization() {
             }
             else
                 uid=data.uid
-        },
-        error: function (data) {
-            alert("failed")
         }
     });
 }
@@ -49,9 +46,6 @@ function admin_authorization() {
                 alert("未登录，请您先登录！")
                 window.location.href = "./admin_login.html"
             }
-        },
-        error: function (data) {
-            alert("failed")
         }
     });
 }
