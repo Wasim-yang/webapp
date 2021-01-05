@@ -104,46 +104,6 @@ function admin_deleteTable() {
     pageResultBox.appendChild(pageResult)
 }
 
-function updategoods() {
-    let id = document.getElementById("modalgoodsid").value;
-    let name = document.getElementById("modalgoodsname").value;
-    let cost = document.getElementById("modalgoodscost").value;
-    let number = document.getElementById("modalgoodsnumber").value;
-    let ean = document.getElementById("modalgoodsean").value;
-    let description = document.getElementById("modalgoodsdescription").value;
-    if (flag == 1) {
-        let formData = new FormData();
-        formData.append('upload', $("#modalgoodsfile")[0].files[0]);
-        formData.append('originpath', originpath)
-        $.ajax({
-            url: "http://127.0.0.1:8080/upload/update",//后端接口
-            type: "post",
-            data: formData,
-            contentType: false,
-            processData: false,
-            mimeType: "multipart/form-data",
-            success: function (data) {
-                flag = 0
-                path = data
-                alert('image upload successful!')
-                request("http://127.0.0.1:8080/goods/update", `id=${id}&name=${name}&cost=${cost}&number=${number}&ean=${ean}&description=${description}&path=${path}`, res => {
-                    alert(res.message)
-                    admin_deleteTable()
-                    selectgoods()
-                    document.getElementById('goodsmodal').style.display = 'none'
-                })
-            }
-        })
-    } else {
-        request("http://127.0.0.1:8080/goods/update", `id=${id}&name=${name}&cost=${cost}&number=${number}&ean=${ean}&description=${description}&path=${originpath}`, res => {
-            alert(res.message)
-            admin_deleteTable()
-            selectgoods()
-            document.getElementById('goodsmodal').style.display = 'none'
-        })
-    }
-}
-
 function admin_firstPage() {
     currentPage = 1
     admin_deleteTable()

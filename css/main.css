@@ -1,0 +1,271 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #f6f6f6;
+    overflow-x: hidden;
+}
+
+li {
+    list-style: none;
+}
+
+a:hover {
+    cursor: pointer;
+}
+
+#top {}
+
+#top>.topBar {
+    background-color: #ddd;
+    color: #999;
+    height: 30px;
+    line-height: 30px;
+    border-bottom: 1px solid #c0c0c0;
+    box-sizing: border-box;
+}
+
+#top>.topBar>.container>.row>div {
+    height: 30px;
+    font-size: 12px;
+    color: #888;
+    padding: 0;
+}
+
+
+/*选择其相邻的div元素，设置边界线*/
+
+#top>.topBar>.container>.row>div+div {
+    border-left: 1px solid #c0c0c0;
+}
+
+#top>.topBar>.container>.row .glyphicon-map-marker {
+    color: #f10215;
+    font-size: 14px;
+}
+
+#top>.topBar>.container>.row a {
+    color: #888;
+    text-decoration: none;
+}
+
+#top>.topBar>.container>.row a:hover {
+    color: #f10215;
+    text-decoration: none;
+}
+
+#top>.topBar>.container>.row .mobile-link img {
+    display: none;
+    height: 100px;
+    width: 100px;
+    z-index: 1001;
+}
+
+#top>.topBar>.container>.row .mobile-link:hover>img {
+    display: block;
+}
+
+
+/*热门词汇*/
+
+#header>#h-top .hotwords ul {
+    list-style: none;
+}
+
+#header>#h-top .hotwords ul li {
+    list-style: none;
+    float: left;
+    margin-right: 5px;
+}
+
+#header>#h-top .hotwords ul li a {
+    color: #888;
+    text-decoration: none;
+}
+
+#header>#h-top .hotwords ul li a:hover {
+    color: #f10215;
+    text-decoration: none;
+}
+
+@media screen and (min-width:499px) and (max-width:565px) {
+    .hotwords ul li:nth-child(8) {
+        display: none;
+    }
+}
+
+.snow-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 100001;
+    background-size: cover;
+}
+
+
+/*合作伙伴*/
+
+#footer {}
+
+#footer>.container-fluid {
+    background-color: #eaeaea;
+    margin-top: 20px;
+}
+
+#footer .footer-title {
+    margin-top: 30px;
+}
+
+#footer .footer-title a {
+    text-decoration: none;
+    color: #666;
+}
+
+#footer .footer-title a:hover {
+    text-decoration: none;
+    color: #f10215;
+}
+
+#footer .footer-content {
+    margin-top: 20px;
+}
+
+
+/*定位菜单*/
+
+#top>.topBar>.container>.row #position {
+    width: 294px;
+    height: 200px;
+    border: 1px solid #c0c0c0;
+    background-color: #fff;
+    list-style: none;
+    position: absolute;
+    z-index: 999;
+    padding: 5px;
+    border-top: 0;
+    margin-left: -1px;
+    display: none;
+}
+
+#top>.topBar>.container>.row #position .item {
+    float: left;
+    padding: 0 8px;
+    color: #999;
+}
+
+#top>.topBar>.container>.row #position .active {
+    color: #f10215;
+    background-color: rgba(234, 231, 232, .5);
+    cursor: pointer;
+}
+
+#top>.topBar>.container>.row .t-position:hover {
+    background-color: #fff;
+    border-bottom: none;
+}
+
+#top>.topBar>.container>.row #position .selected {
+    background-color: #f10215;
+    color: #fff;
+}
+
+
+/*网站导航*/
+
+#top>.topBar>.container>.row #navBar:hover {
+    background-color: #fff;
+    border-bottom: none;
+}
+
+#top>.topBar>.container>.row .nav-bar {
+    width: 688px;
+    height: 170px;
+    background-color: #fff;
+    border: 1px solid #c0c0c0;
+    border-top: none;
+    list-style: none;
+    z-index: 1001;
+    position: absolute;
+    margin-left: -591px;
+    display: none;
+}
+
+#top>.topBar>.container>.row .nav-bar .nav-item {
+    float: left;
+    margin-right: 55px;
+    text-align: center;
+    font-size: 16px;
+    color: #000;
+}
+
+#top>.topBar>.container>.row .nav-bar .nav-item:last-child {
+    margin-right: 0;
+}
+
+#top>.topBar>.container>.row .nav-bar .nav-item small {
+    font-size: 12px;
+    margin-right: 5px;
+    color: #999;
+}
+
+#top>.topBar>.container>.row .nav-bar .nav-item small:hover {
+    color: #f10215;
+    cursor: pointer;
+}
+
+
+/*回到顶部*/
+
+.top {
+    width: 40px;
+    height: 30px;
+    position: fixed;
+    right: 10px;
+    bottom: 10px;
+    display: none;
+    z-index: 999;
+    background-color: #999;
+}
+
+.top:hover {
+    background-color: #ffa200; 
+}
+
+.top:hover p {
+    display: block;
+    background-color: #ffa200; 
+}
+
+.top span {
+    font-size: 30px;
+    color: #fff;
+    margin: -1px 0px 0px 5px;
+}
+
+.top p {
+    width: 70px;
+    height: 30px;
+    position: absolute;
+    right: 40px;
+    bottom: -10px;
+    background-color: #fff;
+    padding-top: 4px;
+    padding-left: 4px;
+    display: none;
+}
+.ad_picture{
+    position:relative;
+    top:-10px;
+    left: 2%;
+    right: 2%;
+    width: 96%;
+    border-radius: 10px;
+    background-color: #ffffff;
+    z-index: 99;
+    opacity: 0.8;
+}
+.label_h{
+    font-size: 4px;
+}

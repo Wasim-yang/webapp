@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>高校成绩管理系统</title>
+    <title>个人碳积分管理系统</title>
     <link rel="icon" href="./images/weblogo.png" type="image/png" sizes="128*128">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -13,30 +13,21 @@
     <!-- Font-icon css-->
     <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
     <!-- Essential javascripts for application to work-->
-    <script src="./Rourses/js/jquery-3.2.1.min.js"></script>
-    <script src="./Rourses/js/popper.min.js"></script>
-    <script src="./Rourses/js/bootstrap.min.js"></script>
-    <script src="./Rourses/js/main.js"></script>
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/main.js"></script>
     <!-- The javascript plugin to display page loading on top-->
-    <script src="./Rourses/js/plugins/pace.min.js"></script>
+    <script src="js/plugins/pace.min.js"></script>
     <script>
-        $(function () {
-            //给登录按钮绑定事件
-            $("#btn_sub").click(function () {
-                //发送ajax请求，提交表单事件
-                $.post("login/login", $("#loginForm").serialize(),function (data) {
-                    if(data === "学生"){
-                        location.href = "/student_index.html";
-                    }
-                    else if(data === "教师"){
-                        location.href = "/teacher_index.html";
-                    }
-                    else if(data === "管理员"){
-                        location.href = "/admin_index.html";
-                    }
-                });
-            })
-        })
+        function admin_login() {
+            let id = document.getElementById("loginId").value
+            let password = document.getElementById("loginPassword").value
+            request("http://127.0.0.1:8080/admin/login",
+                `id=${id}&password=${password}`, res => {
+                    alert(res.message)
+                })
+        }
     </script>
 </head>
 <body background="images/background.png">
@@ -45,8 +36,8 @@
         <div class="col-md-8">
             <div class="jumbotron">
                 <h1 class="display-4">你好！欢迎使用！</h1>
-                <p class="display-4">ZJUT</p>
-                <p class="lead">高校学生成绩信息管理系统</p>
+                <p class="display-4">绿色出行app</p>
+                <p class="lead">个人碳积分管理系统</p>
                 <hr class="my-4">
             </div>
         </div>
@@ -62,32 +53,35 @@
                             <label><strong>登录类型</strong></label>
                             <select class="form-control" name="type">
                                 <option disabled selected>请选择登陆类型</option>
-                                <option>学生</option>
-                                <option>教师</option>
                                 <option>管理员</option>
+                                <option>项目负责人</option>
+                                <option>合作商家</option>
                             </select>
                         <div class="form-group">
-                            <label><strong>用户名</strong></label>
-                            <input class="form-control" type="text" name="ID" placeholder="请输入用户名" autofocus required>
+                            <label><strong>账号</strong></label>
+                            <input id="loginId" class="form-control" type="text" name="ID"
+                                   placeholder="请输入账号" autofocus required>
                         </div>
                         <div class="form-group">
                             <label><strong>密码</strong></label>
-                            <input class="form-control" type="password" name="password" placeholder="请输入密码" required>
+                            <input id="loginPassword" class="form-control" type="password"
+                                   name="password" placeholder="请输入密码" required>
                         </div>
                         <div class="custom-control custom-switch">
                             <input type="checkbox" class="custom-control-input" id="customSwitch1">
                             <label class="custom-control-label" for="customSwitch1">记住密码</label>
                         </div>
                         <div class="btn-group d-flex justify-content-center">
-                            <button class="btn btn-primary" id="btn_sub" type="button"><i class="fa fa-sign-in fa-lg fa-fw"></i>>登录</button>
-                            <button type="button" class="btn btn-outline-secondary" data-container="body" data-toggle="popover"
-                                    data-trigger="focus" data-placement="bottom" title="功能尚未开放">
-                                注册
-                            </button>
+                            <button class="btn btn-primary" id="btn_sub" onclick="admin_login()" type="button"><i class="fa fa-sign-in fa-lg fa-fw"></i>>登录</button>
+<!--                            <button type="button" class="btn btn-outline-secondary" data-container="body" data-toggle="popover"-->
+<!--                                    data-trigger="focus" data-placement="bottom" title="功能尚未开放">-->
+<!--                                注册-->
+<!--                            </button>-->
                         </div>
                         <div class="alert alert-info" role="alert">
                             如有任何问题请联系我们<br>
                             201806061907@zjut.cn<br>
+                        </div>
                         </div>
                     </form>
                 </div>
