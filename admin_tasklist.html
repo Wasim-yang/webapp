@@ -163,6 +163,7 @@
                 alert(res.message)
                 admin_deleteTable()
                 selecttask()
+                document.getElementById('taskmodal').style.display = 'none'
             })
         }
 
@@ -436,9 +437,9 @@
                                 <th>任务编号</th>
                                 <th>任务类型</th>
                                 <th>任务名称</th>
-                                <th>任务要求</th>
+                                <th>目标里程</th>
                                 <th>截止时间</th>
-                                <th>任务奖励</th>
+                                <th>奖励积分</th>
                                 <th>操作</th>
                             </tr>
                             </thead>
@@ -479,13 +480,13 @@
             <label><b>任务类型</b></label>
             <input type="text" id="modaltasktype" style=" width: 80%;" required><br>
 
-            <label><b>任务要求</b></label>
+            <label><b>目标里程</b></label>
             <input type="text" id="modaltaskrequirement" style=" width: 80%;" required><br>
 
             <label><b>截止时间</b></label>
             <input type="text" id="modaltaskdeadline" style=" width: 80%;" required><br>
 
-            <label><b>任务奖励</b></label>
+            <label><b>奖励积分</b></label>
             <input type="text" id="modaltaskaward" style=" width: 80%;" required><br>
 
             <label><b>任务描述</b></label>
