@@ -25,8 +25,8 @@ function usr_authorization() {
         xhrFields: {withCredentials: true},
         success: function (data) {
             if (data.code != 200) {
-                // alert("未登录")
-                //window.location.href="./user_login.html"
+                 alert("未登录")
+                window.location.href="./user_login.html"
             }
         },
         error: function (data) {

@@ -17,15 +17,17 @@
     <script src="js/popper.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/main.js"></script>
-    <!-- The javascript plugin to display page loading on top-->
-    <script src="js/plugins/pace.min.js"></script>
+    <script type="text/javascript" src="js/Control.js"></script>
+    <script src="js/request.js"></script>
     <script>
         function admin_login() {
             let id = document.getElementById("loginId").value
             let password = document.getElementById("loginPassword").value
             request("http://127.0.0.1:8080/admin/login",
                 `id=${id}&password=${password}`, res => {
-                    alert(res.message)
+                    if(res.code==200){
+                        window.location.href="admin_addgoods.html"
+                    }
                 })
         }
     </script>
