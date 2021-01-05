@@ -239,24 +239,7 @@
         <div class="qiandao-layer qiandao-history-layer">
             <div class="qiandao-layer-con qiandao-radius">
                 <a href="javascript:;" class="close-qiandao-layer qiandao-sprits"></a>
-                <ul class="qiandao-history-inf clear">
-                    <li>
-                        <p>连续签到</p>
-                        <h4>5</h4>
-                    </li>
-                    <li>
-                        <p>本月签到</p>
-                        <h4>17</h4>
-                    </li>
-                    <li>
-                        <p>总共签到数</p>
-                        <h4>28</h4>
-                    </li>
-                    <li>
-                        <p>签到累计奖励</p>
-                        <h4>30</h4>
-                    </li>
-                </ul>
+
                 <div class="qiandao-history-table">
                     <table>
                         <thead>
@@ -266,18 +249,16 @@
                             <th>说明</th>
                         </tr>
                         </thead>
-                        <table>
-                            <tr>
-                                <td>2020-12-30 00:00:00</td>
-                                <td>5</td>
-                                <td>连续签到5天奖励</td>
-                            </tr>
-                            <tr>
-                                <td>2020-1-1 14:23:45</td>
-                                <td>0.5</td>
-                                <td>分享奖励</td>
-                            </tr>
-                        </table>
+                    </table>
+                    <table>
+                        <tr>
+                            <td>2020-12-30 00:00:00</td>
+                            <td>5</td>
+                        </tr>
+                        <tr>
+                            <td>2020-1-1 14:23:45</td>
+                            <td>0.5</td>
+                        </tr>
                     </table>
                 </div>
             </div>
@@ -290,12 +271,12 @@
                 <a href="javascript:;" class="close-qiandao-layer qiandao-sprits"></a>
                 <div class="yiqiandao clear">
                     <div class="yiqiandao-icon qiandao-sprits"></div>
-                    您已连续签到<span>2</span>天
+                    恭喜您签到成功！<span></span>
                 </div>
                 <div class="qiandao-jiangli qiandao-sprits">
-                    <span class="qiandao-jiangli-num">2<em>积分</em></span>
+                    <span class="qiandao-jiangli-num">1<em>积分</em></span>
                 </div>
-                <a href="#" class="qiandao-share qiandao-tran">分享获取额外积分</a>
+                <!--                <a href="#" class="qiandao-share qiandao-tran">分享获取额外积分</a>-->
             </div>
             <div class="qiandao-layer-bg"></div>
         </div>
@@ -307,24 +288,25 @@
 <script type="text/javascript" src="lib/bootstrap/js/bootstrap.js"></script>
 <script src="js/jquery-3.2.1.min.js"></script>
 <script src="js/request.js"></script>
-<!--<script src="js/checkin.js"></script>-->
 <script type="text/javascript">
     $(function () {
+        let uid = 1
+        /*获取当前时间*/
+        let $currentDate = $(".current-date"),
+            myDate = new Date();
+        let year = parseInt(myDate.getFullYear()),
+            month = parseInt(myDate.getMonth() + 1),
+            day = parseInt(myDate.getDate())
+
+
         let signFun = function () {
-            /*获取当前时间*/
-            let $currentDate = $(".current-date"),
-                myDate = new Date();
-            let uid = 1
-            let year = parseInt(myDate.getFullYear()),
-                month = parseInt(myDate.getMonth() + 1),
-                day = parseInt(myDate.getDate())
             //添加当前时间到html
             $currentDate.text(myDate.getFullYear() + '年' + parseInt(myDate.getMonth() + 1) + '月' + myDate.getDate() + '日');
 
             let monthFirst = new Date(myDate.getFullYear(), parseInt(myDate.getMonth()), 1).getDay();
-
             let d = new Date(myDate.getFullYear(), parseInt(myDate.getMonth() + 1), 0);
             let totalDay = d.getDate();
+            let _handle = true;
             /*添加日历网格*/
             // ul表格
             let $dateBox = $("#js-qiandao-list"),
@@ -336,18 +318,21 @@
             }
             $dateBox.html(_html);
             let $dateLi = $dateBox.find("li");
-
+            let myform = $("#js-qiandao-history")
 
             request("http://127.0.0.1:8080/cal/selectAll", `uid=${uid}&year=${year}&month=${month}`, res => {
-                for (let i = 0; i < totalDay; i++) {
-                    $dateLi.eq(i + monthFirst).addClass("date" + parseInt(i));
+                for (let i = 0; i <= totalDay; i++) {
+                    $dateLi.eq(i + monthFirst - 1).addClass("date" + parseInt(i));
                     for (let j = 0; j < res.length; j++) {
                         if (i == res[j].caday) {
-                            $dateLi.eq(i + monthFirst).addClass("qiandao");
+                            if (i == day) { //当日已签到
+                                $qiandaoBnt.addClass('actived');
+                                _handle = false;
+                            }
+                            $dateLi.eq(i + monthFirst - 1).addClass("qiandao");
                         }
                     }
                 }//生成当月的日历并添加已签到日期标识
-
             });
 
 
@@ -355,25 +340,23 @@
             $(".date" + myDate.getDate()).addClass('able-qiandao');
 
             //签到按钮
-            let $qiandaoBnt = $(".js-just-qiandao"),
-                //一个bool标识
-                _handle = true;
-            // 为所有已签到的日期添加标识
-            $dateBox.on("click", "li", function () {
-                if ($(this).hasClass('able-qiandao') && _handle) {
-                    $(this).addClass('qiandao');
-                    Clickqiandao();
-                }
-            })
+            let $qiandaoBnt = $(".js-just-qiandao");
+            // 点击日历签到
+            /*            $dateBox.on("click", "li", function () {
+                            if ($(this).hasClass('able-qiandao') && _handle) {
+                                $(this).addClass('qiandao');
+                                Clickqiandao();
+                            }
+                        })*/
 
-            /*点击签到*/
+            /*点击签到按钮*/
             $qiandaoBnt.on("click", function () {
                 if (_handle) {
                     Clickqiandao();
                 }
             });
 
-
+            //签到函数
             function Clickqiandao() {
                 //添加活跃 不可再点击
                 $qiandaoBnt.addClass('actived');
@@ -381,33 +364,38 @@
                 openLayer("qiandao-active", qianDao);
                 //标识为false，不可再点击签到
                 _handle = false;
+                request("http://127.0.0.1:8080/cal/addCalendar", `uid=${uid}&year=${year}&month=${month}&day=${day}`, res => {
+                });
             }
 
-            //为日历表格中的当前时间添加标识
+            //为日历表格中的当前时间添加已签到的标识
             function qianDao() {
                 $(".date" + myDate.getDate()).addClass('qiandao');
             }
         }();
 
+        /*
+          打开弹窗
+        * a:需要显示的class名
+        * Fun:函数*/
         function openLayer(a, Fun) {
             $('.' + a).fadeIn(Fun)
-        } //打开弹窗
+        }
 
         let closeLayer = function () {
             $("body").on("click", ".close-qiandao-layer", function () {
                 $(this).parents(".qiandao-layer").fadeOut()
             })
         }(); //关闭弹窗
-
-        $("#js-qiandao-history").on("click", function () {
-            openLayer("qiandao-history-layer", myFun);
-
-            function myFun() {
-                console.log(1)
-            } //打开弹窗返回函数
-        })
     });
+    //我的签到
+    myform.on("click", function () {
+        openLayer("qiandao-history-layer", myFun);
 
+        function myFun() {
+            console.log(1)
+        } //打开弹窗返回函数
+    })
 </script>
 
 </html>

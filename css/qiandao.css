@@ -86,7 +86,7 @@ img {
     width: 92px;
     height: 36px;
     border-radius: 4px;
-    background-color: #b25d06;
+    background-color: #33b23f;
     color: #fff;
     text-align: center;
     font-size: 1pc;
@@ -379,6 +379,7 @@ img {
 
 .qiandao-history-table table th {
     width: 33.3%;
+    color: #33b23f;
     background-color: #f2f2f2;
     text-align: center;
     line-height: 40px
@@ -387,6 +388,7 @@ img {
 .qiandao-history-table td {
     width: 33.3%;
     border-bottom: 1px #e5e5e5 dashed;
+    text-align: center;
     line-height: 34px
 }
 
