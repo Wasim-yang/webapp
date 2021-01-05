@@ -19,12 +19,87 @@
     <script src="js/main.js"></script>
     <script type="text/javascript" src="js/Control.js"></script>
     <!-- Data table plugin-->
-    <script type="text/javascript" src="/js/plugins/jquery.dataTables.min.js"></script>
-    <script type="text/javascript" src="/js/plugins/dataTables.bootstrap.min.js"></script>
-    <script type="text/javascript">$('#scoreTable').DataTable();</script>
-
+    <script src="js/request.js"></script>
+    <script>
+    /*向后端发送更新数据*/
+    function updatecoupons() {
+    let id = document.getElementById("modalcouponsid").value;
+    let name = document.getElementById("modalcouponsname").value;
+    let discount = document.getElementById("modalcouponsdiscount").value;
+    let expoints = document.getElementById("modalcouponsexpoints").value;
+    let description = document.getElementById("modalcouponsdescription").value;
+    request("http://127.0.0.1:8080/coupon/update", `id=${id}&name=${name}&discount=${discount}&expoints=${expoints}&description=${description}`,
+        res => {
+    alert(res.message)
+    })
+    }
+    /*查询并生成表单*/
+    function selectcoupons() {
+            request("http://127.0.0.1:8080/coupon/select", ``, res => {
+                let table = document.getElementById("coupons_list")
+                /*生成表单并打印数据与操作按钮*/
+                res.forEach(coupons => {
+                let row = document.createElement("tr")
+                let cell1 = document.createElement("td")
+                let cell2 = document.createElement("td")
+                let cell3 = document.createElement("td")
+                let cell4 = document.createElement("td")
+                let cell5 = document.createElement("td")
+                let cell6 = document.createElement("td")
+                let cell7=document.createElement("td")
+                let seebutton = document.createElement("button")
+                let deletebutton = document.createElement("button")
+                seebutton.type = "button"
+                deletebutton.type = "button"
+                seebutton.className = "btn btn-primary"
+                deletebutton.className = "btn btn-danger"
+                deletebutton.style = "margin-right: -40px;margin-left: 10px"
+                seebutton.appendChild(document.createTextNode("查看"))
+                deletebutton.appendChild(document.createTextNode("删除"))
+                seebutton.setAttribute("id", coupons.id)
+                seebutton.setAttribute("name", coupons.name)
+                seebutton.setAttribute("discount", coupons.discount)
+                seebutton.setAttribute("expoints", coupons.expoints)
+                seebutton.setAttribute("description", coupons.description)
+                deletebutton.setAttribute("id", coupons.id)
+                /*查看按钮-在拟态框中显示详细数据*/
+                seebutton.onclick = function () {
+                    document.getElementById("modalcouponsid").value = seebutton.getAttribute("id")
+                    document.getElementById("modalcouponsname").value = seebutton.getAttribute("name")
+                    document.getElementById("modalcouponsdiscount").value = seebutton.getAttribute("discount")
+                    document.getElementById("modalcouponsexpoints").value = seebutton.getAttribute("expoints")
+                    document.getElementById("modalcouponsdescription").value = seebutton.getAttribute("description")
+                    document.getElementById('couponsmodal').style.display = 'block'
+                }
+                /*删除按钮-删除改项数据*/
+                deletebutton.onclick = function () {
+                    let cid = this.getAttribute("id")
+                    request("http://127.0.0.1:8080/coupon/delete", `id=${cid}`, res => {
+                        alert(res.message)
+                    })
+                }
+                cell1.appendChild(document.createTextNode(coupons.id))
+                cell2.appendChild(document.createTextNode(coupons.name))
+                cell3.appendChild(document.createTextNode(coupons.discount))
+                cell4.appendChild(document.createTextNode(coupons.expoints))
+                cell5.appendChild(document.createTextNode(coupons.description))
+                cell6.appendChild(document.createTextNode("7天"))
+                cell7.appendChild(seebutton)
+                cell7.appendChild(deletebutton)
+                row.appendChild(cell1)
+                row.appendChild(cell2)
+                row.appendChild(cell3)
+                row.appendChild(cell4)
+                row.appendChild(cell5)
+                row.appendChild(cell6)
+                row.appendChild(cell7)
+                table.appendChild(row)
+            })
+        })
+    }
+    </script>
 </head>
-<body class="app sidebar-mini rtl">
+<body class="app sidebar-mini rtl" onload="selectcoupons()">
 <!-- Navbar-->
 <header class="navbar navbar-dark bg-dark shadow fixed-top ">
     <!--左侧-->
@@ -152,7 +227,7 @@
 <main class="app-content">
     <div class="app-title">
         <div>
-            <h1><i class="fa fa-book"></i> 优惠券列表</h1>
+            <h1><i class="fa fa-book"></i>优惠券列表</h1>
         </div>
         <!--        <ul class="app-breadcrumb breadcrumb">-->
         <!--            <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>-->
@@ -165,10 +240,10 @@
                 <form class="form-group col-md-12" id="courseList">
                     <div class="row">
                         <div class="col-lg-2">
-                            <input class="form-control" type="text" name="teacher" placeholder="查询优惠券">
+                            <input class="form-control" type="text" name="selectcoupons" placeholder="查询优惠券">
                         </div>
                         <div class="col-lg-3">
-                            <button class="btn btn-primary" id="#" type="button" >查询</button>
+                            <button class="btn btn-primary" id="#" type="button">查询</button>
                         </div>
                     </div>
                 </form>
@@ -177,15 +252,16 @@
                         <table class="table table-hover table-bordered" id="scoreTable">
                             <thead>
                             <tr>
-                                <th>编号</th>
+                                <th>优惠券编号</th>
                                 <th>优惠券名称</th>
                                 <th>折扣度</th>
                                 <th>兑换积分</th>
+                                <th>优惠券描述</th>
                                 <th>有效期</th>
+                                <th>操作</th>
                             </tr>
                             </thead>
-                            <tbody id="course_list">
-                            </tbody>
+                            <tbody id="coupons_list"></tbody>
                         </table>
                     </div>
                 </div>
@@ -193,6 +269,49 @@
         </div>
     </div>
 </main>
+<div id="couponsmodal" class="modal">
+    <!--    商品详情拟态框　　-->
+    <form class="modal-content animate">
+            <!-- 点击×号，隐藏模态框-->
+            <span onclick="document.getElementById('couponsmodal').style.display='none'" class="close"
+                  title="Close Modal">×</span>
+<!--        <div class="container">-->
+<!--            <div class="imagebox">-->
+<!--                <label><b>商品图片</b></label>-->
+<!--                <img src="" id="modalgoodsimage" alt="Avatar" class="avatar" style="width: 20rem;height: 15rem"/>-->
+<!--                <label class="btn btn-info fileinput-button">-->
+<!--                    <span>更换图片</span>-->
+<!--                    <input type="file" name="modalgoodsfile" id="modalgoodsfile"-->
+<!--                           accept="image/gif,image/jpeg,image/jpg,image/png,image/svg"/>-->
+<!--                </label>-->
+<!--            </div>-->
+            <label><b>优惠券编号</b></label>
+        <center>
+            <input type="text" id="modalcouponsid" style=" width: 80%;" required disabled><br></center>
 
+            <label><b>优惠券名称</b></label>
+        <center>
+            <input type="text" id="modalcouponsname" style=" width: 80%;" required><br></center>
+
+            <label><b>折扣度</b></label>
+        <center>
+            <input type="text" id="modalcouponsdiscount" style=" width: 80%;" required><br></center>
+
+            <label><b>兑换积分</b></label>
+        <center>
+            <input type="text" id="modalcouponsexpoints" style=" width: 80%;" required><br></center>
+            <label><b>优惠券描述:</b></label>
+        <center>
+            <textarea id="modalcouponsdescription" cols="10" rows="3" style="width: 80%"
+                      class="form-control" required></textarea></center>
+            <button class="btn btn-danger" type="button" style="margin-top: 10px;" onclick="updatecoupons()">保存修改</button>
+
+        <div class="container" style="background-color:#f1f1f1">
+            <!-- 点击cancel按钮，把模态框隐藏-->
+        </div>
+    </form>
+</div>
+</body>
+</html>
 </body>
 </html>
