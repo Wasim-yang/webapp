@@ -147,6 +147,7 @@
                     contentType: false,
                     processData: false,
                     mimeType: "multipart/form-data",
+                    xhrFields: {withCredentials: true},
                     success: function (data) {
                         flag = 0
                         path = data

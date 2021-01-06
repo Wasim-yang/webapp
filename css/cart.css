@@ -24,8 +24,8 @@
 .goods_body{
 	margin:0;
 	padding: 0;
-	background: url("../images/user_goods.jpg");
-	background-size:cover;
+	/*background: url("../images/user_goods.jpg");*/
+	/*background-size:cover;*/
 	position: absolute;
 }
 .jd_view {

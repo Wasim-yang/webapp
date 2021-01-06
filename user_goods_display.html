@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>商品信息页</title>
+    <link rel="stylesheet" type="text/css" href="lib/bootstrap/css/bootstrap2.css">
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <link rel="stylesheet" type="text/css" href="css/goods.css">
+    <script src="js/request.js"></script>
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/main.js"></script>
+    <script type="text/javascript" src="js/Control.js"></script>
+    <Script>
+        let gid
+        let uid
+
+        function GetRequest() {
+            let url = location.search; //获取url中"?"符后的字串
+            let theRequest = new Object();
+            if (url.indexOf("?") != -1) {
+                let str = url.substr(1);
+                let strs = str.split("&");
+                for (let i = 0; i < strs.length; i++) {
+                    theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
+                }
+            }
+            return theRequest;
+        }
+
+        window.onload = function () {
+            let Request = new Object()
+            Request = GetRequest()
+            gid = Request['gid']
+            uid = Request['uid']
+            usr_authorization()
+        }
+
+        function selectgoodsbyid() {
+            request("http://127.0.0.1:8080/usr/goods/selectid", `id=${gid}`, res => {
+                let area = document.getElementById("goods_display")
+                let image = document.createElement("img")
+                let description = document.createElement("div")
+                let des = document.createElement("p")
+                let cost = document.createElement("p")
+                let buy = document.createElement("button")
+                area.className = "goods_display"
+                image.className = "goods_display_image"
+                description.className = "goods_display_des"
+                image.setAttribute("image", res.gimage)
+                description.appendChild(document.createTextNode(res.gdescription))
+                des.appendChild(document.createTextNode("¥" + res.gcost))
+                description.appendChild(des)
+                buy.className = "btn btn-primary goods_buy"
+                buy.appendChild(document.createTextNode("购买"))
+                buy.onclick = function () {
+                    document.getElementById('modalbuy').style.display = "block"
+                    document.getElementById("modalgoodsimage").src = image.getAttribute("image")
+                    let number = document.getElementById("modalgoodsnumber")
+                    let cost = document.getElementById("modalgoodscost")
+                    let description = document.getElementById("modalgoodsdescription")
+                    request("http://127.0.0.1:8080/usr/goods/buy", `uid=${uid}%gid=${gid}`, res => {
+
+                    })
+                }
+                image.src = res.gimage
+                area.appendChild(image)
+                description.appendChild(buy)
+                area.appendChild(description)
+
+
+            })
+        }
+
+
+    </Script>
+</head>
+<body onpageshow="selectgoodsbyid()">
+<div class="row">
+    <div class="col-lg-2 col-md-4 col-sm-12 col-xs-12">
+        <div id="goods_display" class="goods_display">
+
+        </div>
+    </div>
+</div>
+<div id="modalbuy" class="modalgoodsbuy">
+    <form class="modal-content animate">
+        <div class="imgcontainer">
+            <!-- 点击×号，隐藏模态框-->
+            <span onclick="document.getElementById('modalbuy').style.display='none'" class="close"
+                  title="Close Modal">×</span>
+            <img src="" id="modalgoodsimage" alt="Avatar" class="avatar modalgoodsimage"/>
+            <div id="modalgoodscost">
+
+            </div>
+        </div>
+        <div class="demo_line_01">我的优惠券</div>
+        <div class="container">
+            <div id="usr_coupon" class="usr_coupon">
+
+            </div>
+            <div class="demo_line_01">购买数量</div>
+            <div>
+                <input type="text" id="buy_number" style="width: 80%;" required><br>
+            </div>
+
+            <button type="button" style="margin-top: 10px;" onclick="buygoods()">购买</button>
+        </div>
+    </form>
+
+</div>
+
+</body>
+</html>

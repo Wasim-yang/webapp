@@ -1,0 +1,91 @@
+.goods_area1 {
+    text-align: center;
+    background: white;
+    margin-top: 20px;
+    margin-left: 5px;
+    margin-right: 0;
+    height: 300px;
+    width: 220px;
+}
+
+.goods_image {
+    height: 80%;
+    width: 100%;
+}
+
+.goods_description {
+    color: red;
+}
+
+.goods_area2 {
+    text-align: center;
+    background: white;
+    margin-left: 0;
+    margin-top: 20px;
+    margin-right: 5px;
+    height: 300px;
+    width: 220px;
+}
+
+.goods_display {
+    background: rgba(0, 0, 0, 0.2);
+    height: 672px;
+}
+
+.goods_display_image {
+    margin-left: 3px;
+    border-radius: 10px;
+    width: 99%;
+    height: 75%;
+}
+
+.goods_display_des {
+    width: 99%;
+    margin-top: 5px;
+    margin-left: 3px;
+    font-size: 20px;
+    background: snow;
+    color: #000000;
+    box-shadow: -2px 2px 4px #888888;
+    border-radius: 10px;
+}
+
+.goods_buy {
+    margin-left: 80%;
+    margin-top: 10%;
+    margin-bottom: 1%;
+}
+
+.modalgoodsbuy {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1050;
+    display: none;
+    overflow: hidden;
+    -webkit-overflow-scrolling: touch;
+    outline: 0;
+
+}
+
+.usr_coupon {
+    height: 460px;
+}
+
+.modalgoodsimage {
+    width: 20rem;
+    height: 30rem;
+    margin-left: 20px;
+    margin-top: 20px;
+}
+
+.demo_line_01{
+    padding: 0 20px 0;
+    margin: 20px 0;
+    line-height: 1px;
+    border-left: 190px solid #ddd;
+    border-right: 190px solid #ddd;
+    text-align: center;
+}

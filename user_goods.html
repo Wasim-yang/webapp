@@ -5,11 +5,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
     <title>我的任务</title>
-    <link rel="stylesheet" type="text/css" href="lib/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="lib/bootstrap/css/bootstrap2.css">
     <link rel="stylesheet" type="text/css" href="css/main.css">
-    <link rel="stylesheet" type="text/css" href="css/cart.css">
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <link rel="stylesheet" type="text/css" href="css/goods.css">
     <script src="js/request.js"></script>
     <script src="js/jquery-3.2.1.min.js"></script>
     <script src="js/popper.min.js"></script>
@@ -17,12 +17,215 @@
     <script src="js/main.js"></script>
     <script type="text/javascript" src="js/Control.js"></script>
 
+    <script>
+        let uid
+        let name = document.getElementById("selectgoodsName")
+        let currentPage = 1
+        let totalPage = 1
+        let PageSize
+        let totalRecord = 0
+
+        window.onload = function () {
+
+            function getDocumentTop() {
+                let scrollTop = 0
+                let bodyScrollTop = 0
+                let documentScrollTop = 0;
+                if (document.body) {
+                    bodyScrollTop = document.body.scrollTop;
+                }
+                if (document.documentElement) {
+                    documentScrollTop = document.documentElement.scrollTop;
+                }
+                scrollTop = (bodyScrollTop - documentScrollTop > 0) ? bodyScrollTop : documentScrollTop;
+                return scrollTop;
+            }
+
+            function getWindowHeight() {
+                let windowHeight = 0
+                if (document.compatMode == "CSS1Compat") {
+                    windowHeight = document.documentElement.clientHeight;
+                } else {
+                    windowHeight = document.body.clientHeight;
+                }
+                return windowHeight
+            }
+
+            function getScrollHeight() {
+                let scrollHeight = 0
+                let bodyScrollHeight = 0
+                let documentScrollHeight = 0
+                if (document.body) {
+                    bodyScrollHeight = document.body.scrollHeight;
+                }
+                if (document.documentElement) {
+                    documentScrollHeight = document.documentElement.scrollHeight;
+                }
+                scrollHeight = (bodyScrollHeight - documentScrollHeight > 0) ? bodyScrollHeight : documentScrollHeight;
+                return scrollHeight
+            }
+
+            window.onscroll = function () {
+                scroll().top > 0 ? show(gotop) : hide(gotop);
+                leader = scroll().top;
+                //监听事件内容
+                if (getScrollHeight() <= getWindowHeight() + getDocumentTop() + 0.1) {
+                    //当滚动条到底时,这里是触发内容
+                    //异步请求数据,局部刷新dom
+                    ajax_function()
+                }
+            }
+
+            function ajax_function() {
+                if (currentPage == totalPage) {
+                    let tip = document.createTextNode("已经拉到底了，没有其他商品了")
+
+                } else {
+                    currentPage = currentPage + 1
+                    selectgoods()
+                }
+            }
+
+            // 网站导航
+            var nav = document.getElementById('navBar');
+
+            //回到顶部
+
+            function show(obj) {
+                obj.style.display = "block";
+            }
+
+            function hide(obj) {
+                obj.style.display = "none";
+            }
+
+
+            function scroll() {
+                if (window.pageYOffset != null) //  ie9+ 和其他浏览器
+                {
+                    return {
+                        left: window.pageXOffset,
+                        top: window.pageYOffset
+                    }
+                } else if (document.compatMode == "CSS1Compat") // 声明的了 DTD
+                    // 检测是不是怪异模式的浏览器 -- 就是没有 声明<!DOCTYPE html>
+                {
+                    return {
+                        left: document.documentElement.scrollLeft,
+                        top: document.documentElement.scrollTop
+                    }
+                }
+                return { //  剩下的肯定是怪异模式的
+                    left: document.body.scrollLeft,
+                    top: document.body.scrollTop
+                }
+            }
+
+            var gotop = document.getElementById('gotop');
+            var leader = 0,
+                target = 0,
+                timer = null;
+            // window.onscroll = function() {
+            //     // scroll().top > 0 ? show(gotop) : hide(gotop);
+            //     // leader = scroll().top;
+            // }
+            gotop.onclick = function () {
+                target = 0; //点击完之后目标位置为0
+                timer = setInterval(function () {
+                    leader = leader + (target - leader) / 10;
+                    window.scrollTo(0, leader);
+                    if (leader == target) {
+                        clearInterval(timer);
+                    }
+                }, 20)
+            }
+
+        }
+
+
+        function selectgoods() {
+            request("http://127.0.0.1:8080/usr/goods/selectpage", `currentPage=${currentPage}`, res => {
+                currentPage = res.currentPage
+                totalPage = res.totalPage
+                PageSize = res.pageSize
+                totalRecord = res.totalRecord
+                let arealeft = document.getElementById("body_list1")
+                let arearight = document.getElementById("body_list2")
+                /*生成表单并打印数据与操作按钮*/
+                let goodsList = res.dataList
+                for (let i = 0,j = 0; i < goodsList.length && j < PageSize; i++,j++) {
+                   if(j % 2 === 0){
+                       let goodarea = document.createElement("div")
+                       let cell1 = document.createElement("img")
+                       let cell2 = document.createElement("p")
+                       let cell3 = document.createElement("a")
+                       goodarea.className = "goods_area1"
+                       // alert("A")
+                       cell1.src = goodsList[i].gimage
+                       cell1.className = "goods_image"
+                       cell2.className = "goods_description"
+                       cell3.href="user_goods_display.html?gid="+goodsList[i].gid+"&uid="+uid
+                       cell2.appendChild(document.createTextNode(goodsList[i].gdescription))
+                       cell2.appendChild(document.createTextNode("¥" + goodsList[i].gcost))
+                       cell3.appendChild(cell1)
+                       goodarea.appendChild(cell3)
+                       goodarea.appendChild(cell2)
+                       arealeft.appendChild(goodarea)
+                   }
+                   else{
+                       let goodarea2 = document.createElement("div")
+                       let cell1 = document.createElement("img")
+                       let cell2 = document.createElement("p")
+                       let cell3 = document.createElement("a")
+                       goodarea2.className = "goods_area2"
+                       // alert("A")
+                       cell1.setAttribute("gid",goodsList[i].gid)
+                       cell1.src = goodsList[i].gimage
+                       cell1.className = "goods_image"
+                       cell2.className = "goods_description"
+                       cell3.href="user_goods_display.html?gid="+goodsList[i].gid+"&uid="+uid
+                       cell2.appendChild(document.createTextNode("¥" + goodsList[i].gcost))
+                       cell3.appendChild(cell1)
+                       goodarea2.appendChild(cell3)
+                       goodarea2.appendChild(cell2)
+                       arearight.appendChild(goodarea2)
+                   }
+                }
+                // for (let i = 1; i < PageSize; i = i + 2) {
+                //     j = j + 1
+                //     if (j > PageSize)
+                //         break
+                //
+                // }
+            })
+        }
+
+        function selectgoodsbyname() {
+            request("http://127.0.0.1:8080/usr/goods/selectname", `name=${name}&currentPage=${currentPage}`, res => {
+                let area = document.getElementById("body_list")
+                /*生成表单并打印数据与操作按钮*/
+
+            })
+        }
+
+
+    </script>
+
 </head>
-<body class="goods_body" onpageshow="usr_authorization()">
-<div id="header">
-    <div class="container">
-        <div class="row">
-            <div class="kb-coll3 cart-body title-col"><h2><strong>保持热情&nbsp&nbsp&nbsp奔赴山海</strong></h2>
+<body class="goods_body" onpageshow="usr_authorization();selectgoods()">
+<div id="top">
+    <div class="topBar visible-md visible-lg">
+        <div class="container">
+            <div class="row">
+                <div class=" col-md-3 text-center t-position">
+                    <ul id="position">
+                    </ul>
+                </div>
+
+
+                <div id="navBar">
+
+                </div>
             </div>
         </div>
     </div>
@@ -32,29 +235,28 @@
         <div class="col-md-offset-0 col-lg-offset-4 col-md-4">
             <!--搜索框 start-->
             <div class="input-group" style="margin-top: 5px;">
-                <input type="text" class="form-control" placeholder="搜索商品   ">
+                <input type="text" class="form-control" placeholder="搜索商品   " id="selectgoodsName">
                 <span class="input-group-btn">
-            <button class="btn btn-danger"type="button"><i class="glyphicon glyphicon-search"></i></button>
+            <button class="btn btn-danger" type="button" onclick="admin_firstPage();selectgoodsbyname()"><i
+                    class="glyphicon glyphicon-search"></i></button>
         </span>
             </div>
         </div>
-        <div class="form-address">
-            <table class="table table-hover table-bordered" id="task">
-                <thead>
-                <tr>
-                    <th>商品名称</th>
-                    <th>单价</th>
-                    <th>库存</th>
-                    <th>信息</th>
-                    <th>操作</th>
-                </tr>
-                </thead>
-                <tbody id=task_list">
-                </tbody>
-            </table>
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" id="body_list1">
+
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" id="body_list2">
+
+        </div>
+
+        <div id="tipbody">
+
         </div>
     </div>
 </div>
-</body>
+<div id="gotop" class="top">
+    <span class="glyphicon glyphicon-chevron-up text-center"></span>
+    <p class="goTop">回到顶部</p>
 </div>
+</body>
 </html>
