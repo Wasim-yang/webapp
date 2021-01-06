@@ -198,7 +198,7 @@
         <div class="row">
             <div class="col-lg-offset-2 col-lg-8 col-md-offset-2 col-md-8 col-sm-12 col-xs-12">
                 <!--          -->
-                <img src="images/checkin/qiandao_banner.jpg" alt="">
+                <img src="images/checkin/qiandao_banner.jpg" width="100%" alt="">
             </div>
             <div class="qiandao-con clear col-">
                 <div class="qiandao-left">
@@ -249,16 +249,9 @@
                             <th>说明</th>
                         </tr>
                         </thead>
-                    </table>
-                    <table>
-                        <tr>
-                            <td>2020-12-30 00:00:00</td>
-                            <td>5</td>
-                        </tr>
-                        <tr>
-                            <td>2020-1-1 14:23:45</td>
-                            <td>0.5</td>
-                        </tr>
+
+                        <tbody id="tbody_list">
+                        </tbody>
                     </table>
                 </div>
             </div>
@@ -318,7 +311,6 @@
             }
             $dateBox.html(_html);
             let $dateLi = $dateBox.find("li");
-            let myform = $("#js-qiandao-history")
 
             request("http://127.0.0.1:8080/cal/selectAll", `uid=${uid}&year=${year}&month=${month}`, res => {
                 for (let i = 0; i <= totalDay; i++) {
@@ -387,15 +379,38 @@
                 $(this).parents(".qiandao-layer").fadeOut()
             })
         }(); //关闭弹窗
-    });
-    //我的签到
-    myform.on("click", function () {
-        openLayer("qiandao-history-layer", myFun);
+        let myform = $("#js-qiandao-history")
+        let b = true;
+        //我的签到
+        myform.on("click", function () {
+            if (b) {
+                request("http://127.0.0.1:8080/cal/selectMyform", `uid=${uid}`, res => {
+                    let table = document.getElementById("tbody_list");
 
-        function myFun() {
-            console.log(1)
-        } //打开弹窗返回函数
-    })
+                    let award = 1
+                    let t = res[0].cayear + "-" + res[0].camonth + "-" + res[0].caday
+                    alert(t)
+                    for (let i = 0; i < res.length; i++) {
+                        let row = document.createElement("tr")
+                        let cell1 = document.createElement("td")
+                        let cell2 = document.createElement("td")
+                        let date = res[i].cayear + "-" + res[i].camonth + "-" + res[i].caday
+                        cell1.appendChild(document.createTextNode(date))
+                        cell2.appendChild(document.createTextNode(award))
+                        row.appendChild(cell1)
+                        row.appendChild(cell2)
+                        table.appendChild(row)
+                    }
+                    b = false
+                });
+            }
+            openLayer("qiandao-history-layer", myFun);
+            function myFun() {
+                console.log(1)
+            } //打开弹窗返回函数
+        })
+    });
+
 </script>
 
 </html>

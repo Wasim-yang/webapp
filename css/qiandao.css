@@ -11,6 +11,11 @@ img {
     vertical-align: top
 }
 
+@media only screen and (max-width: 500px) {
+    .qiandao-con {
+        background-image: url("../images/checkin/qiandao_media.png");
+    }
+}
 
 .clear {
     clear: both
