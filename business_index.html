@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/html">
+<html lang="en">
 <head>
     <title>个人碳积分管理系统</title>
     <link rel="icon" href="./images/weblogo.png" type="image/png" sizes="128*128">
@@ -9,7 +9,6 @@
     <!-- Main CSS-->
     <link rel="stylesheet" type="text/css" href="css/Login_main.css">
     <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
-    <!-- Font-icon css-->
     <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
     <!-- Essential javascripts for application to work-->
     <script src="js/jquery-3.2.1.min.js"></script>
@@ -17,18 +16,19 @@
     <script src="js/bootstrap.min.js"></script>
     <script src="js/main.js"></script>
     <script type="text/javascript" src="js/Control.js"></script>
-    <script src="js/request.js"></script>
     <!-- Data table plugin-->
+
+    <script src="js/request.js"></script>
     <script>
-        let mid;
+        let bid;
         window.onload = function () {
-            admin_authorization();
+            business_authorization();
             $(document).ajaxStop(function(){
                 pushId();
             });
         }
         function pushId() {
-            document.getElementById("admin_id2").appendChild(document.createTextNode(mid))
+            document.getElementById("admin_id2").appendChild(document.createTextNode(bid))
         }
     </script>
 </head>
@@ -93,7 +93,7 @@
     <div class="app-sidebar__user">
         <div>
             <p class="app-sidebar__user-name" id="admin_id1"></p>
-            <p class="app-sidebar__user-designation">您好，管理员！</p>
+            <p class="app-sidebar__user-designation">您好，合作商家！</p>
         </div>
     </div>
     <ul class="app-menu">
@@ -103,60 +103,22 @@
                 <i id="span1" class="app-menu__icon fa fa-angle-down"></i></a>
         </li>
         <ul id="adminControl_1" style="">
-            <li><a class="app-menu__item_child active" href="admin_index.html">账号信息</a></li>
+            <li><a class="app-menu__item_child active" href="business_index.html">账号信息</a></li>
             <li><a class="app-menu__item_child" href="#">修改密码</a></li>
             <li><a class="app-menu__item_child" href="#">注销账号</a></li>
         </ul>
-        <!--任务管理-->
+        <!--商品管理-->
         <li onclick="ulControl_2();" id="father_adminControl_2">
-            <a class="app-menu__item" href="#"><i class="app-menu__icon fa fa-user"></i><span class="app-menu__label">&nbsp;&nbsp;任务管理</span>
+            <a class="app-menu__item" href="#"><i class="app-menu__icon fa fa-shopping-cart"></i><span class="app-menu__label">&nbsp;&nbsp;商品管理</span>
                 <i id="span2" class="app-menu__icon fa fa-angle-up"></i></a>
         </li>
-        <ul id="adminControl_2" style="display:none">
-            <li><a class="app-menu__item_child" href="admin_addtask.html">新增任务</a></li>
-            <li><a class="app-menu__item_child" href="admin_tasklist.html">任务列表</a></li>
-        </ul>
-        <!--公益管理-->
-        <li onclick="ulControl_3();" id="father_adminControl_3">
-            <a class="app-menu__item" href="#"><i class="app-menu__icon fa fa-user"></i><span class="app-menu__label">&nbsp;&nbsp;公益管理</span>
-                <i id="span3" class="app-menu__icon fa fa-angle-up"></i></a>
-        </li>
-        <ul id="adminControl_3" style="display:none">
-            <li><a class="app-menu__item_child" href="admin_addPublicwelfare.html">新增公益项目</a></li>
-            <li><a class="app-menu__item_child" href="admin_Publicwelfarelist.html">公益列表</a></li>
-        </ul>
-        <!--商品管理-->
-        <li onclick="ulControl_4();" id="father_adminControl_4">
-            <a class="app-menu__item" href="#"><i class="app-menu__icon fa fa-user"></i><span class="app-menu__label">&nbsp;&nbsp;商品管理</span>
-                <i id="span4" class="app-menu__icon fa fa-angle-up"></i></a>
-        </li>
-        <ul id="adminControl_4" style="display:none">
-            <li><a class="app-menu__item_child" href="admin_addgoods.html">新增商品</a></li>
-            <li><a class="app-menu__item_child" href="admin_goodslist.html">商品列表</a></li>
-            <li><a class="app-menu__item_child" href="#">兑换列表</a></li>
-        </ul>
-        <!--优惠券管理-->
-        <li onclick="ulControl_5();" id="father_adminControl_5">
-            <a class="app-menu__item" href="#"><i class="app-menu__icon fa fa-user"></i><span class="app-menu__label">&nbsp;&nbsp;优惠券管理</span>
-                <i id="span5" class="app-menu__icon fa fa-angle-up"></i></a>
-        </li>
-        <ul id="adminControl_5" style="display: none">
-            <li><a class="app-menu__item_child" href="admin_addcoupons.html">新增优惠券</a></li>
-            <li><a class="app-menu__item_child" href="admin_couponslist.html">优惠券列表</a></li>
-        </ul>
-        <!--用户信息管理-->
-        <li onclick="ulControl_6();" id="father_adminControl_6">
-            <a class="app-menu__item" href="#"><i class="app-menu__icon fa fa-user"></i><span class="app-menu__label">&nbsp;&nbsp;用户信息管理</span>
-                <i id="span6" class="app-menu__icon fa fa-angle-up"></i></a>
-        </li>
-        <ul id="adminControl_6" style="display:none">
-            <li><a class="app-menu__item_child" href="admin_userlist.html">用户列表</a></li>
-            <li><a class="app-menu__item_child" href="#">处理用户反馈</a></li>
-            <li><a class="app-menu__item_child" href="#">处理异常用户</a></li>
+        <ul id="adminControl_2" style="display: none">
+            <li><a class="app-menu__item_child" href="business_deliver.html">发货</a></li>
+            <li><a class="app-menu__item_child" href="#">上架</a></li>
         </ul>
     </ul>
 </aside>
-<!--管理员信息-->
+<!--商家账号信息-->
 <main class="app-content">
     <div class="app-title">
         <div>
@@ -164,11 +126,12 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-6 col-lg-4">
+        <div class="col-md-6 col-lg-3">
             <div class="widget-small primary coloured-icon"><i class="icon fa fa-id-card fa-3x"></i>
                 <div class="info">
-                    <h3>管理员</h3>
+                    <h3>合作商家</h3>
                     <h4>账号:&nbsp;&nbsp;<b id="admin_id2"></b></h4>
+                    <h4>所在地:&nbsp;&nbsp;<b>浙江</b></h4>
                 </div>
             </div>
         </div>

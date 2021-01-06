@@ -46,7 +46,44 @@ function admin_authorization() {
                 alert("未登录，请您先登录！")
                 window.location.href = "./admin_login.html"
             }
+            else
+                mid=data.mid
         }
     });
 }
 
+function business_authorization() {
+    $.ajax({
+        url: "http://127.0.0.1:8080/business/authorization",
+        type: "POST",
+        contentType: false,
+        data: {},
+        xhrFields: {withCredentials: true},
+        success: function (data) {
+            if (data.code != 200) {
+                alert("未登录，请您先登录！")
+                window.location.href = "./admin_login.html"
+            }
+            else
+                bid=data.bid
+        }
+    });
+}
+
+function pleader_authorization() {
+    $.ajax({
+        url: "http://127.0.0.1:8080/pleader/authorization",
+        type: "POST",
+        contentType: false,
+        data: {},
+        xhrFields: {withCredentials: true},
+        success: function (data) {
+            if (data.code != 200) {
+                alert("未登录，请您先登录！")
+                window.location.href = "./admin_login.html"
+            }
+            else
+                pid=data.pid
+        }
+    });
+}

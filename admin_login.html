@@ -28,7 +28,7 @@
                 request("http://127.0.0.1:8080/business/login",
                     `id=${id}&password=${password}`, res => {
                         if(res.code==200){
-                            window.location.href="business.index.html"
+                            window.location.href="business_index.html"
                         }
                         else{
                             alert("商家登录失败，请检查账号或密码是否正确！")
