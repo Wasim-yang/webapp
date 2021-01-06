@@ -26,12 +26,12 @@
         let totalPage = 1
         let PageSize
         let totalRecord = 0
-        let uid
-        let ucintegral
+        let uid= 1
+
         // 按id查询
         function selectwelfarebyid() {
-            let uid= document.getElementById("modaluid").value
             let wid = document.getElementById("selectwelfareid").value
+
             request("http://127.0.0.1:8080/welfare/selectid", `wid=${wid}`, res => {
                 let table = document.getElementById("tbody_list")
                 /*生成表单并打印数据与操作按钮*/
@@ -54,6 +54,10 @@
                 //当项目达到启动条件时，设置捐赠按钮为不可选中
                 if(res.wtotal<=res.wgain) { donatebutton.disabled=true; }
                 donatebutton.onclick = function () {
+                    request("http://127.0.0.1:8080/usr/selectUsrUcintegral",`uid=${uid}`, res => {
+                        donatebutton.setAttribute("ucintegral", res)
+                        document.getElementById("modalucintegral").value = donatebutton.getAttribute("ucintegral")
+                    })
                     document.getElementById("modalwelfareid").value = donatebutton.getAttribute("wid")
                     document.getElementById("modalwelfaregain").value = donatebutton.getAttribute("wgain")
                     document.getElementById("modalwelfaretotal").value = donatebutton.getAttribute("wtotal")
@@ -73,7 +77,9 @@
                 row.appendChild(cell5)
                 row.appendChild(cell6)
                 table.appendChild(row)
+
             })
+
         }
         /*按页号跳转*/
         function uploadPage() {
@@ -88,7 +94,6 @@
 
         /*向后端发送更新数据*/
          function updatewelfare() {
-             let uid = document.getElementById("modaluid").value;
              let ucintegral=document.getElementById("modalucintegral").value;
              let wid = document.getElementById("modalwelfareid").value;
              let wgain = document.getElementById("modalwelfaregain").value;
@@ -129,10 +134,11 @@
                     let cell5 = document.createElement("td")
                     let cell6 = document.createElement("td")
                     let donatebutton = document.createElement("button")
+                    let ucintegral
                     donatebutton.className = "btn btn-primary"
                     donatebutton.appendChild(document.createTextNode("捐赠"))
-                    donatebutton.setAttribute("uid", modaluid.value)
-                    donatebutton.setAttribute("ucintegral", modalucintegral.value)
+                    // donatebutton.setAttribute("uid", modaluid.value)
+                    // donatebutton.setAttribute("ucintegral", modalucintegral.value)
                     donatebutton.setAttribute("wid", welfareList[i].wid)
                     donatebutton.setAttribute("wname", welfareList[i].wname)
                     donatebutton.setAttribute("wtotal", welfareList[i].wtotal)
@@ -140,20 +146,17 @@
                     donatebutton.setAttribute("wdescription", welfareList[i].wdescription)
                     // 当项目达到启动条件时，设置捐赠按钮为不可选中
                     if(welfareList[i].wtotal<=welfareList[i].wgain) { donatebutton.disabled=true; }
-                    /*查看按钮-在拟态框中显示详细数据*/
+                    /*捐赠按钮-在拟态框中显示详细数据和捐赠操作*/
                     donatebutton.onclick = function () {
+                        request("http://127.0.0.1:8080/usr/selectUsrUcintegral",`uid=${uid}`, res => {
+                            donatebutton.setAttribute("ucintegral", res)
+                            document.getElementById("modalucintegral").value = donatebutton.getAttribute("ucintegral")
+                        })
                         document.getElementById("welfaremodal").style.display="block";
-                        document.getElementById("modaluid").value = donatebutton.getAttribute("uid")
-                        document.getElementById("modalucintegral").value = donatebutton.getAttribute("ucintegral")
                         document.getElementById("modalwelfareid").value = donatebutton.getAttribute("wid")
                         document.getElementById("modalwelfaregain").value = donatebutton.getAttribute("wgain")
                         document.getElementById("modalwelfaretotal").value = donatebutton.getAttribute("wtotal")
                         document.getElementById('welfaremodal').style.display = 'block'
-                        // request("http://127.0.0.1:8080/user/selectpage"`uid=${uid}`, res => {
-                        //     uid = res.uid;
-                        //
-                        // }
-
                     }
                     cell1.appendChild(document.createTextNode(welfareList[i].wid))
                     cell2.appendChild(document.createTextNode(welfareList[i].wname))
@@ -169,9 +172,7 @@
                     row.appendChild(cell6)
                     table.appendChild(row)
                 }
-
             })
-
         }
         // 捐赠积分后清空捐赠积分input框
         function buttonreset() {
@@ -261,8 +262,8 @@
             <label><b>已获碳积分</b></label>
             <input type="text" id="modalwelfaregain" style=" width: 80%;" required><br>
             <input type="text" id="modalwelfaretotal"  style="display: none">
-            <input type="text" id="modaluid" value="001" style="display: none">
-            <input type="text" id="modalucintegral" value="20" style="display: none">
+            <label><b>您当前的碳积分为：</b></label>
+            <input type="text" id="modalucintegral"  style="width: 80%; "required disabled><br>
             <label><b>请输入您想捐赠的积分</b></label>
             <input type="text" id="modalwelfaredonate" style=" width: 80%;" required>
             <br>
