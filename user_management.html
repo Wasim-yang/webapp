@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>个人中心</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <script src="js/user/infor/rem.js"></script>
+    <script src="js/jquery-3.2.1.min.js" type="text/javascript"></script>
+    <link rel="stylesheet" type="text/css" href="css/infor/base.css"/>
+    <link rel="stylesheet" type="text/css" href="css/infor/page.css"/>
+    <link rel="stylesheet" type="text/css" href="css/infor/all.css"/>
+    <link rel="stylesheet" type="text/css" href="css/infor/mui.min.css"/>
+    <link rel="stylesheet" type="text/css" href="css/infor/loaders.min.css"/>
+    <link rel="stylesheet" type="text/css" href="css/iconfont/iconfont.css"/>
+</head>
+<body>
+<!--header star-->
+<header class="mui-bar mui-bar1 mui-bar-nav mui-bar-nav1" id="header">
+    <a class="back-btn" href="javascript:history.go(-1)">
+        <i class="iconfont icon-fanhui"></i>
+    </a>
+    <div class="mui-title">个人中心</div>
+</header>
+<!--header end-->
+
+<div class="warp clearfloat">
+    <div class="h-top clearfloat box-s">
+        <div class="ge-back"><img src="images/infor/text-bck.png"></div>
+        <div class="mui-tus">
+            <div class="huiyuan-text">
+                <img src="images/infor/touxiang.png"/>
+                <!-- 	<div class="content clearfloat">
+                        <p class="hname">王小二</p>
+                        <p class="hpthy">普通管理员</p>
+                    </div> -->
+                <a class="content clearfloat" style="font-size: 0.5rem; color: #fff;display: block;" href="user_login.html">
+                    登录/注册
+                </a>
+
+            </div>
+
+            <ul class="">
+                <li id="user_balance">
+                    <a href="#">
+                        <p>74.00</p>
+                        <span>账户余额</span>
+                    </a>
+                </li>
+                <span class="right-lines"></span>
+                <li id="user_credit">
+                    <a href="#">
+                        <p>4789</p>
+                        <span>可用积分</span>
+                    </a>
+                </li>
+                <span class="right-lines"></span>
+                <li id="user_coupon">
+                    <a href="#">
+                        <p>10</p>
+                        <span>可用优惠券</span>
+                    </a>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+    <div class="swiper-text clearfloat">
+				<span class="fl vip-span">
+					<svg class="icon vip-s" aria-hidden="true">
+					  <use xlink:href="#icon-94"></use>
+					</svg>
+					每日签到，乐享积分
+					</span>
+        <a class="fr vip-kai" href="user_checkin.html">前往</a>
+    </div>
+    <div class="four-text clearfloat">
+        <ul class="four-ul">
+            <li style="background: linear-gradient(to left bottom,rgba(82, 86, 255, 0.5), rgba(82, 86, 255, 0.9)); margin-right: 0.35rem;">
+                <div class="back-text">
+                    <div class="box-text">
+                        <i class="iconfont fense icon-zhanghuguanli"></i>
+                        <p>账户管理</p>
+                    </div>
+                    <div class="box-text_2">
+                        <p>账户余额&nbsp;&nbsp;&nbsp;10</p>
+                        <a class="fr vip-kai just-recharge">充值</a>
+                    </div>
+                </div>
+            </li>
+            <li style="background: linear-gradient(to left bottom, rgba(0, 114, 255, 0.5), rgba(0, 114, 255, 0.9));">
+                <div class="back-text">
+                    <div class="box-text">
+                        <i class="iconfont lanse icon-youhuiquan"></i>
+                        <p>积分</p>
+                    </div>
+                    <div class="aidou-text">
+                        <div class="box-text_2" id="">
+                            <p>我的积分</p>
+                            <p class="user_credit">10</p>
+                        </div>
+                        <div class="box-text_2">
+                            <p>最新到账</p>
+                            <p>10</p>
+                        </div>
+                    </div>
+
+                </div>
+            </li>
+        </ul>
+        <ul class="four-ul">
+            <li style="background: linear-gradient(to left bottom, rgba(255, 177, 153, 0.5), rgba(255, 177, 153, 0.9));margin-right: 0.35rem;">
+                <div class="back-text">
+                    <div class="box-text">
+                        <i class="iconfont zise icon-4"></i>
+                        <p>成就</p>
+                    </div>
+                    <div class="box-text_2">
+                        <p>已有成就数</p>
+                        <p>10</p>
+                    </div>
+                </div>
+            </li>
+            <li style="background: linear-gradient(to left bottom, rgba(254, 81, 150, 0.5), rgba(254, 81, 150, 0.9));">
+                <div class="back-text">
+                    <div class="box-text">
+                        <i class="iconfont hongse icon-08_zizhanghaoguanli"></i>
+                        <p>好友与排行榜</p>
+                    </div>
+                    <div class="box-text_2">
+                        <p>在线好友数</p>
+                        <p>10</p>
+                    </div>
+                </div>
+            </li>
+
+        </ul>
+    </div>
+    <div class="cashlist clearfloat">
+        <ul>
+            <li class="box-s">
+                <a href="user_info.html">
+                    <p><i class="iconfont icon-zhanghao"></i>个人信息</p>
+                    <i class="iconfont icon-jiantou1"></i>
+                </a>
+            </li>
+            <li class="box-s">
+                <a href="system/account/address.html">
+                    <p><i class="iconfont icon-tubiao201"></i>收货地址</p>
+                    <i class="iconfont icon-jiantou1">浙江工业大学屏峰校区</i>
+                </a>
+            </li>
+            <li class="box-s">
+                <a href="system/user/user.html">
+                    <p><i class="iconfont icon-zizhanghaoguanli"></i>账号与安全</p>
+                    <i class="iconfont icon-jiantou1"></i>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="cashlist clearfloat">
+        <ul>
+            <li class="box-s">
+                <a href="system/coupon/my_coupon.html">
+                    <p><i class="iconfont icon-youhuiquan1"></i>我的优惠券</p>
+                    <i class="iconfont icon-jiantou1"></i>
+                </a>
+            </li>
+            <li class="box-s">
+                <a href="system/business/business.html">
+                    <p><i class="iconfont icon-fafang"></i>我的购买</p>
+                    <i class="iconfont icon-jiantou1"></i>
+                </a>
+            </li>
+            <li class="box-s">
+                <a href="system/present/present-daily.html">
+                    <p><i class="iconfont icon-denglu"></i>我的兑换</p>
+                    <i class="iconfont icon-jiantou1"></i>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="cashlist clearfloat">
+        <ul>
+            <li class="box-s">
+                <a href="system/content/content.html">
+                    <!--                    <p><i class="iconfont icon-neirongziduanguanli"></i>支付设置</p>-->
+                    <p><i class="iconfont icon-zhanghuguanli"></i>支付设置</p>
+                    <i class="iconfont icon-jiantou1"></i>
+                </a>
+            </li>
+            <li class="box-s">
+                <a href="system/shop/shop.html">
+                    <p><i class="iconfont icon-dianpu"></i>消息通知设置</p>
+                    <i class="iconfont icon-jiantou1"></i>
+                </a>
+            </li>
+            <li class="box-s">
+                <a href="system/children_account/children_account.html">
+                    <p><i class="iconfont icon-fafang"></i>通用</p>
+                    <i class="iconfont icon-jiantou1"></i>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="cashlist clearfloat">
+
+    </div>
+
+    <div class="cashlist clearfloat">
+        <ul>
+            <li class="box-s">
+                <a href="system/promotePage/promotePage.html">
+                    <p><i class="iconfont icon-tongzhituiguang"></i>问题反馈</p>
+                    <i class="iconfont icon-jiantou1"></i>
+                </a>
+            </li>
+            <li class="box-s">
+                <a href="system/present/present.html">
+                    <p><i class="iconfont icon-jinbileyuaniocn"></i>关于我们</p>
+                    <i class="iconfont icon-jiantou1"></i>
+                </a>
+            </li>
+
+        </ul>
+    </div>
+    <a href="login.html" class="center-btn db ra3">退出登录</a>
+</div>
+
+<script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
+<script src="js/user/infor/mui.min.js"></script>
+<script type="text/javascript" src="js/user/infor/hmt.js"></script>
+<script src="iconfont/iconfont.js"></script>
+<!--插件-->
+<!-- <link rel="stylesheet" href="css/infor/swiper.min.css">
+<script src="js/user/infor/swiper.jquery.min.js"></script> -->
+</body>
+<script type="text/javascript">
+
+</script>
+</html>

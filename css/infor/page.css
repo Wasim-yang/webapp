@@ -798,14 +798,16 @@ input[type="checkbox"]:checked+div {
 .cashlist ul li a p i{
 	margin-right: 0.15rem;
 	}
-.cashlist ul li p {
+.cashlist ul li p{
+	margin-right: 0.15rem;
 	font-size: .48rem;
 	color: #696974;
 }
 
-.cashlist ul li i {
+.cashlist ul li i{
+	margin-right: 0.15rem;
 	color: #696974;
-	font-size: 0.45rem;
+	font-size: 0.3rem;
 }
 
 .center-btn {
@@ -836,10 +838,10 @@ input[type="checkbox"]:checked+div {
 .vip-kai{
 	color: #fff;
 	font-size: 0.4rem;
-	border: 1px solid #4C82FF;
+	border: 1px solid #33b23f;
 	height: 0.6rem;
 	line-height: 0.6rem;
-	background: #4C82FF;
+	background: #33b23f;
 	padding: 0 0.2rem;
 	margin-top: 8px;
 }
@@ -1360,7 +1362,7 @@ input[type="checkbox"]:checked+div {
 	background-color: #fff;
 	padding: 15px;
 	position: absolute;
-	top: 50% !import;
+	top: 50% !important;
 	display: none;
 	left: 40%;
 	z-index: 9999999;

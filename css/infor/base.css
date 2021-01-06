@@ -268,6 +268,8 @@ box-sizing: content-box;
 .icon-gouwuche:before { content: "\e629"; }
 .icon-jiahao:before { content: "\e62f"; }
 .icon-jiantou1:before { content: "\e635"; }
+.icon-jiantou2:before { content: "\e635"; }
+
 .icon-xihuan:before { content: "\e616"; }
 .icon-yonghuming:before { content: "\e600"; }
 .icon-remenhuodong:before { content: "\e617"; }
