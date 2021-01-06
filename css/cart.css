@@ -334,6 +334,9 @@
 	line-height: 1.42857143;
 	color:#368306;
 }
+.table-line{
+	table-layout: fixed; word-wrap: break-word;
+}
 
 
 

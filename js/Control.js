@@ -108,21 +108,37 @@ function admin_firstPage() {
     currentPage = 1
     admin_deleteTable()
 }
-
+function usr_firstPage() {
+    usrcurrentPage = 1
+    admin_deleteTable()
+}
 function admin_previousPage() {
     if (currentPage > 1) {
         currentPage = currentPage - 1
     }
     admin_deleteTable()
 }
-
+function usr_previousPage() {
+    if (usrcurrentPage > 1) {
+        usrcurrentPage = usrcurrentPage - 1
+    }
+    admin_deleteTable()
+}
 function admin_nextPage() {
     if (currentPage < totalPage)
         currentPage = currentPage + 1
     admin_deleteTable()
 }
-
+function usr_nextPage() {
+    if (usrcurrentPage < usrtotalPage)
+        usrcurrentPage = usrcurrentPage + 1
+    admin_deleteTable()
+}
 function admin_lastPage() {
     currentPage = totalPage
+    admin_deleteTable()
+}
+function usr_lastPage() {
+    usrcurrentPage = usrtotalPage
     admin_deleteTable()
 }
