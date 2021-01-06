@@ -12,9 +12,197 @@
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <script src="lib/html5shiv/html5shiv.min.js"></script>
     <script src="lib/respond/respond.min.js"></script>
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/main.js"></script>
+    <script type="text/javascript" src="http://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script>x
+<!--    列表显示和操作-->
+    <script src="js/request.js"></script>
+    <script src="js/Control.js"></script>
+    <script>
+        // 分页处理全局变量
+        let currentPage = 1
+        let totalPage = 1
+        let PageSize
+        let totalRecord = 0
+        let uid= 1
 
+        // 按id查询
+        // function selecttaskbyid() {
+        //     let wid = document.getElementById("selecttaskid").value
+        //
+        //     request("http://127.0.0.1:8080/welfare/selectid", `wid=${wid}`, res => {
+        //         let table = document.getElementById("tbody_list")
+        //         /*生成表单并打印数据与操作按钮*/
+        //         let row = document.createElement("tr")
+        //         let cell1 = document.createElement("td")
+        //         let cell2 = document.createElement("td")
+        //         let cell3 = document.createElement("td")
+        //         let cell4 = document.createElement("td")
+        //         let cell5 = document.createElement("td")
+        //         let cell6 = document.createElement("td")
+        //         let receivebutton = document.createElement("button")
+        //         receivebutton.type = "button"
+        //         receivebutton.className = "btn btn-primary"
+        //         receivebutton.appendChild(document.createTextNode("捐赠"))
+        //         receivebutton.setAttribute("wid", res.wid)
+        //         receivebutton.setAttribute("wname", res.wname)
+        //         receivebutton.setAttribute("wtotal", res.wtotal)
+        //         receivebutton.setAttribute("wgain", res.wgain)
+        //         receivebutton.setAttribute("wdescription", res.wdescription)
+        //         //当项目达到启动条件时，设置捐赠按钮为不可选中
+        //         if(res.wtotal<=res.wgain) { receivebutton.disabled=true; }
+        //         receivebutton.onclick = function () {
+        //             request("http://127.0.0.1:8080/usr/selectUsrUcintegral",`uid=${uid}`, res => {
+        //                 receivebutton.setAttribute("ucintegral", res)
+        //                 document.getElementById("modalucintegral").value = receivebutton.getAttribute("ucintegral")
+        //             })
+        //             document.getElementById("modalwelfareid").value = receivebutton.getAttribute("wid")
+        //             document.getElementById("modalwelfaregain").value = receivebutton.getAttribute("wgain")
+        //             document.getElementById("modalwelfaretotal").value = receivebutton.getAttribute("wtotal")
+        //             document.getElementById('taskmodal').style.display = 'block'
+        //         }
+        //         cell1.appendChild(document.createTextNode(res.wid))
+        //         cell2.appendChild(document.createTextNode(res.wname))
+        //         cell3.appendChild(document.createTextNode(res.wtotal))
+        //         cell4.appendChild(document.createTextNode(res.wgain))
+        //         cell5.appendChild(document.createTextNode(res.wdescription))
+        //         cell6.appendChild(receivebutton)
+        //
+        //         row.appendChild(cell1)
+        //         row.appendChild(cell2)
+        //         row.appendChild(cell3)
+        //         row.appendChild(cell4)
+        //         row.appendChild(cell5)
+        //         row.appendChild(cell6)
+        //         table.appendChild(row)
+        //
+        //     })
+        //
+        // }
+        /*按页号跳转*/
+        function uploadPage() {
+            let page = document.getElementById("selecttaskpage").value
+            if (page >= 1 && page <= totalPage) {
+                admin_deleteTable()
+                currentPage = page
+                selecttask()
+            } else
+                alert("输入的页面超出范围")
+        }
+
+        /*向后端发送更新数据*/
+        function updatetask() {
+
+            let tid = document.getElementById("modalwelfareid").value;
+            let taward = document.getElementById("modalwelfaredonate").value;
+            let ucintegral=document.getElementById("modalucintegral").value;
+
+            request("http://127.0.0.1:8080/task/update_user",
+                `tid=${tid}&ucintegral=${ucintegral}&taward=${taward}`, res => {
+                    alert(res.message)
+                    admin_deleteTable()
+                    selecttask()
+                    document.getElementById('taskmodal').style.display = 'none'
+                })
+        }
+        /*查询并生成表单*/
+        function selecttask() {
+            request("http://127.0.0.1:8080/task/selectByPage", `currentPage=${currentPage}`, res => {
+                currentPage = res.currentPage
+                totalPage = res.totalPage
+                PageSize = res.pageSize
+                totalRecord = res.totalRecord
+                let table = document.getElementById("tbody_list")
+                /*生成表单并打印数据与操作按钮*/
+                let taskList = res.dataList
+                let j = 0
+                document.getElementById("pageResult").append("共有" + totalRecord + "条记录 共" + totalPage + "页 当前第" + currentPage + "页")
+                for (let i = 0; i < totalRecord; i++) {
+                    j = j + 1
+                    if (j > PageSize)
+                        break
+                    let row = document.createElement("tr")
+                    let cell1 = document.createElement("td")
+                    let cell2 = document.createElement("td")
+                    let cell3 = document.createElement("td")
+                    let cell4 = document.createElement("td")
+                    let cell5 = document.createElement("td")
+                    let cell6 = document.createElement("td")
+                    let cell7 = document.createElement("td")
+                    let cell8 = document.createElement("td")
+                    let receivebutton = document.createElement("button")
+                    receivebutton.className = "btn btn-primary"
+                    receivebutton.appendChild(document.createTextNode("领取"))
+                    //待转换的参数
+                    let ttype = taskList[i].ttype
+                    let t = taskList[i].tdeadline
+                    let tdeadline = t.substring(0,16).replace(/-/g,"/")
+                    let bicycle = document.createElement("i")
+                    let subway = document.createElement("i")
+                    let bus = document.createElement("i")
+                    let h_s = document.createElement("i")
+                    /*将类型转换为对应中午*/
+                    switch (ttype) {
+                        case 1:
+                            ttype = "自行车"
+                            break;
+                        case 2:
+                            ttype = "公交车"
+                            break;
+                        case 3:
+                            ttype = "地铁"
+                            break;
+                        case 4:
+                            ttype = "高铁"
+                            break;
+                    }
+                    receivebutton.setAttribute("tname", taskList[i].tname)
+                    receivebutton.setAttribute("ttype", taskList[i].ttype)
+                    receivebutton.setAttribute("tdescription", taskList[i].tdescription)
+                    receivebutton.setAttribute("trequirement", taskList[i].trequirement)
+                    receivebutton.setAttribute("tgain", taskList[i].tgain)
+                    receivebutton.setAttribute("tdeadline", taskList[i].tdeadline)
+                    receivebutton.setAttribute("taward", taskList[i].taward)
+
+                    // 当项目达到领取条件时，设置捐赠按钮为可选中
+                    if(taskList[i].tgain < taskList[i].trequirement) { receivebutton.disabled=false; }
+                    else{receivebutton.disabled=true;}
+                    //领取积分后，更新后端
+                    receivebutton.onclick = function () {
+                        updatetask();
+                        //删除该任务
+                        let tid = this.getAttribute("id")
+                        request("http://127.0.0.1:8080/task/delete", `tid=${tid}`, res => {
+                            alert(res.message)
+                            admin_deleteTable()
+                            selecttask()
+                        })
+                    }
+                    cell1.appendChild(document.createTextNode(taskList[i].tname))
+                    cell2.appendChild(document.createTextNode(taskList[i].ttype))
+                    cell3.appendChild(document.createTextNode(taskList[i].tdescription))
+                    cell4.appendChild(document.createTextNode(taskList[i].trequirement))
+                    cell5.appendChild(document.createTextNode(taskList[i].tgain))
+                    cell6.appendChild(document.createTextNode(taskList[i].tdeadline))
+                    cell7.appendChild(document.createTextNode(taskList[i].taward))
+                    cell8.appendChild(receivebutton)
+                    row.appendChild(cell1)
+                    row.appendChild(cell2)
+                    row.appendChild(cell3)
+                    row.appendChild(cell4)
+                    row.appendChild(cell5)
+                    row.appendChild(cell6)
+                    row.appendChild(cell7)
+                    row.appendChild(cell8)
+                    table.appendChild(row)
+                }
+            })
+        }
+    </script>
 </head>
-<body class="task_body">
+<body class="tsak_body" onload='selecttask()'>
 <div id="header">
     <div class="container">
         <div class="row">
@@ -28,30 +216,86 @@
     <div class="col-md-offset-0 col-lg-offset-4 col-md-4">
         <!--搜索框 start-->
         <div class="input-group" style="margin-top: 5px;">
-            <input type="text" class="form-control" placeholder="搜索任务">
+            <input type="text" class="form-control"
+                   id="selecttaskid"
+                   placeholder="搜索任务">
             <span class="input-group-btn">
-            <button class="btn btn-danger"type="button"><i class="glyphicon glyphicon-search"></i></button>
-        </span>
+                    <button class="btn btn-danger"
+                            onclick="admin_deleteTable();selecttaskbyid()"
+                            id="selecttask_id"
+                            type="button">
+                        <i class="glyphicon glyphicon-search"></i>
+                    </button>
+                </span>
+        </div>
+        <div class="input-group" style="margin-top: 5px;" >
+            <input class="form-control" type="text" id="selecttaskpage" placeholder="跳转到第几页"/>
+            <span class="input-group-btn">
+                <button class="btn btn-danger" id="selecttask_page" type="button"
+                        onclick="uploadPage()">
+                    <i class="glyphicon glyphicon-search"></i>
+                </button>
+                </span>
         </div>
     </div>
         <div class="form-address">
-                <table class="table table-hover table-bordered" id="task">
+                <table class="table table-hover table-bordered" id="cTable">
                     <thead>
                     <tr>
                         <th>任务名称</th>
-                        <th>任务信息</th>
+                        <th>任务类型</th>
+                        <th>任务描述</th>
+                        <th>目标里程</th>
                         <th>当前进度</th>
-                        <th>任务要求</th>
-                        <th>可获碳积分</th>
+                        <th>截止时间</th>
+                        <th>奖励积分</th>
                         <th>操作</th>
                     </tr>
                     </thead>
-                    <tbody id=task_list">
+                    <tbody id="tbody_list">
                     </tbody>
                 </table>
+            <div id="pageResultBox">
+                <p id="pageResult"/>
+            </div>
+            <div style="text-align: center">
+                <a href="#" onclick="admin_firstPage();selecttask();">首页</a>&nbsp;&nbsp;
+                <a href="#" onclick="admin_previousPage();selecttask();">上一页</a>&nbsp;&nbsp;
+                <a href="#" onclick="admin_nextPage();selecttask();">下一页</a>&nbsp;&nbsp;
+                <a href="#" onclick="admin_lastPage();selecttask();">尾页</a>
+            </div>
         </div>
     </div>
 </div>
+<!--<div id="taskmodal" class="modal">-->
+<!--    &lt;!&ndash;    公益详情拟态框　　&ndash;&gt;-->
+<!--    <form class="modal-content animate">-->
+<!--        <div class="imgcontainer">-->
+<!--            &lt;!&ndash; 点击×号，隐藏模态框&ndash;&gt;-->
+<!--            <span onclick="document.getElementById('taskmodal').style.display='none'" class="close"-->
+<!--                  title="Close Modal">×</span>-->
+<!--        </div>-->
+
+<!--        <div class="container">-->
+<!--            <br>-->
+<!--            <label><b>项目编号</b></label>-->
+<!--            <input type="text" id="modalwelfareid" style=" width: 80%;" required disabled><br>-->
+<!--            <label><b>已获碳积分</b></label>-->
+<!--            <input type="text" id="modalwelfaregain" style=" width: 80%;" required><br>-->
+<!--            <input type="text" id="modalwelfaretotal"  style="display: none">-->
+<!--            <label><b>您当前的碳积分为：</b></label>-->
+<!--            <input type="text" id="modalucintegral"  style="width: 80%; "required disabled><br>-->
+<!--            <label><b>请输入您想捐赠的积分</b></label>-->
+<!--            <input type="text" id="modalwelfaredonate" style=" width: 80%;" required>-->
+<!--            <br>-->
+<!--            <button type="button" id="button" style="margin-top: 10px;" onclick="updatetask();buttonreset();">确认捐赠</button>-->
+<!--            <br>-->
+<!--        </div>-->
+<!--        <div class="container" style="background-color:#f1f1f1">-->
+<!--            &lt;!&ndash; 点击cancel按钮，把模态框隐藏&ndash;&gt;-->
+<!--        </div>-->
+<!--    </form>-->
+<!--</div>-->
 </body>
 </div>
 </html>
