@@ -69,7 +69,7 @@ img {
 .qiandao-left {
     float: left;
     padding: 20px 42px 0 39px;
-    width: 603px
+    /*width: 60%*/
 }
 
 .qiandao-right {
@@ -130,10 +130,10 @@ img {
 }
 
 .qiandao-rule-list {
-    margin-bottom: 40px;
+    padding-top: 30px;
     color: #8d8ebb;
     font-size: 1pc;
-    line-height: 26px
+    line-height: 26px;
 }
 
 .qiandao-rule-list h4 {
@@ -143,7 +143,7 @@ img {
 
 .qiandao-main {
     overflow: hidden;
-    width: 603px
+    /*width: 120%*/
 }
 
 .qiandao-list {

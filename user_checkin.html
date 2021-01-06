@@ -198,10 +198,10 @@
         <div class="row">
             <div class="col-lg-offset-2 col-lg-8 col-md-offset-2 col-md-8 col-sm-12 col-xs-12">
                 <!--          -->
-                <img src="images/checkin/qiandao_banner.jpg" width="100%" alt="">
+                <img src="images/checkin/qiandao_banner.jpg" width="110%" alt="">
             </div>
-            <div class="qiandao-con clear col-">
-                <div class="qiandao-left">
+            <div class="qiandao-con clear ">
+                <div class="qiandao-left col-lg-8  col-md-8 col-sm-7 col-xs-7">
                     <div class="qiandao-left-top clear">
                         <!--当前日期-->
                         <div class="current-date"></div>
@@ -389,7 +389,6 @@
 
                     let award = 1
                     let t = res[0].cayear + "-" + res[0].camonth + "-" + res[0].caday
-                    alert(t)
                     for (let i = 0; i < res.length; i++) {
                         let row = document.createElement("tr")
                         let cell1 = document.createElement("td")
