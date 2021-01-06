@@ -65,6 +65,12 @@ img {
     height: 684px;
     background-image: url(../images/checkin/qiandao_con.jpg)
 }
+.qiandao-mcon {
+    margin: 0 auto;
+    width: 1035px;
+    height: 684px;
+    background-image: url(../images/checkin/qiandao_con.jpg)
+}
 
 .qiandao-left {
     float: left;
@@ -75,7 +81,8 @@ img {
 .qiandao-right {
     float: right;
     padding: 0 1px;
-    width: 290px
+    padding-left: 60px;
+    /*width: 290px*/
 }
 
 .current-date {
@@ -91,7 +98,7 @@ img {
     width: 92px;
     height: 36px;
     border-radius: 4px;
-    background-color: #33b23f;
+    background-color: #b25d06;
     color: #fff;
     text-align: center;
     font-size: 1pc;

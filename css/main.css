@@ -104,7 +104,14 @@ a:hover {
     background-size: cover;
 }
 
-
+.fixednav {
+    position: fixed !important;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    width: 100%;
+    z-index: 1;
+}
 /*合作伙伴*/
 
 #footer {}
@@ -257,7 +264,7 @@ a:hover {
 }
 .ad_picture{
     position:relative;
-    top:-10px;
+    top:1px;
     left: 2%;
     right: 2%;
     width: 96%;
