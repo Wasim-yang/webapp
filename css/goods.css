@@ -14,6 +14,12 @@
 }
 
 .goods_description {
+    margin-top: 4px;
+    color: black;
+}
+
+.goods_cost {
+    margin-top: 0;
     color: red;
 }
 
@@ -27,34 +33,106 @@
     width: 220px;
 }
 
-.goods_display {
-    background: rgba(0, 0, 0, 0.2);
-    height: 672px;
+.goods_menu {
+    color: black;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: rgb(241, 241, 241);
 }
+
+.goods_padding {
+    height: 5px;
+    background: black;
+}
+
+.goods_display {
+    width: 70%;
+    float: left;
+    background: black;
+    color: white;
+}
+
+.goods_indexdisplay {
+    border-left: 1px solid #FFFFFF;
+    width: 30%;
+    float: right;
+    background: black;
+    color: white;
+}
+
+.blackbox {
+    margin-left: 25px;
+    margin-top: 9px;
+}
+
+.goods_best {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    width: 74%;
+    color: white;
+    background-image: linear-gradient(to right, #ff9569 0%, #e92758 100%);
+}
+
 
 .goods_display_image {
     margin-left: 3px;
     border-radius: 10px;
-    width: 99%;
-    height: 75%;
 }
 
 .goods_display_des {
-    width: 99%;
-    margin-top: 5px;
-    margin-left: 3px;
-    font-size: 20px;
-    background: snow;
-    color: #000000;
-    box-shadow: -2px 2px 4px #888888;
-    border-radius: 10px;
+    color: black;
+    background: white;
 }
+
+.goods_des1 {
+    margin-top: 5px;
+    margin-left: 10px;
+}
+
+.goods_des1_1{
+    float: left;
+    border-radius: 10px;
+    background:#FFEFCC8C;
+    width: 140px;
+    color:chocolate;
+}
+
+.goods_des1_2{
+    margin-right: 280px;
+    float: right;
+    border-radius: 10px;
+    background:#FFEFCC8C;
+    width: 70px;
+    color:chocolate;
+}
+
+.goods_des2 {
+    float: left;
+    border-radius: 10px;
+    border: 1px solid rebeccapurple;
+    color: black;
+    margin-top: 15px;
+    margin-left: 20px;
+    background-image: linear-gradient(to right, #ff9569 0%, #e92758 100%);
+    width: 100px;
+}
+
+.goods_des2_1{
+    margin-top: 15px;
+    float: right;
+    margin-right: 266px;
+}
+
+
 
 .goods_buy {
     margin-left: 80%;
     margin-top: 10%;
     margin-bottom: 1%;
 }
+
 
 .modalgoodsbuy {
     position: fixed;
@@ -67,12 +145,17 @@
     overflow: hidden;
     -webkit-overflow-scrolling: touch;
     outline: 0;
-
 }
+
 
 .usr_coupon {
-    height: 460px;
+    height: 600px;
 }
+
+.buy_button {
+    height: 100px;
+}
+
 
 .modalgoodsimage {
     width: 20rem;
@@ -81,11 +164,35 @@
     margin-top: 20px;
 }
 
-.demo_line_01{
+.modalgoodscontainer {
+    width: 50%;
+    float: left;
+}
+
+.demo_line_01 {
     padding: 0 20px 0;
     margin: 20px 0;
     line-height: 1px;
     border-left: 190px solid #ddd;
     border-right: 190px solid #ddd;
     text-align: center;
+}
+
+.topbody {
+    height: 40%;
+    text-align: center;
+    margin: 24px 0 12px 0;
+    position: relative;
+}
+
+.bottombody {
+    position: relative;
+    top: 350px;
+    border: 1px dashed #000;
+}
+
+.couponlist {
+    margin-left: 20px;
+    width: 33.33%;
+    border: 1px dashed #000;
 }

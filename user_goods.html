@@ -19,7 +19,6 @@
 
     <script>
         let uid
-        let name = document.getElementById("selectgoodsName")
         let currentPage = 1
         let totalPage = 1
         let PageSize
@@ -144,7 +143,8 @@
 
 
         function selectgoods() {
-            request("http://127.0.0.1:8080/usr/goods/selectpage", `currentPage=${currentPage}`, res => {
+            name=document.getElementById("selectgoodsName").value
+            request("http://127.0.0.1:8080/usr/goods/selectname", `name=${name}&currentPage=${currentPage}`, res => {
                 currentPage = res.currentPage
                 totalPage = res.totalPage
                 PageSize = res.pageSize
@@ -157,56 +157,72 @@
                    if(j % 2 === 0){
                        let goodarea = document.createElement("div")
                        let cell1 = document.createElement("img")
-                       let cell2 = document.createElement("p")
+                       let cell2 = document.createElement("div")
                        let cell3 = document.createElement("a")
+                       let cell4=document.createElement("p")
+                       let cell5=document.createElement("div")
                        goodarea.className = "goods_area1"
                        // alert("A")
                        cell1.src = goodsList[i].gimage
                        cell1.className = "goods_image"
                        cell2.className = "goods_description"
+                       cell4.className = "goods_cost"
                        cell3.href="user_goods_display.html?gid="+goodsList[i].gid+"&uid="+uid
-                       cell2.appendChild(document.createTextNode(goodsList[i].gdescription))
-                       cell2.appendChild(document.createTextNode("¥" + goodsList[i].gcost))
+                       cell2.appendChild(cell5)
+                       cell5.appendChild(document.createTextNode("名称:"+goodsList[i].gname))
+                       cell2.appendChild(document.createTextNode("描述"+goodsList[i].gdescription))
+                       cell4.appendChild(document.createTextNode("¥" + goodsList[i].gcost))
                        cell3.appendChild(cell1)
                        goodarea.appendChild(cell3)
                        goodarea.appendChild(cell2)
+                       goodarea.appendChild(cell4)
                        arealeft.appendChild(goodarea)
                    }
                    else{
                        let goodarea2 = document.createElement("div")
                        let cell1 = document.createElement("img")
-                       let cell2 = document.createElement("p")
+                       let cell2 = document.createElement("div")
                        let cell3 = document.createElement("a")
+                       let cell4=document.createElement("p")
+                       let cell5=document.createElement("div")
                        goodarea2.className = "goods_area2"
                        // alert("A")
                        cell1.setAttribute("gid",goodsList[i].gid)
                        cell1.src = goodsList[i].gimage
                        cell1.className = "goods_image"
                        cell2.className = "goods_description"
+                       cell4.className="goods_cost"
                        cell3.href="user_goods_display.html?gid="+goodsList[i].gid+"&uid="+uid
-                       cell2.appendChild(document.createTextNode("¥" + goodsList[i].gcost))
+                       cell2.appendChild(cell5)
+                       cell5.appendChild(document.createTextNode("名称:"+goodsList[i].gname))
+                       cell2.appendChild(document.createTextNode("描述"+goodsList[i].gdescription))
+                       cell4.appendChild(document.createTextNode("¥" + goodsList[i].gcost))
                        cell3.appendChild(cell1)
                        goodarea2.appendChild(cell3)
                        goodarea2.appendChild(cell2)
+                       goodarea2.appendChild(cell4)
                        arearight.appendChild(goodarea2)
                    }
                 }
-                // for (let i = 1; i < PageSize; i = i + 2) {
-                //     j = j + 1
-                //     if (j > PageSize)
-                //         break
-                //
-                // }
             })
         }
 
-        function selectgoodsbyname() {
-            request("http://127.0.0.1:8080/usr/goods/selectname", `name=${name}&currentPage=${currentPage}`, res => {
-                let area = document.getElementById("body_list")
-                /*生成表单并打印数据与操作按钮*/
-
-            })
+        function clearbody(){
+            currentPage=1
+            let mainbody=document.getElementById("mainbody")
+            document.getElementById("body_list1").remove()
+            document.getElementById("body_list2").remove()
+            let body_list1=document.createElement("div")
+            body_list1.className="col-lg-6 col-md-6 col-sm-6 col-xs-6"
+            body_list1.id="body_list1"
+            let body_list2=document.createElement("div")
+            body_list2.className="col-lg-6 col-md-6 col-sm-6 col-xs-6"
+            body_list2.id="body_list2"
+            mainbody.appendChild(body_list1)
+            mainbody.appendChild(body_list2)
         }
+
+
 
 
     </script>
@@ -231,13 +247,13 @@
     </div>
 </div>
 <div class="ad_picture">
-    <div class="app-content">
+    <div class="app-content" id="mainbody">
         <div class="col-md-offset-0 col-lg-offset-4 col-md-4">
             <!--搜索框 start-->
             <div class="input-group" style="margin-top: 5px;">
                 <input type="text" class="form-control" placeholder="搜索商品   " id="selectgoodsName">
                 <span class="input-group-btn">
-            <button class="btn btn-danger" type="button" onclick="admin_firstPage();selectgoodsbyname()"><i
+            <button class="btn btn-danger" type="button" onclick="clearbody();selectgoods()"><i
                     class="glyphicon glyphicon-search"></i></button>
         </span>
             </div>
@@ -249,9 +265,6 @@
 
         </div>
 
-        <div id="tipbody">
-
-        </div>
     </div>
 </div>
 <div id="gotop" class="top">
