@@ -749,6 +749,10 @@ input[type="checkbox"]:checked+div {
 	font-size: 0.4rem;
 	color: #fff;
 }
+.four-text ul li .box-text_2 p em{
+	font-size: 0.5rem;
+	color: #fff;
+}
 .four-text ul li i{
 	display: inline-block;
 	width: 34px;
