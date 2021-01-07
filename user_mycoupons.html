@@ -23,7 +23,7 @@
         /*按name搜索*/
         function selectcouponsbycname() {
             let name = document.getElementById("selectcouponsname").value
-            request("http://127.0.0.1:8080/coupon/selectname", `name=${name}`, res => {
+            request("http://127.0.0.1:8080/usr/coupon/selectmycname", `name=${name}`, res => {
                 let table = document.getElementById("tbody_list")
                 /*生成表单并打印数据与操作按钮*/
                 let row = document.createElement("tr")
@@ -36,7 +36,7 @@
                 cell2.appendChild(document.createTextNode(res.cdiscount))
                 cell3.appendChild(document.createTextNode(res.cexpoints))
                 cell4.appendChild(document.createTextNode(res.cdescription))
-                cell5.appendChild(document.createTextNode("7天"))
+                cell5.appendChild(document.createTextNode(res.ctime))
                 row.appendChild(cell1)
                 row.appendChild(cell2)
                 row.appendChild(cell3)
