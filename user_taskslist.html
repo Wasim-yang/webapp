@@ -60,7 +60,8 @@
         //             })
         //             document.getElementById("modalwelfareid").value = receivebutton.getAttribute("wid")
         //             document.getElementById("modalwelfaregain").value = receivebutton.getAttribute("wgain")
-        //             document.getElementById("modalwelfaretotal").value = receivebutton.getAttribute("wtotal")
+        //             document.getElementById("modalwelfare
+        //     total").value = receivebutton.getAttribute("wtotal")
         //             document.getElementById('taskmodal').style.display = 'block'
         //         }
         //         cell1.appendChild(document.createTextNode(res.wid))
@@ -100,7 +101,7 @@
             let ucintegral=document.getElementById("modalucintegral").value;
 
             request("http://127.0.0.1:8080/task/update_user",
-                `tid=${tid}&ucintegral=${ucintegral}&taward=${taward}`, res => {
+                `tid=${tid}&uid=${uid}&ucintegral=${ucintegral}&taward=${taward}`, res => {
                     alert(res.message)
                     admin_deleteTable()
                     selecttask()
