@@ -9,109 +9,41 @@
     <link rel="stylesheet" type="text/css" href="lib/bootstrap/css/bootstrap.css">
     <link rel="stylesheet" type="text/css" href="css/main.css">
     <link rel="stylesheet" type="text/css" href="css/index.css">
-    <!--icon-->
     <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-    <script src="lib/html5shiv/html5shiv.min.js"></script>
-    <script src="lib/respond/respond.min.js"></script>
-    <![endif]-->
+    <script src="js/request.js"></script>
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/main.js"></script>
+    <script type="text/javascript" src="js/Control.js"></script>
+    <script>
+        let uid
+        window.onload = function () {
+          //  usr_authorization()
+            $(document).ajaxStop(function(){
+                //todo
+                //  document.getElementById("cscore").appendChild(document.createTextNode(uid))
+            });
+        }
+        function A(){
+            alert("A")
+        }
+        function bike() {
+            window.location.href = "./user_travelbike.html"
+        }
+        function bus() {
+            window.location.href = "./user_travelbus.html"
+        }
+        function subway() {
+            window.location.href = "./user_travelsubway.html"
+        }
+        function train() {
+            window.location.href = "./user_traveltrain.html"
+        }
+    </script>
 </head>
 
 <body>
-<!-- 顶部导航 start -->
-<div id="top">
-    <div class="topBar visible-md visible-lg">
-        <div class="container">
-            <div class="row">
-                <div class=" col-md-3 text-center t-position">
-                    <i class="glyphicon glyphicon-map-marker"></i>
-                    <a href="javascript:;" id="positionText">北京</a>
-                    <ul id="position">
-                    </ul>
-                </div>
-                <div class="col-md-2 text-center">
-                    <a href="login.html"><i class="glyphicon glyphicon-user"></i>登录</a>&nbsp;
-                    <a href="register.html">免费注册</a>
-                </div>
-                <div class="col-md-1 text-center">
-                    <a href="javascript:;">我的订单</a>
-                </div>
-                <div class="col-md-1 text-center">
-                    <a href="user_index.html">我的趣购</a>
-                </div>
-                <div class="col-md-1 text-center">
-                    <a href="javascript:;">趣购会员</a>
-                </div>
-                <div class="col-md-1 text-center">
-                    <a href="javascript:;">企业采购</a>
-                </div>
-                <div class="col-md-1 text-center">
-                    <a href="javascript:;">客户服务</a>
-                </div>
-                <div class="col-md-1 text-center" id="navBar">
-                    <a href="javascript:;">网站导航<i class="glyphicon glyphicon-menu-down"></i>
-                    </a>
-                    <ul class="nav-bar">
-                        <li class="nav-item">特色主题
-                            <div>
-                                <small>趣购金融</small><small>趣购会员</small>
-                                <br>
-                                <small>优惠券</small><small>陪伴计划</small>
-                                <br>
-                                <small>买什么</small><small>趣购秒杀</small>
-                                <br>
-                                <small>全球购</small><small>0元测评</small>
-                                <br>
-                            </div>
-                        </li>
-                        <li class="nav-item">行业频道
-                            <div>
-                                <small>家用电器</small><small>手机数码</small>
-                                <br>
-                                <small>精选家居</small><small>服装鞋包</small>
-                                <br>
-                                <small>美妆个护</small><small>食品生鲜</small>
-                                <br>
-                                <small>礼品鲜花</small><small>汽车用品</small>
-                                <br>
-                            </div>
-                        </li>
-                        <li class="nav-item">生活服务
-                            <div>
-                                <small>趣购金融</small><small>优惠券</small>
-                                <br>
-                                <small>话费</small><small>加油卡</small>
-                                <br>
-                                <small>火车票</small><small>旅游出行</small>
-                                <br>
-                                <small>电影票</small><small>酒店住宿</small>
-                                <br>
-                            </div>
-                        </li>
-                        <li class="nav-item">更多精选
-                            <div>
-                                <small>合作招商</small><small>服装市场</small>
-                                <br>
-                                <small>企业采购</small><small>游戏社区</small>
-                                <br>
-                                <small>智能家居</small><small>知识产权</small>
-                                <br>
-                                <small>乡村招募</small><small>校园加盟</small>
-                                <br>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-                <div class="col-md-1 text-center">
-                    <a href="javascript:;" class="mobile-link">手机趣购<i class="glyphicon glyphicon-phone"></i>
-                        <img src="images/01.png" alt="扫一扫">
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
     <!-- 顶部导航面板 start-->
     <nav class="navbar navbar-inverse visible-sm visible-xs">
         <div class="container-fluid">
@@ -323,19 +255,19 @@
                         <div>
                             <label style="margin-top: 28px;margin-bottom: 10px;font-size: 23px">碳积分</label><br>
                             <i class="imageinput_icon fa fa-envira fa-lg"></i>
-                            <label style="font-size: 17px">666</label>
+                            <label id="cscore" style="font-size: 17px"></label>
                         </div>
                     </div>
 
                     <div class="col-md-6 col-lg-6 col-sm-6 col-xs-6 text-center">
                         <div class="row">
-                            <label class="scordBackground2 btn imageinput-button col-md-6 col-lg-6 col-sm-6 col-xs-6 text-center">
+                            <label onclick="bike()" class="scordBackground2 btn imageinput-button col-md-6 col-lg-6 col-sm-6 col-xs-6 text-center">
                                 <div>
                                     <i class="imageinput_icon fa fa-bicycle fa-2x"></i><br>
                                     <label>自行车</label>
                                 </div>
                             </label>
-                            <label class="scordBackground3 btn imageinput-button col-md-6 col-lg-6 col-sm-6 col-xs-6 text-center">
+                            <label onclick="bus()" class="scordBackground3 btn imageinput-button col-md-6 col-lg-6 col-sm-6 col-xs-6 text-center">
                                 <div>
                                     <i class="imageinput_icon fa fa-bus fa-2x"></i><br>
                                     <label>公交车</label>
@@ -343,13 +275,13 @@
                             </label>
                         </div>
                         <div class="row">
-                            <label class="scordBackground4 btn imageinput-button col-md-6 col-lg-6 col-sm-6 col-xs-6 text-center">
+                            <label onclick="subway()" class="scordBackground4 btn imageinput-button col-md-6 col-lg-6 col-sm-6 col-xs-6 text-center">
                                 <div>
                                     <i class="imageinput_icon fa fa-subway fa-2x"></i><br>
                                     <label>地铁</label>
                                 </div>
                             </label>
-                            <label class="scordBackground5 btn imageinput-button col-md-6 col-lg-6 col-sm-6 col-xs-6 text-center">
+                            <label onclick="train()" class="scordBackground5 btn imageinput-button col-md-6 col-lg-6 col-sm-6 col-xs-6 text-center">
                                 <div>
                                     <i class="imageinput_icon fa fa-train  fa-2x"></i><br>
                                     <label>高铁</label>
@@ -585,7 +517,6 @@
 </div>
 <!-- 回到顶部 end-->
 </body>
-
 </html>
 <script type="text/javascript" src="lib/jquery/jquery.js"></script>
 <script type="text/javascript" src="lib/bootstrap/js/bootstrap.js"></script>
