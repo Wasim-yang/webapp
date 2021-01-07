@@ -20,9 +20,9 @@
         let usrtotalPage = 1
         let usrPageSize
         let usrtotalRecord = 0
-        let uid = 1
         let ctime = "7天"
-            /*按name搜索*/
+        let uid
+        /*按name搜索*/
         function selectcouponsbycname() {
             let name = document.getElementById("selectcouponsname").value
             request("http://127.0.0.1:8080/coupon/selectname", `name=${name}`, res => {
@@ -141,7 +141,7 @@
                     }
                 })
         }
-    /*用户显示剩余碳积分*/
+        /*用户显示剩余碳积分*/
         function selectpoints() {
             request("http://127.0.0.1:8080/usr/coupon/selectpoints", ``,
                 res => {
