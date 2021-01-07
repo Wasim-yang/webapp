@@ -33,6 +33,10 @@
     width: 220px;
 }
 
+.goods_test{
+    border: 1px solid #0c5460;
+}
+
 .goods_menu {
     color: black;
     top: 0;
@@ -111,21 +115,41 @@
 .goods_des2 {
     float: left;
     border-radius: 10px;
-    border: 1px solid rebeccapurple;
     color: black;
-    margin-top: 15px;
-    margin-left: 20px;
+    margin-top: 5px;
+    margin-left: 10px;
     background-image: linear-gradient(to right, #ff9569 0%, #e92758 100%);
     width: 100px;
 }
 
 .goods_des2_1{
-    margin-top: 15px;
+    margin-top: 8px;
     float: right;
-    margin-right: 266px;
+    margin-right: 280px;
 }
 
+.goods_des3{
+    font-size: 16px;
+    margin-top: 20px;
+    margin-left: 12px;
+    word-wrap: break-word;
+    color: black;
+    float: left;
+    width: 360px;
+}
 
+.goods_des3_1{
+    float: right;
+    width: 100px;
+}
+
+.goods_bottom{
+    color: black;
+    position: fixed;
+    bottom: 0;
+    left:0;
+    right:0;
+}
 
 .goods_buy {
     margin-left: 80%;

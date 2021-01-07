@@ -41,31 +41,30 @@
             request("http://127.0.0.1:8080/usr/goods/selectid", `id=${gid}`, res => {
                 let area = document.getElementById("goods_display")
                 let image = document.createElement("img")
-                let description = document.createElement("div")
-                let des = document.createElement("p")
-                let cost = document.createElement("p")
-                let buy = document.createElement("button")
-                image.setAttribute("image", res.gimage)
-                description.appendChild(document.createTextNode(res.gdescription))
-                des.appendChild(document.createTextNode("¥" + res.gcost))
-                description.appendChild(des)
-                buy.className = "btn btn-primary goods_buy"
-                buy.appendChild(document.createTextNode("购买"))
                 image.src = res.gimage
                 image.style = "width:500px;"
                 area.appendChild(image)
+                let name=document.getElementById("goods_name")
+                name.append(res.gname)
+                let description=document.getElementById("goods_description")
+                description.append(res.gdescription)
+            })
+        }
                 // description.appendChild(buy)
                 // area.appendChild(description)
-                buy.onclick = function () {
+        function readybuy(){
                     document.getElementById('modalbuy').style.display = "block"
-                    document.getElementById("modalgoodsimage").src = image.getAttribute("image")
                     let coupon_list1 = document.getElementById("coupon_list1")
                     let coupon_list2 = document.getElementById("coupon_list2")
                     let coupon_list3 = document.getElementById("coupon_list3")
                     request("http://127.0.0.1:8080/usr/goods/readybuy", `uid=${uid}&gid=${gid}`, res => {
-                        document.getElementById("modalgoodsnumber").value = res.gnumber
-                        document.getElementById("modalgoodscost").value = res.cost
-                        document.getElementById("modalgoodsdescription").value = res.cost
+                        document.getElementById("modalgoodsimage").src = res.goods.gimage
+                        let number=document.createTextNode(res.goods.gnumber)
+                        document.getElementById("modalgoodsnumber").append(number)
+                        let cost=document.createTextNode(res.goods.gcost)
+                        document.getElementById("modalgoodscost").append(cost)
+                        let description=document.createTextNode(res.goods.gdescription)
+                        document.getElementById("modalgoodsdescription").append(description)
                         let couponlist = res.datalist
                         for (let i = 0; i < couponlist.length; i++) {
                             let couponimage = document.createElement("img")
@@ -110,8 +109,6 @@
                             }
                         }
                     })
-                }
-            })
         }
 
         function buy() {
@@ -133,7 +130,7 @@
 </head>
 <body onpageshow="selectgoodsbyid()">
 <div class="goods_menu">
-    <span>
+    <span></span>
 </div>
 <div class="row">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -166,7 +163,7 @@
             </div>
         </div>
     </div>
-    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
         <div class="goods_des2">
             <span class="glyphicon glyphicon-gift" style="margin-left:5px;margin-bottom: 3px">东睿专卖店</span>
         </div>
@@ -175,13 +172,37 @@
         </div>
     </div>
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-        <div class="goods_des3">
-            eqwe
+        <div class="goods_des3 " id="goods_name">
+
+        </div>
+        <div class="goods_des3_1 ">
+
+        </div>
+    </div>
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="goods_des3" id="goods_description">
+
         </div>
     </div>
 </div>
+<div class="goods_bottom ">
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 text-center ">
+                <span class="glyphicon glyphicon-zoom-in"></span>
+                <p>进店逛逛</p>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 text-center ">
+                <span class="glyphicon glyphicon-star-empty"></span>
+                <p>收藏</p>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 ">
+                <button class="btn btn-primary" onclick="readybuy()">点击购买</button>
+            </div>
 
-
+        </div>
+    </div>
+</div>
 <div id="modalbuy" class="modalgoodsbuy">
     <!--    商品详情拟态框　　-->
     <form class="modal-content animate">
@@ -190,19 +211,17 @@
             <span onclick="document.getElementById('modalbuy').style.display='none'" class="close"
                   title="Close Modal">×</span>
         </div>
-
         <div class="container" style="color: #0d1214">
             <div class="row">
-                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 
                     <div class="imagebox">
                         <img src="" id="modalgoodsimage" alt="Avatar" class="avatar"
-                             style="margin-top: 5px;width: 20rem;height: 30rem"/>
+                             style="margin-top: 5px;"/>
                     </div>
                 </div>
-                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <br><br><br>
-                    <label style="color: red;font-size: 25px;">¥</label>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <label style="color: black;font-size: 25px;margin-left: 20px;">¥</label>
                     <label id="modalgoodscost"></label>
                     <br><br>
                     <label>库存数量:</label>
@@ -229,16 +248,15 @@
                      style="height: 270px;">
 
                 </div>
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="border-top:1px dashed #000 ">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 goods_test" style="border-top:1px dashed #000;">
                     <label>购买数量&nbsp&nbsp</label>
                     <input id="buy_number" type="text"/>
                 </div>
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 goods_test">
                     <button type="button" class="btn btn-primary" style="margin-left: 380px;" onclick="buy()">点击结算
                     </button>
                 </div>
             </div>
-
         </div>
     </form>
 </div>
