@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
+    <title>绿色出行页面</title>
+    <link rel="stylesheet" type="text/css" href="lib/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <link rel="stylesheet" type="text/css" href="css/index.css">
+    <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
+    <script src="js/request.js"></script>
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/main.js"></script>
+    <script type="text/javascript" src="js/Control.js"></script>
+    <script>
+        let uid
+        function submit_travel() {
+            let mileage = document.getElementById("travel").value
+            let type = 1;   //自行车出行
+            // 前后端分离
+            request("http://127.0.0.1:8080/usr/inserttravel",
+                `uid=${uid}&type=${type}&mileage=${mileage}`, res => {
+                    alert(res.message)
+                })
+        }
+    </script>
+</head>
+
+<body onpageshow="usr_authorization()">
+<div style="background: url(images/cd-background-2.jpg)">
+<!--开头start-->
+<div class="row">
+    <div class="col-md-offset-2 col-md-8 col-lg-offset-2 col-lg-8 col-sm-12 col-xs-12">
+        <div id="userCenter_box">
+            <div class="userCenter-ad" style="background:none">
+                <div class="row">
+                    <div class="col-md-6 col-lg-6 col-sm-6 col-xs-6 text-left">
+                        <a class="userCenterBox-lf" href="user_index.html">
+                        <i class="glyphicon glyphicon-menu-left kb-coll1 col-sm-1 col-xm-1" style="font-size: 20px"></i>
+                       <h4 class="kb-coll2 col-sm-4 col-xm-4"><strong>&nbsp;&nbsp;绿色·出行</strong>
+                           <i class="glyphicon glyphicon-triangle-bottom" style="font-size: 5px"></i></h4>
+                        </a>
+                    </div>
+                    <div class="userCenterBox-rh col-md-6 col-lg-6 col-sm-6 col-xs-6 text-right">
+                        <a class="kb-coll3" style="font-size: 15px;" href="#"><strong>管理</strong></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--开头 end-->
+<!--功能插件 start-->
+<div id="silder">
+    <div class="container" >
+        <div class="row">
+            <div class="col-lg-offset-2 col-lg-8 col-md-offset-2 col-md-8 col-sm-12 col-xs-12 text-center"
+                 id="silder_ad">
+                <!-- 功能按钮 start-->
+                <div class="ad_picture" style="opacity: 100%;top: -20px">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                                <label class="label_h ">单车</label>
+                                <a href="user_travelbike.html"><img src="images/travel_bike.png" alt=""
+                                                 class="img-rounded img-responsive center-block"></a>
+                            </div>
+                            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                                <label class="label_h" >公交</label>
+                                <a href="user_travelbus.html"><img src="images/travel_bus.png" alt=""
+                                                                            class="img-rounded img-responsive center-block"></a>
+                            </div>
+                            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                                <label class="label_h" >地铁</label>
+                                <a href="user_travelsubway.html"><img src="images/travel_subway.png" alt=""
+                                                                   class="img-rounded img-responsive center-block"></a>
+                            </div>
+                            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                                <label class="label_h " >高铁</label>
+                                <a href="user_traveltrain.html"><img src="images/travel_train.png" alt=""
+                                                                   class="img-rounded img-responsive center-block"></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--功能按钮 end-->
+                <div class="row">
+                    <div class="col-md-2 col-lg-2 col-sm-2 col-xs-offset-1 col-xs-2">
+                        <i class="glyphicon glyphicon-triangle-top" style="color:#fff;top: -8px;font-size: 20px"></i>
+                    </div>
+                </div>
+                <!--二维码 start-->
+                <div class="ad_picture" style="opacity: 100%;top: -20px">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-8 col-lg-8 col-sm-8 col-xs-offset-2 col-xs-8 text-center">
+                                <div class="sk_product">
+                                    <div class="sk-item">
+                                        <img src="images/travel2.png" class="img-rounded  center-block" width="130%"
+                                             height="250" style="position: relative;left: -35px">
+                                        <p class="sk_name owner-font-size" style="margin-top: 10px;"><strong>扫码出行，赚碳积分</strong></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 二维码 end-->
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<!-- 功能插件  end-->
+<!--输入框 start-->
+<div class="row">
+    <div class="col-md-offset-2 col-md-8 col-lg-offset-2 col-lg-8 col-sm-12 col-xs-12">
+        <div id="userCenter_box2">
+            <div class="userCenter-ad">
+                <div class="row">
+                    <div class="userCenterBox-lf  col-md-6 col-lg-6 col-sm-6 col-xs-6 text-left">
+                        <i class="glyphicon glyphicon-user kb-coll1 col-sm-1" style="font-size: 20px"></i>
+                        <h4 class="kb-coll2 col-sm-5 "><strong>&nbsp;&nbsp;骑行信息录入</strong></h4>
+                    </div>
+                    <div class="userCenterBox-rh col-md-6 col-lg-6 col-sm-6 col-xs-6 text-right">
+                        <a class="kb-coll3" style="font-size: 15px;" href="#">
+                            <i class="glyphicon glyphicon-menu-right kb-coll4"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="ad_picture">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-offset-2 col-md-6 col-lg-offset-2 col-lg-6 col-sm-8 col-xs-8 text-center">
+                            <div class="form-inline">
+                                <div class="form-group">
+                                    <label style="position: relative;right: 15px">里程</label>
+                                    <input class="travelinput" type="text" name="travel" id="travel"
+                                           placeholder="请输入骑行里程数" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2 col-lg-2 col-sm-3 col-xs-3 text-left">
+                        <button class="btn btn-primary" type="button" onclick="submit_travel();">提交</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 输入框 end-->
+</body>
+</html>
+<script type="text/javascript" src="lib/jquery/jquery.js"></script>
+<script type="text/javascript" src="lib/bootstrap/js/bootstrap.js"></script>
+<script type="text/javascript" src="js/index.js"></script>
+<script type="text/javascript" src="js/main1.js"></script>

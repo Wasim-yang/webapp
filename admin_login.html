@@ -17,20 +17,39 @@
     <script src="js/popper.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/main.js"></script>
-    <!-- The javascript plugin to display page loading on top-->
-    <script src="js/plugins/pace.min.js"></script>
+    <script type="text/javascript" src="js/Control.js"></script>
+    <script src="js/request.js"></script>
     <script>
         function admin_login() {
             let id = document.getElementById("loginId").value
             let password = document.getElementById("loginPassword").value
-            request("http://127.0.0.1:8080/admin/login",
-                `id=${id}&password=${password}`, res => {
-                    alert(res.message)
-                })
+            let type = document.getElementById("type").value
+            if(type == 2){
+                request("http://127.0.0.1:8080/business/login",
+                    `id=${id}&password=${password}`, res => {
+                        if(res.code==200){
+                            window.location.href="business_index.html"
+                        }
+                        else{
+                            alert("商家登录失败，请检查账号或密码是否正确！")
+                        }
+                    })
+            }
+            else{
+                request("http://127.0.0.1:8080/admin/login",
+                    `id=${id}&password=${password}`, res => {
+                        if(res.code==200){
+                            window.location.href="admin_index.html"
+                        }
+                        else{
+                            alert("管理员登录失败，请检查账号或密码是否正确！")
+                        }
+                    })
+            }
         }
     </script>
 </head>
-<body background="images/background.png">
+<body background="images/login/background.png">
 <div class="container-fluid">
     <div class="row align-items-center">
         <div class="col-md-8">
@@ -51,11 +70,11 @@
                     <form class="form-horizontal col" id="loginForm">
                         <div class="card-body">
                             <label><strong>登录类型</strong></label>
-                            <select class="form-control" name="type">
+                            <select class="form-control" name="type" id="type">
                                 <option disabled selected>请选择登陆类型</option>
-                                <option>管理员</option>
-                                <option>项目负责人</option>
-                                <option>合作商家</option>
+                                <option value="1">管理员</option>
+                                <option value="2">合作商家</option>
+                                <option value="3">公益项目负责人</option>
                             </select>
                         <div class="form-group">
                             <label><strong>账号</strong></label>

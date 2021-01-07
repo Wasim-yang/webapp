@@ -167,6 +167,100 @@
 	color: #f10215; 
 }
 
+/*首页用户个人中心css*/
+#userCenter_box2 {}
+
+#userCenter_box2 > .userCenter-ad {
+	background: url("../images/13.png") no-repeat;
+	height: 55px;
+	line-height: 55px;
+	padding-right: 15px;
+	padding-left: 15px;
+	margin: 10px auto;
+}
+
+#userCenter_box2 > .userCenter-ad  .userCenterBox-lf > .kb-coll1 {
+	float: left;
+	font-size: 35px;
+	color: #fff;
+	margin-top: 10px;
+	padding: 0;
+}
+
+#userCenter_box2 > .userCenter-ad  .userCenterBox-lf > .kb-coll2 {
+	margin-top: 18px;
+	color: #fff;
+	white-space: nowrap;
+}
+
+#userCenter_box2 > .userCenter-ad  .userCenterBox-lf > .sk_time {
+	font-size: 16px;
+	color: #fff;
+}
+
+#userCenter_box2 > .userCenter-ad  .userCenterBox-lf > .sk_time > span {
+	background-color: #000;
+	font-size: 24px;
+	white-space: nowrap;
+}
+
+#userCenter_box2 > .userCenter-ad  .userCenterBox-rh  .kb-coll3 {
+	color: #fff;
+	text-decoration: none;
+	display: inline-block;
+	width: 100%;
+	white-space: nowrap;
+}
+
+@media screen and (min-width:100px) and (max-width:400px) {
+	#userCenter_box2 > .userCenter-ad  .userCenterBox-lf > .kb-coll1 {
+		display: none;
+	}
+
+	#userCenter_box2 > .userCenter-ad  .userCenterBox-lf > .sk_time  {
+		font-size: 16px;
+		white-space: nowrap;
+	}
+
+	#userCenter_box2 > .userCenter-ad  .userCenterBox-rh  .kb-coll3 {
+		font-size: 12px;
+	}
+}
+
+/*个人中心内容*/
+#userCenter_box2 > .userCenter-content .sk_product {}
+
+#userCenter_box2 > .userCenter-content .sk_product .sk_name {
+	font-size: 12px;
+	height: 35px;
+	overflow: hidden;
+	margin-top: 5px;
+	color: #999;
+	text-decoration: none;
+}
+
+#userCenter_box2 > .userCenter-content .sk_product {
+	margin-bottom: 20px;
+}
+
+#userCenter_box2 > .userCenter-content .sk_product > .sk-item span {
+	font-size: 18px;
+	font-weight: 700;
+	color:  #f10215;
+}
+
+#userCenter_box2 > .userCenter-content .sk_product > .sk-item del {
+	color: #999;
+}
+
+#userCenter_box2 > .userCenter-content .sk_product > .sk-item:hover  {
+	text-decoration: none;
+}
+
+#userCenter_box2 > .userCenter-content .sk_product > .sk-item:hover .sk_name  {
+	color: #f10215;
+}
+
 /*展示*/
 #product {}
 
