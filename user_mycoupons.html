@@ -15,13 +15,11 @@
     <script type="text/javascript" src="js/Control.js"></script>
     <script src="js/request.js"></script>
     <script>
-        // 分页处理全局变量
+        /*分页处理全局变量*/
         let usrmycurrentPage = 1
         let usrmytotalPage = 1
         let usrmyPageSize
         let usrmytotalRecord = 0
-        let uid = 1
-        let ctime = "7天"
         /*按name搜索*/
         function selectcouponsbycname() {
             let name = document.getElementById("selectcouponsname").value
@@ -81,7 +79,7 @@
                         row.appendChild(cell5)
                         table.appendChild(row)
                     }
-                })
+        })
         }
         /*用户显示剩余碳积分*/
         function selectpoints() {
@@ -91,7 +89,7 @@
                 })
         }
     </script>
-<body class="coupons_body" onload="selectcoupons();selectpoints()">
+<body class="coupons_body" onload="selectmycoupons();selectpoints()">
 <div id="header">
     <div class="container">
         <div class="row">
@@ -132,10 +130,11 @@
                 <p id="pageResult"/>
             </div>
             <div style="text-align: center">
-                <a href="#" onclick="usr_firstPage();selectcoupons();">首页</a>&nbsp;&nbsp;
-                <a href="#" onclick="usr_previousPage();selectcoupons();">上一页</a>&nbsp;&nbsp;
-                <a href="#" onclick="usr_nextPage();selectcoupons();">下一页</a>&nbsp;&nbsp;
-                <a href="#" onclick="usr_lastPage();selectcoupons();">尾页</a>
+                <a href="#" onclick="usr_firstPage();selectmycoupons()();">首页</a>&nbsp;&nbsp;
+                <a href="#" onclick="usr_previousPage();selectmycoupons();">上一页</a>&nbsp;&nbsp;
+                <a href="#" onclick="usr_nextPage();selectmycoupons();">下一页</a>&nbsp;&nbsp;
+                <a href="#" onclick="usr_lastPage();selectmycoupons();">尾页</a>
+                <a href="user_coupons.html">&nbsp;&nbsp;返回</a>
             </div>
         </div>
     </div>

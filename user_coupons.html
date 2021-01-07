@@ -70,9 +70,12 @@
         /*向后端发送更新数据*/
         function exchangecoupons() {
             let cid = document.getElementById("usrmodalcouponscid").getAttribute("cid")
+            let cname = document.getElementById("usrmodalcouponscname").value;
+            let cdiscount = document.getElementById("usrmodalcouponscdiscount").value;
+            let cdescription = document.getElementById("usrmodalcouponscdescription").value
             let cexpoints = document.getElementById("usrmodalcouponscexpoints").value;
             request("http://127.0.0.1:8080/usr/coupon/exchange",
-                `uid=${uid}&cid=${cid}&cexpoints=${cexpoints}&ctime=${ctime}`,
+                `uid=${uid}&cid=${cid}&cname=${cname}&cdiscount=${cdiscount}&cdescription=${cdescription}&cexpoints=${cexpoints}&ctime=${ctime}`,
                 res => {
                     alert(res.message)
                     admin_deleteTable()
@@ -167,9 +170,19 @@
         </span>
             </div>
         </div>
-        <div style="margin-top: 20px" >
+        <div style="margin-top: 20px;width: 60%" >
             <strong><p id="usrpoints"></p></strong>
         </div>
+        <div class="text-center mycoupons" style="margin-top: -40px;">
+            <div class="sk_product">
+                <a href="user_mycoupons.html" class="sk-item">
+                    <img src="images/mycoupons.png" class="img-rounded center-block" width="50"
+                         height="50">
+                    <p class="sk_name"><strong>我的卡包</strong></p>
+                </a>
+            </div>
+        </div>
+
         <div class="form-address">
             <table class="table table-hover table-bordered table-line" id="cTable" style="text-align:center">
                 <thead>
@@ -195,6 +208,7 @@
                 <a href="#" onclick="usr_lastPage();selectcoupons();">尾页</a>
             </div>
         </div>
+    </div>
     </div>
 </div>
 <div id="usrcouponsmodal" class="modal">
