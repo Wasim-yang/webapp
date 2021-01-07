@@ -16,7 +16,6 @@
     <script src="js/popper.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/main.js"></script>
-    <script type="text/javascript" src="http://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script>x
 <!--    列表显示和操作-->
     <script src="js/request.js"></script>
     <script src="js/Control.js"></script>
@@ -27,6 +26,8 @@
         let PageSize
         let totalRecord = 0
         let uid= 1
+        let ucintegral
+
 
         // 按id查询
         // function selecttaskbyid() {
@@ -92,25 +93,18 @@
             } else
                 alert("输入的页面超出范围")
         }
-
         /*向后端发送更新数据*/
-        function updatetask() {
-
-            let tid = document.getElementById("modalwelfareid").value;
-            let taward = document.getElementById("modalwelfaredonate").value;
-            let ucintegral=document.getElementById("modalucintegral").value;
-
-            request("http://127.0.0.1:8080/task/update_user",
-                `tid=${tid}&uid=${uid}&ucintegral=${ucintegral}&taward=${taward}`, res => {
-                    alert(res.message)
-                    admin_deleteTable()
-                    selecttask()
-                    document.getElementById('taskmodal').style.display = 'none'
-                })
-        }
+        // function updatetask() {
+        //     request("http://127.0.0.1:8080/task/update_user",
+        //         `uid=${uid}&taward=${taward}&tid=${tid}&ttype=${ttype}`, res => {
+        //             alert(res.message)
+        //             admin_deleteTable()
+        //             selecttask()
+        //         })
+        // }
         /*查询并生成表单*/
         function selecttask() {
-            request("http://127.0.0.1:8080/task/selectByPage", `currentPage=${currentPage}`, res => {
+            request("http://127.0.0.1:8080/task/selectByPageUser", `currentPage=${currentPage}`, res => {
                 currentPage = res.currentPage
                 totalPage = res.totalPage
                 PageSize = res.pageSize
@@ -136,29 +130,8 @@
                     let receivebutton = document.createElement("button")
                     receivebutton.className = "btn btn-primary"
                     receivebutton.appendChild(document.createTextNode("领取"))
-                    //待转换的参数
-                    let ttype = taskList[i].ttype
-                    let t = taskList[i].tdeadline
-                    let tdeadline = t.substring(0,16).replace(/-/g,"/")
-                    let bicycle = document.createElement("i")
-                    let subway = document.createElement("i")
-                    let bus = document.createElement("i")
-                    let h_s = document.createElement("i")
-                    /*将类型转换为对应中午*/
-                    switch (ttype) {
-                        case 1:
-                            ttype = "自行车"
-                            break;
-                        case 2:
-                            ttype = "公交车"
-                            break;
-                        case 3:
-                            ttype = "地铁"
-                            break;
-                        case 4:
-                            ttype = "高铁"
-                            break;
-                    }
+
+                    receivebutton.setAttribute("tid", taskList[i].tid)
                     receivebutton.setAttribute("tname", taskList[i].tname)
                     receivebutton.setAttribute("ttype", taskList[i].ttype)
                     receivebutton.setAttribute("tdescription", taskList[i].tdescription)
@@ -167,26 +140,52 @@
                     receivebutton.setAttribute("tdeadline", taskList[i].tdeadline)
                     receivebutton.setAttribute("taward", taskList[i].taward)
 
+                    //待转换的参数
+                    let type = taskList[i].ttype
+                    let t = taskList[i].tdeadline
+                    let tdeadline = t.substring(0,16).replace(/-/g,"/")
+                    let bicycle = document.createElement("i")
+                    let subway = document.createElement("i")
+                    let bus = document.createElement("i")
+                    let h_s = document.createElement("i")
+                    /*将类型转换为对应中午*/
+                    switch (type) {
+                        case 1:
+                            type = "自行车"
+                            break;
+                        case 2:
+                            type = "公交车"
+                            break;
+                        case 3:
+                            type = "地铁"
+                            break;
+                        case 4:
+                            type = "高铁"
+                            break;
+                    }
                     // 当项目达到领取条件时，设置捐赠按钮为可选中
-                    if(taskList[i].tgain < taskList[i].trequirement) { receivebutton.disabled=false; }
+                    if(taskList[i].tgain >= taskList[i].trequirement) { receivebutton.disabled=false; }
                     else{receivebutton.disabled=true;}
                     //领取积分后，更新后端
                     receivebutton.onclick = function () {
-                        updatetask();
-                        //删除该任务
-                        let tid = this.getAttribute("id")
-                        request("http://127.0.0.1:8080/task/delete", `tid=${tid}`, res => {
-                            alert(res.message)
-                            admin_deleteTable()
-                            selecttask()
-                        })
+                        //赋值传回后端
+                        let tid = this.getAttribute("tid")
+                        let taward = this.getAttribute("taward")
+
+                        //更新用户积分,将任务状态信息插入用户_任务表
+                        request("http://127.0.0.1:8080/task/update_user",
+                            `uid=${uid}&taward=${taward}&tid=${tid}`, res => {
+                                alert(res.message)
+                                admin_deleteTable()
+                                selecttask()
+                            })
                     }
                     cell1.appendChild(document.createTextNode(taskList[i].tname))
-                    cell2.appendChild(document.createTextNode(taskList[i].ttype))
+                    cell2.appendChild(document.createTextNode(type))
                     cell3.appendChild(document.createTextNode(taskList[i].tdescription))
                     cell4.appendChild(document.createTextNode(taskList[i].trequirement))
                     cell5.appendChild(document.createTextNode(taskList[i].tgain))
-                    cell6.appendChild(document.createTextNode(taskList[i].tdeadline))
+                    cell6.appendChild(document.createTextNode(tdeadline))
                     cell7.appendChild(document.createTextNode(taskList[i].taward))
                     cell8.appendChild(receivebutton)
                     row.appendChild(cell1)
@@ -198,6 +197,7 @@
                     row.appendChild(cell7)
                     row.appendChild(cell8)
                     table.appendChild(row)
+
                 }
             })
         }
@@ -207,7 +207,7 @@
 <div id="header">
     <div class="container">
         <div class="row">
-            <div class="kb-coll3 cart-body title-col"><h2><strong>做任务&nbsp&nbsp&nbsp赚取碳积分</strong></h2>
+            <div class="kb-coll3 cart-body title-col"><h2><strong>做任务<br>赚取碳积分</strong></h2>
             </div>
         </div>
     </div>
@@ -216,19 +216,19 @@
 <div class="app-content">
     <div class="col-md-offset-0 col-lg-offset-4 col-md-4">
         <!--搜索框 start-->
-        <div class="input-group" style="margin-top: 5px;">
-            <input type="text" class="form-control"
-                   id="selecttaskid"
-                   placeholder="搜索任务">
-            <span class="input-group-btn">
-                    <button class="btn btn-danger"
-                            onclick="admin_deleteTable();selecttaskbyid()"
-                            id="selecttask_id"
-                            type="button">
-                        <i class="glyphicon glyphicon-search"></i>
-                    </button>
-                </span>
-        </div>
+<!--        <div class="input-group" style="margin-top: 5px;">-->
+<!--            <input type="text" class="form-control"-->
+<!--                   id="selecttaskid"-->
+<!--                   placeholder="搜索任务">-->
+<!--            <span class="input-group-btn">-->
+<!--                    <button class="btn btn-danger"-->
+<!--                            onclick="admin_deleteTable();selecttaskbyid()"-->
+<!--                            id="selecttask_id"-->
+<!--                            type="button">-->
+<!--                        <i class="glyphicon glyphicon-search"></i>-->
+<!--                    </button>-->
+<!--                </span>-->
+<!--        </div>-->
         <div class="input-group" style="margin-top: 5px;" >
             <input class="form-control" type="text" id="selecttaskpage" placeholder="跳转到第几页"/>
             <span class="input-group-btn">
