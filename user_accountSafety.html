@@ -15,13 +15,13 @@
     <link rel="stylesheet" type="text/css" href="css/infor/loaders.min.css"/>
     <link rel="stylesheet" type="text/css" href="css/iconfont/iconfont.css"/>
 </head>
-<body onload="myonload()">
+<body>
 <!--header star-->
 <header class="mui-bar mui-bar1 mui-bar-nav mui-bar-nav1" id="header">
     <a class="back-btn" href="javascript:history.go(-1)">
         <i class="iconfont icon-fanhui"></i>
     </a>
-    <div class="mui-title">个人信息</div>
+    <div class="mui-title">安全中心</div>
 </header>
 <!--header end-->
 
@@ -30,27 +30,21 @@
         <ul>
             <li class="box-s">
                 <a href="#">
-                    <p>账号</p>
-                    <em><em class="just-count">276683372</em>&nbsp;&nbsp;<i class="iconfont icon-jiantou1"></i></em>
+                    <p>登录密码</p>
+                    <em><em>修改&nbsp;<i class="iconfont icon-jiantou1"></i></em></em>
                 </a>
             </li>
             <li class="box-s">
                 <a href="#">
-                    <p>昵称</p>
-                    <em><em class="just-name">就好像风吹过大海</em>&nbsp;&nbsp;<i class="iconfont icon-jiantou1"></i></em>
-                </a>
-            </li>
-
-            <li class="box-s">
-                <a href="#">
-                    <p>性别</p>
-                    <em><em class="just-sex">男</em>&nbsp;&nbsp;<i class="iconfont icon-jiantou1"></i></em>
+                    <p>支付密码</p>
+                    <em><em style="color: red;font-size: 0.3rem">安全等级：中</em>&nbsp;&nbsp;&nbsp;&nbsp;<em>修改</em>&nbsp;<i
+                            class="iconfont icon-jiantou1"></i></em>
                 </a>
             </li>
             <li class="box-s">
                 <a href="#">
-                    <p>年龄</p>
-                    <em><em class="just-age">20</em>&nbsp;&nbsp;<i class="iconfont icon-jiantou1"></i></em>
+                    <p>实名认证</p>
+                    <em><em style="color: #00a0e9">已实名</em>&nbsp;&nbsp;<i class="iconfont icon-jiantou1"></i></em>
                 </a>
             </li>
             <li class="box-s">
@@ -59,10 +53,25 @@
                     <em><em class="just-phone">13097793728</em>&nbsp;&nbsp;<i class="iconfont icon-jiantou1"></i></em>
                 </a>
             </li>
+
         </ul>
     </div>
     <div class="cashlist clearfloat">
-        <a href="user_management.html" class="center-btn db ra3" style="width: 50%">保存并退出</a>
+        <ul>
+            <li class="box-s">
+                <a href="#">
+                    <p>生物识别</p>
+                    <em><em>人脸、指纹识别</em>&nbsp<i class="iconfont icon-jiantou1"></i></em>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <p>注销账号</p>
+                    <em><i class="iconfont icon-jiantou1"></i></em>
+                </a>
+            </li>
+        </ul>
+
     </div>
 </div>
 
@@ -77,6 +86,7 @@
 <script src="js/request.js"></script>
 <script type="text/javascript">
     let uid = 1;
+
     function myonload() {
         request("http://127.0.0.1:8080/usr/selectAll", `uid=${uid}`, user => {
             $(".just-count").html(user.uid)

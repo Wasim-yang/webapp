@@ -18,15 +18,14 @@
 <body onload="myonload()">
 <!--header star-->
 <header class="mui-bar mui-bar1 mui-bar-nav mui-bar-nav1" id="header">
-    <a class="back-btn" href="javascript:history.go(-1)">
+    <a class="back-btn" href="user_index.html">
         <i class="iconfont icon-fanhui"></i>
     </a>
     <div class="mui-title">个人中心</div>
 </header>
 <!--header end-->
 
-<div class="warp clearfloat" )
-">
+<div class="warp clearfloat">
 <div class="h-top clearfloat box-s">
     <div class="ge-back"><img src="images/infor/text-bck.png"></div>
     <div class="mui-tus">
@@ -60,7 +59,7 @@
             <span class="right-lines"></span>
             <li id="user_coupon">
                 <a href="#">
-                    <p>10</p>
+                    <p class="just-coupon">10</p>
                     <span>可用优惠券</span>
                 </a>
             </li>
@@ -90,7 +89,7 @@
                     <p>
                         <em class="just-money">20</em>
                         <button type="button" class=" fr vip-kai just-recharge" onclick="a();"
-                                style="font-size: 0.35rem;display: block;">充值
+                                style="font-size: 0.35rem;background-color:#f10215;display: block;">充值
                         </button>
                     </p>
 
@@ -125,9 +124,9 @@
                 </div>
                 <div class="box-text_2">
                     <p>
-                    <em>已有成就数20</em>
-                        <button type="button" class=" fr vip-kai" onclick="window.location.href='user_coupons.html'"
-                                style="font-size: 0.35rem;display: block;">兑换
+                        已解锁：12/32(38%)
+                        <button type="button" class=" fr vip-kai"
+                                style="font-size: 0.35rem;display: block;">查看我的成就
                         </button>
                     </p>
                 </div>
@@ -142,8 +141,11 @@
                     <p>好友与排行榜</p>
                 </div>
                 <div class="box-text_2">
-                    <p>在线好友数</p>
-                    <p>10</p>
+                    <p>好友数：<em>10</em>
+                    </p>
+                    <button type="button" class=" fr vip-kai"
+                            style="font-size: 0.35rem;display: block;">查看排行榜
+                    </button>
                 </div>
             </div>
         </li>
@@ -161,11 +163,11 @@
         <li class="box-s">
             <a href="system/account/address.html">
                 <p><i class="iconfont icon-tubiao201"></i>收货地址</p>
-                <em>浙江工业大学屏峰校区<i class="iconfont icon-jiantou1"></i></em>
+                <em><em class="just-addr">浙江工业大学屏峰校区</em>&nbsp;<i class="iconfont icon-jiantou1"></i></em>
             </a>
         </li>
         <li class="box-s">
-            <a href="system/user/user.html">
+            <a href="user_accountSafety.html">
                 <p><i class="iconfont icon-zizhanghaoguanli"></i>账号与安全</p>
                 <em>修改密码、修改手机号、注销账号<i class="iconfont icon-jiantou1"></i></em>
             </a>
@@ -256,12 +258,17 @@
         request("http://127.0.0.1:8080/usr/selectAll", `uid=${uid}`, user => {
             $(".just-money").html(user.umoney)
             $(".just-credit").html(user.ucintegral)
+            $(".just-addr").html(user.uaddress)
         })
-    }
+        request("http://127.0.0.1:8080/usr/getCouponNum", `uid=${uid}`, res => {
+            $(".just-coupon").html(res)
+        })
+        }
 
     function a() {
         request("http://127.0.0.1:8080/usr/topupMoney", `uid=${uid}`, res => {
             alert(res.message)
+            window.location.reload()
         });
     }
 
