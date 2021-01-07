@@ -843,15 +843,43 @@ input[type="checkbox"]:checked+div {
 .vip-kai{
 	color: #fff;
 	font-size: 0.4rem;
-	border: 1px solid #33b23f;
+	border: 1px solid #009688;
 	height: 0.6rem;
 	line-height: 0.6rem;
 	background: #33b23f;
 	padding: 0 0.2rem;
 	margin-top: 8px;
-}
-.vip-kai:active,.vip-kai:focus,.vip-kai:hover{
 	color: #FFF;
+	background-color: #007bff;
+}
+.vip-kai:hover {
+	color: #FFF;
+	background-color: #007045;
+	border-color: #00435a;
+}
+
+.vip-kai:focus, .vip-kai.focus {
+	-webkit-box-shadow: 0 0 0 0 rgba(0, 150, 136, 0.5);
+	box-shadow: 0 0 0 0 rgba(0, 150, 136, 0.5);
+}
+
+.vip-kai.disabled, .vip-kai:disabled {
+	color: #FFF;
+	background-color: #009688;
+	border-color: #009688;
+}
+
+.vip-kai:not(:disabled):not(.disabled):active, .vip-kai:not(:disabled):not(.disabled).active,
+.show > .vip-kai.dropdown-toggle {
+	color: #FFF;
+	background-color: #00435a;
+	border-color: #00564e;
+}
+
+.vip-kai:not(:disabled):not(.disabled):active:focus, .vip-kai:not(:disabled):not(.disabled).active:focus,
+.show > .vip-kai.dropdown-toggle:focus {
+	-webkit-box-shadow: 0 0 0 0 rgba(0, 150, 136, 0.5);
+	box-shadow: 0 0 0 0 rgba(0, 150, 136, 0.5);
 }
 
 
