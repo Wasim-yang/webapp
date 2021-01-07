@@ -5883,7 +5883,7 @@ button.close {
 .modal1 {
   position: fixed;
   top: 300px;
-  /*width: 200px;*/
+  width: 200px;
   left: 30%;
   right: 30%;
   bottom: 0;
