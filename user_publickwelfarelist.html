@@ -16,7 +16,6 @@
     <script src="js/popper.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/main.js"></script>
-    <script type="text/javascript" src="http://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script>
     <!--显示-->
     <script src="js/request.js"></script>
     <script src="js/Control.js"></script>
@@ -26,8 +25,14 @@
         let totalPage = 1
         let PageSize
         let totalRecord = 0
-        let uid= 1
+        let uid
 
+        window.onload = function () {
+            usr_authorization()
+            $(document).ajaxStop(function(){
+                selectwelfare()
+            });
+        }
         // 按id查询
         function selectwelfarebyid() {
             let wid = document.getElementById("selectwelfareid").value
@@ -99,8 +104,9 @@
              let wgain = document.getElementById("modalwelfaregain").value;
              let wtotal = document.getElementById("modalwelfaretotal").value;
              let wdonate = document.getElementById("modalwelfaredonate").value;
-             if(wdonate==""){
-                 alert("您还没有捐赠积分-_-")
+             if(wdonate == ""){
+                 alert("您还没有输入捐赠积分数-_-")
+                 return;
              }
              request("http://127.0.0.1:8080/welfare/update_user",
                  `uid=${uid}&ucintegral=${ucintegral}&wid=${wid}&wgain=${wgain}&wtotal=${wtotal}&wdonate=${wdonate}`, res => {
@@ -152,11 +158,11 @@
                             donatebutton.setAttribute("ucintegral", res)
                             document.getElementById("modalucintegral").value = donatebutton.getAttribute("ucintegral")
                         })
-                        document.getElementById("welfaremodal").style.display="block";
                         document.getElementById("modalwelfareid").value = donatebutton.getAttribute("wid")
+                        document.getElementById("modalwelfarename").value = donatebutton.getAttribute("wname")
                         document.getElementById("modalwelfaregain").value = donatebutton.getAttribute("wgain")
                         document.getElementById("modalwelfaretotal").value = donatebutton.getAttribute("wtotal")
-                        document.getElementById('welfaremodal').style.display = 'block'
+                        document.getElementById("welfaremodal").style.display="block";
                     }
                     cell1.appendChild(document.createTextNode(welfareList[i].wid))
                     cell2.appendChild(document.createTextNode(welfareList[i].wname))
@@ -182,13 +188,16 @@
 
     </script>
 </head>
-<body class="welfare_body" onload='selectwelfare()'>
+<body class="welfare_body">
 <div id="header">
     <div class="container">
         <div class="row">
-            <div class="kb-coll3 cart-body title-col"><h2><strong>但行好事&nbsp&nbsp&nbsp莫问前程</strong></h2>
+            <div class="col-xs-2 text-right"><a href="user_index.html">
+                <i class="glyphicon glyphicon-menu-left kb-coll1"style="font-size: 34px;top: 8px;color:#368306;" ></i></a></div>
+            <div class="col-xs-10">
+            <div class="kb-coll3 cart-body"><h2><strong>但行好事&nbsp&nbsp&nbsp莫问前程</strong></h2></div>
             </div>
-        </div>
+            </div>
     </div>
 </div>
 <div class="ad_picture">
@@ -246,7 +255,7 @@
         </div>
     </div>
 </div>
-<div id="welfaremodal" class="modal">
+<div id="welfaremodal" class="modal1">
     <!--    公益详情拟态框　　-->
     <form class="modal-content animate">
         <div class="imgcontainer">
@@ -257,11 +266,13 @@
 
         <div class="container">
             <br>
-            <label><b>项目编号</b></label>
+            <label><b>公益编号</b></label>
             <input type="text" id="modalwelfareid" style=" width: 80%;" required disabled><br>
-            <label><b>已获碳积分</b></label>
-            <input type="text" id="modalwelfaregain" style=" width: 80%;" required><br>
-            <input type="text" id="modalwelfaretotal"  style="display: none">
+            <label><b>公益名称</b></label>
+            <input type="text" id="modalwelfarename" style=" width: 80%;" required disabled><br>
+            <label><b>进程（已获碳积分）</b></label>
+            <input type="text" id="modalwelfaregain" style=" width: 80%;" required disabled><br>
+            <input type="text" id="modalwelfaretotal"  style="display: none" disabled>
             <label><b>您当前的碳积分为：</b></label>
             <input type="text" id="modalucintegral"  style="width: 80%; "required disabled><br>
             <label><b>请输入您想捐赠的积分</b></label>
