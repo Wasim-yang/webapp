@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html" xmlns:margin-top="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -12,9 +12,145 @@
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <script src="lib/html5shiv/html5shiv.min.js"></script>
     <script src="lib/respond/respond.min.js"></script>
-
+    <script type="text/javascript" src="js/Control.js"></script>
+    <script src="js/request.js"></script>
+    <script>
+        // 分页处理全局变量
+        let usrcurrentPage = 1
+        let usrtotalPage = 1
+        let usrPageSize
+        let usrtotalRecord = 0
+        let ctime = "7天"
+        let uid
+        /*按name搜索*/
+        function selectcouponsbycname() {
+            let name = document.getElementById("selectcouponsname").value
+            request("http://127.0.0.1:8080/coupon/selectname", `name=${name}`, res => {
+                let table = document.getElementById("tbody_list")
+                /*生成表单并打印数据与操作按钮*/
+                let row = document.createElement("tr")
+                let cell1 = document.createElement("td")
+                let cell2 = document.createElement("td")
+                let cell3 = document.createElement("td")
+                let cell4 = document.createElement("td")
+                let cell5 = document.createElement("td")
+                let cell6 = document.createElement("td")
+                let exbutton = document.createElement("button")
+                exbutton.type = "button"
+                exbutton.className = "btn btn-primary"
+                exbutton.appendChild(document.createTextNode("兑换"))
+                exbutton.setAttribute("cname",couponList[i].cname)
+                exbutton.setAttribute("cdiscount",couponList[i].cdiscount)
+                exbutton.setAttribute("cexpoints",couponList[i].cexpoints)
+                exbutton.setAttribute("cdescription",couponList[i].cdescription)
+                exbutton.setAttribute("ctime",ctime)
+                exbutton.onclick = function () {
+                    document.getElementById("usrmodalcouponscname").value = exbutton.getAttribute("cname")
+                    document.getElementById("usrmodalcouponscdiscount").value = exbutton.getAttribute("cdiscount")
+                    document.getElementById("usrmodalcouponscexpoints").value = exbutton.getAttribute("cexpoints")
+                    document.getElementById("usrmodalcouponscdescription").value = exbutton.getAttribute("cdescription")
+                    document.getElementById("usrmodalctime").value = exbutton.getAttribute("ctime")
+                    document.getElementById('usrcouponsmodal').style.display = 'block'
+                }
+                cell1.appendChild(document.createTextNode(res.cname))
+                cell2.appendChild(document.createTextNode(res.cdiscount))
+                cell3.appendChild(document.createTextNode(res.cexpoints))
+                cell4.appendChild(document.createTextNode(res.cdescription))
+                cell5.appendChild(document.createTextNode("7天"))
+                cell6.appendChild(exbutton)
+                row.appendChild(cell1)
+                row.appendChild(cell2)
+                row.appendChild(cell3)
+                row.appendChild(cell4)
+                row.appendChild(cell5)
+                row.appendChild(cell6)
+                table.appendChild(row)
+            })
+        }
+        /*向后端发送更新数据*/
+        function exchangecoupons() {
+            let cid = document.getElementById("usrmodalcouponscid").getAttribute("cid")
+            let cname = document.getElementById("usrmodalcouponscname").value;
+            let cdiscount = document.getElementById("usrmodalcouponscdiscount").value;
+            let cdescription = document.getElementById("usrmodalcouponscdescription").value
+            let cexpoints = document.getElementById("usrmodalcouponscexpoints").value;
+            request("http://127.0.0.1:8080/usr/coupon/exchange",
+                `uid=${uid}&cid=${cid}&cname=${cname}&cdiscount=${cdiscount}&cdescription=${cdescription}&cexpoints=${cexpoints}&ctime=${ctime}`,
+                res => {
+                    alert(res.message)
+                    admin_deleteTable()
+                    selectcoupons()
+                    selectpoints()
+                })
+        }
+        /*查询并生成表单*/
+        function selectcoupons() {
+            request("http://127.0.0.1:8080/usr/coupon/selectpage", `usrcurrentPage=${usrcurrentPage}`,
+                res => {
+                    usrcurrentPage = res.usrcurrentPage
+                    usrtotalPage = res.usrtotalPage
+                    usrPageSize = res.usrPageSize
+                    usrtotalRecord = res.usrtotalRecord
+                    let table = document.getElementById("tbody_list")
+                    /*生成表单并打印数据与操作按钮*/
+                    let couponList = res.dataList;
+                    let j = 0
+                    document.getElementById("pageResult").append("共有" + usrtotalRecord + "条记录 共" + usrtotalPage + "页 当前第" + usrcurrentPage + "页")
+                    for (let i = 0; i < usrtotalRecord; i++) {
+                        j = j + 1
+                        if (j > usrPageSize) break
+                        let row = document.createElement("tr")
+                        let cell1 = document.createElement("td")
+                        let cell2 = document.createElement("td")
+                        let cell3 = document.createElement("td")
+                        let cell4 = document.createElement("td")
+                        let cell5 = document.createElement("td")
+                        let cell6 = document.createElement("td")
+                        let exbutton = document.createElement("button")
+                        exbutton.type = "button"
+                        exbutton.className = "btn btn-primary"
+                        exbutton.appendChild(document.createTextNode("兑换"))
+                        exbutton.setAttribute("cid",couponList[i].cid)
+                        exbutton.setAttribute("cname",couponList[i].cname)
+                        exbutton.setAttribute("cdiscount",couponList[i].cdiscount)
+                        exbutton.setAttribute("cexpoints",couponList[i].cexpoints)
+                        exbutton.setAttribute("cdescription",couponList[i].cdescription)
+                        exbutton.setAttribute("ctime",ctime)
+                        exbutton.onclick = function () {
+                            document.getElementById("usrmodalcouponscid").setAttribute("cid",exbutton.getAttribute("cid"))
+                            document.getElementById("usrmodalcouponscname").value = exbutton.getAttribute("cname")
+                            document.getElementById("usrmodalcouponscdiscount").value = exbutton.getAttribute("cdiscount")
+                            document.getElementById("usrmodalcouponscexpoints").value = exbutton.getAttribute("cexpoints")
+                            document.getElementById("usrmodalcouponscdescription").value = exbutton.getAttribute("cdescription")
+                            document.getElementById("usrmodalctime").value = exbutton.getAttribute("ctime")
+                            document.getElementById('usrcouponsmodal').style.display = 'block'
+                        }
+                        cell1.appendChild(document.createTextNode(couponList[i].cname))
+                        cell2.appendChild(document.createTextNode(couponList[i].cdiscount))
+                        cell3.appendChild(document.createTextNode(couponList[i].cexpoints))
+                        cell4.appendChild(document.createTextNode(couponList[i].cdescription))
+                        cell5.appendChild(document.createTextNode("7天"))
+                        cell6.appendChild(exbutton)
+                        row.appendChild(cell1)
+                        row.appendChild(cell2)
+                        row.appendChild(cell3)
+                        row.appendChild(cell4)
+                        row.appendChild(cell5)
+                        row.appendChild(cell6)
+                        table.appendChild(row)
+                    }
+                })
+        }
+        /*用户显示剩余碳积分*/
+        function selectpoints() {
+            request("http://127.0.0.1:8080/usr/coupon/selectpoints", ``,
+                res => {
+                    document.getElementById("usrpoints").innerText="您当前的碳积分余额:"+res;
+                })
+        }
+    </script>
 </head>
-<body class="coupons_body">
+<body class="coupons_body" onload="selectcoupons();selectpoints()">
 <div id="header">
     <div class="container">
         <div class="row">
@@ -28,29 +164,83 @@
         <div class="col-md-offset-0 col-lg-offset-4 col-md-4">
             <!--搜索框 start-->
             <div class="input-group" style="margin-top: 5px;">
-                <input type="text" class="form-control" placeholder="搜索优惠券">
+                <input type="text" class="form-control" id="selectcouponsname" placeholder="搜索优惠券">
                 <span class="input-group-btn">
-            <button class="btn btn-danger"type="button"><i class="glyphicon glyphicon-search"></i></button>
+            <button class="btn btn-danger"type="button" onclick="admin_deleteTable(),selectcouponsbycname()"><i class="glyphicon glyphicon-search"></i></button>
         </span>
             </div>
         </div>
+        <div style="margin-top: 25px;width: 60%" >
+            <strong><p style="margin-left: 1rem" id="usrpoints"></p></strong>
+        </div>
+        <div class="text-center mycoupons" style="margin-top: -50px;">
+            <div class="sk_product">
+                <a href="user_mycoupons.html" class="sk-item">
+                    <img src="images/mycoupons.png" class="img-rounded center-block" width="40"
+                         height="40">
+                    <p class="sk_name"><strong>我的卡包</strong></p>
+                </a>
+            </div>
+        </div>
+
         <div class="form-address">
-            <table class="table table-hover table-bordered" id="task">
+            <table class="table table-hover table-bordered table-line" id="cTable" style="text-align:center">
                 <thead>
                 <tr>
                     <th>优惠券名称</th>
-                    <th>折扣</th>
-                    <th>兑换积分</th>
-                    <th>有效期</th>
-                    <th>信息</th>
-                    <th>操作</th>
+                    <th>&nbsp;&nbsp;&nbsp;&nbsp;折扣度</th>
+                    <th>&nbsp;&nbsp;兑换积分</th>
+                    <th>优惠券描述</th>
+                    <th>&nbsp;&nbsp;&nbsp;有效期</th>
+                    <th>&nbsp;&nbsp;&nbsp;&nbsp;操作</th>
                 </tr>
                 </thead>
-                <tbody id=task_list">
+                <tbody id="tbody_list">
                 </tbody>
             </table>
+            <div id="pageResultBox">
+                <p id="pageResult"/>
+            </div>
+            <div style="text-align: center">
+                <a href="#" onclick="usr_firstPage();selectcoupons();">首页</a>&nbsp;&nbsp;
+                <a href="#" onclick="usr_previousPage();selectcoupons();">上一页</a>&nbsp;&nbsp;
+                <a href="#" onclick="usr_nextPage();selectcoupons();">下一页</a>&nbsp;&nbsp;
+                <a href="#" onclick="usr_lastPage();selectcoupons();">尾页</a>
+            </div>
         </div>
     </div>
+    </div>
+</div>
+<div id="usrcouponsmodal" class="modal">
+    <!--    商品详情拟态框　　-->
+    <form class="modal-content animate">
+        <!-- 点击×号，隐藏模态框-->
+        <span onclick="document.getElementById('usrcouponsmodal').style.display='none'" class="close"
+              title="Close Modal">×</span>
+        <label><b>优惠券名称</b></label>
+        <center>
+            <input type="text" id="usrmodalcouponscname" style=" width: 80%;" required><br></center>
+
+        <label><b>折扣度</b></label>
+        <center>
+            <input type="text" id="usrmodalcouponscdiscount" style=" width: 80%;" required><br></center>
+
+        <label><b>兑换积分</b></label>
+        <center>
+            <input type="text" id="usrmodalcouponscexpoints" style=" width: 80%;" required><br></center>
+        <label><b>有效期</b></label>
+        <center>
+            <input type="text" id="usrmodalctime" style=" width: 80%;" required><br></center>
+        <label><b>优惠券描述:</b></label>
+        <center>
+            <textarea id="usrmodalcouponscdescription" cols="10" rows="3" style="width: 80%"
+                      class="form-control" required></textarea></center>
+        <button id="usrmodalcouponscid" class="btn btn-danger" type="button" style="margin-top: 10px; width: 60%; margin-left: 13rem" onclick="exchangecoupons()">确认兑换</button>
+
+        <div class="container" style="background-color:#f1f1f1">
+            <!-- 点击cancel按钮，把模态框隐藏-->
+        </div>
+    </form>
 </div>
 </body>
 </html>
