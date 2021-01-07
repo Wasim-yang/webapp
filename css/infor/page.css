@@ -801,13 +801,18 @@ input[type="checkbox"]:checked+div {
 .cashlist ul li p{
 	margin-right: 0.15rem;
 	font-size: .48rem;
+	/*font-size: .3rem;*/
 	color: #696974;
+}
+.cashlist ul li em{
+	color: #8e8c8c;
+	font-size: 0.35rem;
 }
 
 .cashlist ul li i{
 	margin-right: 0.15rem;
 	color: #696974;
-	font-size: 0.3rem;
+	font-size: 0.35rem;
 }
 
 .center-btn {
