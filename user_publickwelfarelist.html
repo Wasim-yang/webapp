@@ -20,6 +20,22 @@
     <!--显示-->
     <script src="js/request.js"></script>
     <script src="js/Control.js"></script>
+    <style type="text/css">
+        .modal2 {
+            position: fixed;
+            top: 8%;
+            left: 10%;
+            right: 10%;
+            bottom: 8%;
+            /*left: 0;*/
+            z-index: 1050;
+            display: none;
+            overflow-y:scroll;
+            overflow-x:hidden;
+            -webkit-overflow-scrolling: touch;
+            outline: 0;
+        }
+    </style>
     <script>
         // 分页处理全局变量
         let currentPage = 1
@@ -246,7 +262,8 @@
         </div>
     </div>
 </div>
-<div id="welfaremodal" class="modal">
+
+<div id="welfaremodal" class="modal2">
     <!--    公益详情拟态框　　-->
     <form class="modal-content animate">
         <div class="imgcontainer">
@@ -260,7 +277,7 @@
             <label><b>项目编号</b></label>
             <input type="text" id="modalwelfareid" style=" width: 80%;" required disabled><br>
             <label><b>已获碳积分</b></label>
-            <input type="text" id="modalwelfaregain" style=" width: 80%;" required><br>
+            <input type="text" id="modalwelfaregain" style=" width: 80%;" required disabled><br>
             <input type="text" id="modalwelfaretotal"  style="display: none">
             <label><b>您当前的碳积分为：</b></label>
             <input type="text" id="modalucintegral"  style="width: 80%; "required disabled><br>
