@@ -207,7 +207,7 @@
                         <!--当前日期-->
                         <div class="current-date"></div>
                         <div class="qiandao-history qiandao-tran qiandao-radius" id="js-qiandao-history">我的签到</div>
-                        <div class="visible-xs visible-md  qiandao-history qiandao-tran qiandao-radius js-just-qiandao">
+                        <div class="visible-xs visible-md  qiandao-history qiandao-tran qiandao-radius js-just-qiandao" id="xsqiandao">
                             签到
                         </div>
                     </div>
@@ -240,7 +240,7 @@
             </div>
         </div>
         <!-- 我的签到 layer start -->
-        <div class="qiandao-layer qiandao-history-layer">
+        <div class="qiandao-layer qiandao-history-layer col-lg-4  col-xs-12">
             <div class="qiandao-layer-con qiandao-radius">
                 <a href="javascript:;" class="close-qiandao-layer qiandao-sprits"></a>
 
@@ -324,6 +324,7 @@
                             if (i == day) { //当日已签到
                                 $qiandaoBnt.addClass('actived');
                                 _handle = false;
+                                $("#xsqiandao").html("已签到")
                             }
                             $dateLi.eq(i + monthFirst - 1).addClass("qiandao");
                         }
@@ -360,6 +361,7 @@
                 openLayer("qiandao-active", qianDao);
                 //标识为false，不可再点击签到
                 _handle = false;
+                $("#xsqiandao").html("已签到")
                 request("http://127.0.0.1:8080/cal/addCalendar", `uid=${uid}&year=${year}&month=${month}&day=${day}`, res => {
                 });
             }
