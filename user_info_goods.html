@@ -17,6 +17,11 @@
     <link rel="stylesheet" type="text/css" href="css/iconfont/iconfont.css"/>
     <script>
         let uid
+        let number
+        let gtime
+        let gid
+        let ugcost
+
         window.onload = function () {
             usr_authorization();
             $(document).ajaxStop(function () {
@@ -28,50 +33,50 @@
         let totalRecord
         let pageSize
 
-        function usr_delete(){
+        function usr_delete() {
             document.getElementById("mygoods").remove()
-            let mygoods=document.createElement("div")
-            mygoods.id="mygoods"
-            mygoods.className="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+            let mygoods = document.createElement("div")
+            mygoods.id = "mygoods"
+            mygoods.className = "col-lg-12 col-md-12 col-sm-12 col-xs-12"
             document.getElementById("mygoodsbody").appendChild(mygoods)
         }
 
-        function usr_firstPage(){
-            currentPage=1
+        function usr_firstPage() {
+            currentPage = 1
             usr_delete()
         }
 
-        function usr_nextPage(){
-           if(currentPage<totalPage)
-               currentPage=currentPage+1
+        function usr_nextPage() {
+            if (currentPage < totalPage)
+                currentPage = currentPage + 1
             usr_delete()
         }
 
-        function usr_previousPage(){
-            if(currentPage>1)
-                currentPage=currentPage-1
+        function usr_previousPage() {
+            if (currentPage > 1)
+                currentPage = currentPage - 1
             usr_delete()
 
         }
 
-        function usr_lastPage(){
-            currentPage=totalPage
+        function usr_lastPage() {
+            currentPage = totalPage
             usr_delete()
         }
 
         function selectmygoods() {
             request("http://127.0.0.1:8080/usr/goods/selectmygoods", `uid=${uid}&currentPage=${currentPage}`, res => {
                 let goodslist = res.dataList
-                currentPage=res.currentPage
-                totalPage=res.totalPage
-                totalRecord=res.totalRecord
-                pageSize=res.pageSize
+                currentPage = res.currentPage
+                totalPage = res.totalPage
+                totalRecord = res.totalRecord
+                pageSize = res.pageSize
                 for (let i = 0; i < goodslist.length; i++) {
                     let area = document.getElementById("mygoods")
                     let goods_display = document.createElement("div")
                     goods_display.className = "mygoods_display goods_test"
                     let name = document.createElement("name")
-                    name.className="mygoods_name"
+                    name.className = "mygoods_name"
                     name.append(document.createTextNode(goodslist[i].gname))
                     goods_display.appendChild(name)
                     let title = document.createElement("div")
@@ -81,7 +86,7 @@
                     title.appendChild(p1)
                     goods_display.appendChild(title)
                     let description = document.createElement("div")
-                    description.className="mygoods_description"
+                    description.className = "mygoods_description"
                     description.append(document.createTextNode(goodslist[i].gdescription))
                     goods_display.appendChild(description)
                     let myimg = document.createElement("div")
@@ -118,25 +123,38 @@
                     menu.appendChild(menu_1)
                     goods_display.appendChild(menu)
                     area.appendChild(goods_display)
-                    button3.setAttribute("number",goodslist[i].ugnumber)
-                    button3.setAttribute("gtime",goodslist[i].gtime)
-                    button3.setAttribute("ugcost",goodslist[i].ugcost)
-                    button3.setAttribute("gid",goodslist[i].gid)
-                    button3.onclick=function (){
-                        let number=button3.getAttribute("number")
-                        let gtime=button3.getAttribute("gtime")
-                        let ugcost=button3.getAttribute("ugcost")
-                        let gid=button3.getAttribute("gid")
-                        request("http://127.0.0.1:8080/usr/goods/rejected",
-                            `uid=${uid}&gid=${gid}&number=${number}&gcost=${ugcost}&gtime=${gtime}`,res=>{
-                                alert(res.message)
-                                usr_delete()
-                                selectmygoods()
-                        })
+                    button3.setAttribute("number", goodslist[i].ugnumber)
+                    button3.setAttribute("gtime", goodslist[i].gtime)
+                    button3.setAttribute("ugcost", goodslist[i].ugcost)
+                    button3.setAttribute("gid", goodslist[i].gid)
+                    button3.onclick = function () {
+                        document.getElementById("mybox").style.display = "block"
+                        document.getElementById("hidebg").style.display = "block"
+                        number = button3.getAttribute("number")
+                        gtime = button3.getAttribute("gtime")
+                        ugcost = button3.getAttribute("ugcost")
+                        gid = button3.getAttribute("gid")
                     }
                 }
             })
         }
+
+        function rejectgoods() {
+            request("http://127.0.0.1:8080/usr/goods/rejected",
+                `uid=${uid}&gid=${gid}&number=${number}&gcost=${ugcost}&gtime=${gtime}`, res => {
+                    alert(res.message)
+                    document.getElementById("mybox").style.display="none"
+                    document.getElementById("hidebg").style.display="none"
+                    usr_delete()
+                    selectmygoods()
+                })
+        }
+
+        function mycancel(){
+            document.getElementById("mybox").style.display="none"
+            document.getElementById("hidebg").style.display="none"
+        }
+
     </script>
 </head>
 <body>
@@ -148,9 +166,9 @@
 </header>
 <div style="height:70px"></div>
 <div class="row" id="mygoodsbody">
-<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 " id="mygoods">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 " id="mygoods">
 
-</div>
+    </div>
 </div>
 <div style="margin-bottom: 5%;text-align: center">
     <a href="#" onclick="usr_firstPage();selectmygoods();">首页</a>&nbsp;&nbsp;
@@ -158,5 +176,16 @@
     <a href="#" onclick="usr_nextPage();selectmygoods();">下一页</a>&nbsp;&nbsp;
     <a href="#" onclick="usr_lastPage();selectmygoods();">尾页</a>
 </div>
+<div class="buytip" id="mybox">
+    <div class="text-center" style="font-size: 1rem;color: #974676">
+        <span>确认退货吗？</span>
+    </div>
+    <div class="comfirmword">您确认要退货吗?退货后该记录将被删除</div>
+    <div>
+        <button type="button" class="mycancel" onclick="mycancel()">取消</button>
+        <button type="button" class="mycomfirm" onclick="rejectgoods()">确认</button>
+    </div>
+</div>
+<div id="hidebg"></div>
 </body>
 </html>
