@@ -59,8 +59,6 @@
             usr_delete()
         }
 
-
-
         function selectmygoods() {
             request("http://127.0.0.1:8080/usr/goods/selectmygoods", `uid=${uid}&currentPage=${currentPage}`, res => {
                 let goodslist = res.dataList
