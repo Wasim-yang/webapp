@@ -19,6 +19,22 @@
     <!--显示-->
     <script src="js/request.js"></script>
     <script src="js/Control.js"></script>
+    <style type="text/css">
+        .modal2 {
+            position: fixed;
+            top: 8%;
+            left: 10%;
+            right: 10%;
+            bottom: 8%;
+            /*left: 0;*/
+            z-index: 1050;
+            display: none;
+            overflow-y:scroll;
+            overflow-x:hidden;
+            -webkit-overflow-scrolling: touch;
+            outline: 0;
+        }
+    </style>
     <script>
         // 分页处理全局变量
         let currentPage = 1
@@ -139,8 +155,6 @@
                     let ucintegral
                     donatebutton.className = "btn btn-primary"
                     donatebutton.appendChild(document.createTextNode("捐赠"))
-                    // donatebutton.setAttribute("uid", modaluid.value)
-                    // donatebutton.setAttribute("ucintegral", modalucintegral.value)
                     donatebutton.setAttribute("wid", welfareList[i].wid)
                     donatebutton.setAttribute("wname", welfareList[i].wname)
                     donatebutton.setAttribute("wtotal", welfareList[i].wtotal)
@@ -251,7 +265,8 @@
         </div>
     </div>
 </div>
-<div id="welfaremodal" class="modal1" style="top: 100px">
+
+<div id="welfaremodal" class="modal2">
     <!--    公益详情拟态框　　-->
     <form class="modal-content animate">
         <div class="imgcontainer">
