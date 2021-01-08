@@ -32,7 +32,7 @@
         let totalRecord = 0
         /*查询并生成表单*/
         function selecttask() {
-            request("http://127.0.0.1:8080/task/selectByPage", `currentPage=${currentPage}`, res => {
+            request("http://127.0.0.1:8080/admin/task/selectByPage", `currentPage=${currentPage}`, res => {
                 currentPage = res.currentPage
                 totalPage = res.totalPage
                 PageSize = res.pageSize
@@ -115,7 +115,7 @@
                     /*删除按钮-删除个项数据*/
                     deletebutton.onclick = function () {
                         let tid = this.getAttribute("id")
-                        request("http://127.0.0.1:8080/task/delete", `tid=${tid}`, res => {
+                        request("http://127.0.0.1:8080/admin/task/delete", `tid=${tid}`, res => {
                             alert(res.message)
                             admin_deleteTable()
                             selecttask()
@@ -166,7 +166,7 @@
             let award = document.getElementById("modaltaskaward").value;
             let descp = document.getElementById("modaltaskdescription").value;
             let deadline = document.getElementById("modaltaskdeadline").value;
-            request("http://127.0.0.1:8080/task/update", `tid=${id}&tname=${name}&tdescription=${descp}&trequirement=${require}&taward=${award}&ttype=${type}&tdeadline=${deadline}`, res => {
+            request("http://127.0.0.1:8080/admin/task/update", `tid=${id}&tname=${name}&tdescription=${descp}&trequirement=${require}&taward=${award}&ttype=${type}&tdeadline=${deadline}`, res => {
                 alert(res.message)
                 admin_deleteTable()
                 selecttask()
@@ -176,7 +176,11 @@
 
         function tasksearch() {
             let id = document.getElementById("searchid").value;
-            request("http://127.0.0.1:8080/task/selectOne", `tid=${id}`, task => {
+            if(id == "") {
+                selecttask();
+                return;
+            }
+            request("http://127.0.0.1:8080/admin/task/selectOne", `tid=${id}`, task => {
                 let table = document.getElementById("tbody_list")
                 /*生成表单并打印数据与操作按钮*/
                 let row = document.createElement("tr")
@@ -243,7 +247,7 @@
                 /*删除按钮-删除个项数据*/
                 deletebutton.onclick = function () {
                     let tid = this.getAttribute("id")
-                    request("http://127.0.0.1:8080/task/delete", `tid=${tid}`, res => {
+                    request("http://127.0.0.1:8080/admin/task/delete", `tid=${tid}`, res => {
                         alert(res.message)
                         admin_deleteTable()
                         selecttask()
@@ -281,7 +285,7 @@
         }
     </script>
 </head>
-<body class="app sidebar-mini rtl" onload="selecttask()">
+<body class="app sidebar-mini rtl" onpageshow="admin_authorization()" onload="selecttask()">
 <!-- Navbar-->
 <header class="navbar navbar-dark bg-dark shadow fixed-top ">
     <!--左侧-->

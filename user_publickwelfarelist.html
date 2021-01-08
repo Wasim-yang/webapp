@@ -52,8 +52,11 @@
         // 按id查询
         function selectwelfarebyid() {
             let wid = document.getElementById("selectwelfareid").value
-
-            request("http://127.0.0.1:8080/welfare/selectid", `wid=${wid}`, res => {
+            if(wid == ""){
+                selectwelfare();
+                return;
+            }
+            request("http://127.0.0.1:8080/usr/welfare/selectid", `wid=${wid}`, res => {
                 let table = document.getElementById("tbody_list")
                 /*生成表单并打印数据与操作按钮*/
                 let row = document.createElement("tr")
@@ -73,7 +76,10 @@
                 donatebutton.setAttribute("wgain", res.wgain)
                 donatebutton.setAttribute("wdescription", res.wdescription)
                 //当项目达到启动条件时，设置捐赠按钮为不可选中
-                if(res.wtotal<=res.wgain) { donatebutton.disabled=true; }
+                if(res.wtotal<=res.wgain) {
+                    donatebutton.className = "btn btn-warning"
+                    donatebutton.disabled=true;
+                }
                 donatebutton.onclick = function () {
                     request("http://127.0.0.1:8080/usr/selectUsrUcintegral",`uid=${uid}`, res => {
                         donatebutton.setAttribute("ucintegral", res)
@@ -124,7 +130,7 @@
                  alert("您还没有输入捐赠积分数-_-")
                  return;
              }
-             request("http://127.0.0.1:8080/welfare/update_user",
+             request("http://127.0.0.1:8080/usr/welfare/update_user",
                  `uid=${uid}&ucintegral=${ucintegral}&wid=${wid}&wgain=${wgain}&wtotal=${wtotal}&wdonate=${wdonate}`, res => {
                      alert(res.message)
                      admin_deleteTable()
@@ -134,7 +140,7 @@
          }
         /*查询并生成表单*/
         function selectwelfare() {
-            request("http://127.0.0.1:8080/welfare/selectpage", `currentPage=${currentPage}`, res => {
+            request("http://127.0.0.1:8080/usr/welfare/selectpage", `currentPage=${currentPage}`, res => {
                 currentPage = res.currentPage
                 totalPage = res.totalPage
                 PageSize = res.pageSize

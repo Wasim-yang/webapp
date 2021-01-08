@@ -25,7 +25,7 @@
             let discount = document.getElementById("couponsDiscount").value
             let expoints = document.getElementById("couponsExpoints").value
             let description = document.getElementById("couponsDescription").value
-            request("http://127.0.0.1:8080/coupon/insert",
+            request("http://127.0.0.1:8080/admin/coupon/insert",
                 `name=${name}&discount=${discount}&expoints=${expoints}&description=${description}`,
                 res => {
                     alert(res.message)
@@ -33,7 +33,7 @@
         }
     </script>
 </head>
-<body class="app sidebar-mini rtl">
+<body class="app sidebar-mini rtl"  onpageshow="admin_authorization()">
 <!-- Navbar-->
 <header class="navbar navbar-dark bg-dark shadow fixed-top ">
     <!--左侧-->

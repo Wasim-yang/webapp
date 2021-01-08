@@ -62,18 +62,9 @@
             } else
                 alert("输入的页面超出范围")
         }
-        /*向后端发送更新数据*/
-        // function updatetask() {
-        //     request("http://127.0.0.1:8080/task/update_user",
-        //         `uid=${uid}&taward=${taward}&tid=${tid}&ttype=${ttype}`, res => {
-        //             alert(res.message)
-        //             admin_deleteTable()
-        //             selecttask()
-        //         })
-        // }
         /*查询并生成表单*/
         function selecttask() {
-            request("http://127.0.0.1:8080/task/selectByPageUser", `currentPage=${currentPage}`, res => {
+            request("http://127.0.0.1:8080/usr/task/selectByPageUser", `currentPage=${currentPage}`, res => {
                 currentPage = res.currentPage
                 totalPage = res.totalPage
                 PageSize = res.pageSize
@@ -171,7 +162,7 @@
                         let tid = this.getAttribute("tid")
                         let taward = this.getAttribute("taward")
                         //更新用户积分,将任务状态信息插入用户_任务表
-                        request("http://127.0.0.1:8080/task/update_user",
+                        request("http://127.0.0.1:8080/usr/task/update_user",
                             `uid=${uid}&taward=${taward}&tid=${tid}`, res => {
                                 alert(res.message)
                                 admin_deleteTable()

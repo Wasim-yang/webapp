@@ -23,7 +23,7 @@
         window.onpageshow = function () {
             usr_authorization()
             $(document).ajaxStop(function(){
-                request("http://127.0.0.1:8080/user/usr/selectUsrUcintegral", `uid=${uid}`, res => {
+                request("http://127.0.0.1:8080/usr/selectUsrUcintegral", `uid=${uid}`, res => {
                     document.getElementById("cscore").appendChild(document.createTextNode(res))
                 })
             });

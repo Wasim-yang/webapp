@@ -55,6 +55,10 @@
         /*按id搜索*/
         function selectgoodsbyid() {
             let id = document.getElementById("selectgoodsid").value
+            if(id == ""){
+                selectgoods();
+                return;
+            }
             request("http://127.0.0.1:8080/admin/goods/selectid", `id=${id}`, res => {
                 let table = document.getElementById("tbody_list")
                 /*生成表单并打印数据与操作按钮*/

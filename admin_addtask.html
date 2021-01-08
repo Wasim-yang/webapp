@@ -33,14 +33,14 @@
             let tstartime = document.getElementById("taskSt").value
             let deadline = document.getElementById("taskDl").value
             // 前后端分离
-            request("http://127.0.0.1:8080/task/insert",
+            request("http://127.0.0.1:8080/admin/task/insert",
                 `tname=${name}&tdescription=${descp}&trequirement=${require}&taward=${award}&ttype=${type}&tstartime=${tstartime}&tdeadline=${deadline}`, res => {
                     alert(res.message)
                 })
         }
     </script>
 </head>
-<body class="app sidebar-mini rtl">
+<body class="app sidebar-mini rtl" onpageshow="admin_authorization()">
 <!-- Navbar-->
 <header class="navbar navbar-dark bg-dark shadow fixed-top ">
     <!--左侧-->
