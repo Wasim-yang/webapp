@@ -8,49 +8,350 @@
     <link rel="stylesheet" type="text/css" href="lib/bootstrap/css/bootstrap.css">
     <link rel="stylesheet" type="text/css" href="css/main.css">
     <link rel="stylesheet" type="text/css" href="css/cart.css">
+<!--    返回按钮-->
+    <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="http://cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+    <style type="text/css">
+        .return{
+            color: #fff;
+            text-transform: uppercase;
+            border-radius: 0;
+            padding-left: 60px;
+            position: relative;
+            transform: translateZ(0px);
+            transition: all 0.5s ease 0s;
+        }
+        .return:after{
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: #fff;
+            z-index: -1;
+            transform: scaleX(0);
+            transform-origin: 100% 50% 0;
+            transition: all 0.5s ease-out 0s;
+        }
+        .return:hover:after{
+            transform: scaleX(1);
+            transition-timing-function: cubic-bezier(0.52, 1.64, 0.37, 0.66);
+        }
+        .return span{
+            width: 40px;
+            height: 100%;
+            line-height: 40px;
+            background: #fff;
+            position: absolute;
+            top: 0;
+            left: 0;
+            transition: all 0.3s linear 0s;
+        }
+        .return span:after{
+            content: "";
+            display: block;
+            width: 10px;
+            height: 10px;
+            background: #fff;
+            margin: auto 0;
+            position: absolute;
+            top: 0;
+            right: -6px;
+            bottom: 0;
+            transform: rotate(45deg);
+            transition: all 0.3s linear 0s;
+        }
+
+        .return.return-xs{
+            padding-left: 30px;
+        }
+        .return.return-xs span{
+            width: 20px;
+            line-height: 20px;
+        }
+        .return.return-xs span:after{
+            width: 7px;
+            height: 7px;
+            right: -4px;
+        }
+        .return.green{
+            border: 1px solid #79d799;
+            background: #79d799;
+        }
+        .return.green:hover,
+        .return.green span{
+            color: #79d799;
+        }
+        .return.green:hover span,
+        .return.green:hover span:after{
+            background: #79d799;
+        }
+        .return:hover span{
+            color: #fff;
+        }
+        @media only screen and (max-width: 767px){
+            .return{ margin-bottom: 20px; }
+        }
+
+        .modal2 {
+            position: fixed;
+            top: 8%;
+            left: 10%;
+            right: 10%;
+
+            /*left: 0;*/
+            z-index: 1050;
+            display: none;
+            overflow-y:scroll;
+            overflow-x:hidden;
+            -webkit-overflow-scrolling: touch;
+            outline: 0;
+        }
+    </style>
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <script src="lib/html5shiv/html5shiv.min.js"></script>
     <script src="lib/respond/respond.min.js"></script>
-    <![endif]-->
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/main.js"></script>
+<!--    列表显示和操作-->
+    <script src="js/request.js"></script>
+    <script src="js/Control.js"></script>
+    <script>
+        // 分页处理全局变量
+        let currentPage = 1
+        let totalPage = 1
+        let PageSize
+        let totalRecord = 0
+        let uid= 1
+        let ucintegral
+
+
+        /*按页号跳转*/
+        function uploadPage() {
+            let page = document.getElementById("selecttaskpage").value
+            if (page >= 1 && page <= totalPage) {
+                admin_deleteTable()
+                currentPage = page
+                selecttask()
+            } else
+                alert("输入的页面超出范围")
+        }
+        /*向后端发送更新数据*/
+        // function updatetask() {
+        //     request("http://127.0.0.1:8080/task/update_user",
+        //         `uid=${uid}&taward=${taward}&tid=${tid}&ttype=${ttype}`, res => {
+        //             alert(res.message)
+        //             admin_deleteTable()
+        //             selecttask()
+        //         })
+        // }
+        /*查询并生成表单*/
+        function selecttask() {
+            request("http://127.0.0.1:8080/task/selectByPageUser", `currentPage=${currentPage}`, res => {
+                currentPage = res.currentPage
+                totalPage = res.totalPage
+                PageSize = res.pageSize
+                totalRecord = res.totalRecord
+                let table = document.getElementById("tbody_list")
+                /*生成表单并打印数据与操作按钮*/
+                let taskList = res.dataList
+                let j = 0
+                document.getElementById("pageResult").append("共有" + totalRecord + "条记录 共" + totalPage + "页 当前第" + currentPage + "页")
+                for (let i = 0; i < totalRecord; i++) {
+                    j = j + 1
+                    if (j > PageSize)
+                        break
+                    let row = document.createElement("tr")
+                    let cell1 = document.createElement("td")
+                    let cell2 = document.createElement("td")
+                    let cell3 = document.createElement("td")
+                    let cell4 = document.createElement("td")
+                    let cell5 = document.createElement("td")
+                    let cell6 = document.createElement("td")
+
+                    let receivebutton = document.createElement("button")
+                    let seebutton = document.createElement("button")
+                    seebutton.className = "btn btn-primary"
+                    seebutton.appendChild(document.createTextNode("详情"))
+                    receivebutton.className = "btn btn-primary"
+                    receivebutton.appendChild(document.createTextNode("领取"))
+
+                    //待转换的参数
+                    let type = taskList[i].ttype
+                    let t = taskList[i].tdeadline
+                    let tdeadline = t.substring(0,16).replace(/-/g,"/")
+                    let bicycle = document.createElement("i")
+                    let subway = document.createElement("i")
+                    let bus = document.createElement("i")
+                    let h_s = document.createElement("i")
+                    /*将类型转换为对应中午*/
+                    switch (type) {
+                        case 1:
+                            type = "自行车"
+                            break;
+                        case 2:
+                            type = "公交车"
+                            break;
+                        case 3:
+                            type = "地铁"
+                            break;
+                        case 4:
+                            type = "高铁"
+                            break;
+                    }
+
+                    seebutton.setAttribute("tid", taskList[i].tid)
+                    seebutton.setAttribute("tname", taskList[i].tname)
+                    seebutton.setAttribute("ttype", type)
+                    seebutton.setAttribute("tdescription", taskList[i].tdescription)
+                    seebutton.setAttribute("trequirement", taskList[i].trequirement)
+                    seebutton.setAttribute("tgain", taskList[i].tgain)
+                    seebutton.setAttribute("tdeadline", tdeadline)
+                    seebutton.setAttribute("taward", taskList[i].taward)
+
+                    receivebutton.setAttribute("tid", taskList[i].tid)
+                    receivebutton.setAttribute("tname", taskList[i].tname)
+                    receivebutton.setAttribute("ttype", taskList[i].ttype)
+                    receivebutton.setAttribute("tdescription", taskList[i].tdescription)
+                    receivebutton.setAttribute("trequirement", taskList[i].trequirement)
+                    receivebutton.setAttribute("tgain", taskList[i].tgain)
+                    receivebutton.setAttribute("tdeadline", taskList[i].tdeadline)
+                    receivebutton.setAttribute("taward", taskList[i].taward)
+
+
+                    // 当项目达到领取条件时，设置捐赠按钮为可选中
+                    if(taskList[i].tgain >= taskList[i].trequirement) { receivebutton.disabled=false; }
+                    else{receivebutton.disabled=true;}
+
+                    cell1.appendChild(document.createTextNode(taskList[i].tname))
+                    cell2.appendChild(document.createTextNode(type))
+                    cell3.appendChild(document.createTextNode(taskList[i].trequirement))
+                    cell4.appendChild(document.createTextNode(taskList[i].tgain))
+                    cell5.appendChild(document.createTextNode(taskList[i].taward))
+                    cell6.appendChild(seebutton)
+                    cell6.appendChild(receivebutton)
+                    row.appendChild(cell1)
+                    row.appendChild(cell2)
+                    row.appendChild(cell3)
+                    row.appendChild(cell4)
+                    row.appendChild(cell5)
+                    row.appendChild(cell6)
+                    table.appendChild(row)
+                    //领取积分后，更新后端
+                    receivebutton.onclick = function () {
+                        //赋值传回后端
+                        let tid = this.getAttribute("tid")
+                        let taward = this.getAttribute("taward")
+                        //更新用户积分,将任务状态信息插入用户_任务表
+                        request("http://127.0.0.1:8080/task/update_user",
+                            `uid=${uid}&taward=${taward}&tid=${tid}`, res => {
+                                alert(res.message)
+                                admin_deleteTable()
+                                selecttask()
+                            })
+                    }
+                    //详情按钮查看任务详情
+                    seebutton.onclick = function () {
+                        document.getElementById("modaltaskid").value = seebutton.getAttribute("tid")
+                        document.getElementById("modaltaskname").value = seebutton.getAttribute("tname")
+                        document.getElementById("modaltaskrequirement").value = seebutton.getAttribute("trequirement")
+                        document.getElementById("modaltaskgain").value = seebutton.getAttribute("tgain")
+                        document.getElementById("modaltaskaward").value = seebutton.getAttribute("taward")
+                        document.getElementById("modaltaskdeadline").value = seebutton.getAttribute("tdeadline")
+                        document.getElementById("modaltaskdescription").value = seebutton.getAttribute("tdescription")
+                        document.getElementById('taskmodal').style.display = 'block'
+                    }
+                }
+            })
+        }
+    </script>
 </head>
-<body class="task_body">
+<body class="tsak_body" onload='selecttask()'>
 <div id="header">
     <div class="container">
         <div class="row">
-            <div class="kb-coll3 cart-body title-col"><h2><strong>做任务&nbsp&nbsp&nbsp赚取碳积分</strong></h2>
+            <div class="kb-coll3 cart-body title-col"><h2><strong>做任务<br>赚取碳积分</strong></h2>
             </div>
         </div>
     </div>
 </div>
 <div class="ad_picture">
 <div class="app-content">
+<!--    <a href="user_index.html"><label><</label></a>-->
+    <div class="col-sm-3">
+        <a href="#" class="return return-xs green">
+            <span class="fa fa-home"></span>返回
+        </a>
+    </div>
     <div class="col-md-offset-0 col-lg-offset-4 col-md-4">
-        <!--搜索框 start-->
-        <div class="input-group" style="margin-top: 5px;">
-            <input type="text" class="form-control" placeholder="搜索任务">
+        <div class="input-group" style="margin-top: 5px;" >
+            <input class="form-control" type="text" id="selecttaskpage" placeholder="跳转到第几页"/>
             <span class="input-group-btn">
-            <button class="btn btn-danger"type="button"><i class="glyphicon glyphicon-search"></i></button>
-        </span>
+                <button class="btn btn-danger" id="selecttask_page" type="button"
+                        onclick="uploadPage()">
+                    <i class="glyphicon glyphicon-search"></i>
+                </button>
+                </span>
         </div>
     </div>
         <div class="form-address">
-                <table class="table table-hover table-bordered" id="task">
+                <table class="table table-hover table-bordered" id="cTable">
                     <thead>
                     <tr>
                         <th>任务名称</th>
-                        <th>任务信息</th>
+                        <th>任务类型</th>
+                        <th>目标里程</th>
                         <th>当前进度</th>
-                        <th>任务要求</th>
-                        <th>可获碳积分</th>
+                        <th>奖励积分</th>
                         <th>操作</th>
                     </tr>
                     </thead>
-                    <tbody id=task_list">
+                    <tbody id="tbody_list">
                     </tbody>
                 </table>
+            <div id="pageResultBox">
+                <p id="pageResult"/>
+            </div>
+            <div style="text-align: center">
+                <a href="#" onclick="admin_firstPage();selecttask();">首页</a>&nbsp;&nbsp;
+                <a href="#" onclick="admin_previousPage();selecttask();">上一页</a>&nbsp;&nbsp;
+                <a href="#" onclick="admin_nextPage();selecttask();">下一页</a>&nbsp;&nbsp;
+                <a href="#" onclick="admin_lastPage();selecttask();">尾页</a>
+            </div>
         </div>
     </div>
+</div>
+<div id="taskmodal" class="modal2">
+    <!--    公益详情拟态框　　-->
+    <form class="modal-content animate">
+        <div class="container">
+            <br>
+            <label><b>任务编号</b></label>
+            <input type="text" id="modaltaskid" style=" width: 80%;" required disabled><br>
+            <label><b>任务名称</b></label>
+            <input type="text" id="modaltaskname" style=" width: 80%;" required disabled><br>
+            <label><b>目标里程</b></label>
+            <input type="text" id="modaltaskrequirement" style=" width: 80%;" required disabled><br>
+            <label><b>当前进度</b></label>
+            <input type="text" id="modaltaskgain" style=" width: 80%;" required disabled><br>
+            <label><b>奖励积分</b></label>
+            <input type="text" id="modaltaskaward" style=" width: 80%;" required disabled><br>
+            <label><b>截止时间</b></label>
+            <input type="text" id="modaltaskdeadline" style=" width: 80%;" required disabled><br>
+            <label><b>任务描述</b></label>
+            <input type="text" id="modaltaskdescription" style=" width: 80%;" required disabled><br>
+            <br>
+            <button type="button" id="button" style="margin-top: 10px;" onclick=document.getElementById('taskmodal').style.display='none'>关闭</button>
+            <br>
+        </div>
+        <div class="container" style="background-color:#f1f1f1">
+            <!-- 点击cancel按钮，把模态框隐藏-->
+        </div>
+    </form>
 </div>
 </body>
 </div>

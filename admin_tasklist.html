@@ -54,6 +54,7 @@
                     let cell5 = document.createElement("td")
                     let cell6 = document.createElement("td")
                     let cell7 = document.createElement("td")
+                    let cell8 = document.createElement("td")
                     let seebutton = document.createElement("button")
                     let deletebutton = document.createElement("button")
                     seebutton.type = "button"
@@ -66,6 +67,8 @@
                     //待转换的参数
                     let ttype = task[i].ttype
                     let t = task[i].tdeadline
+                    let s = task[i].tstartime
+                    let tstartime = s.substring(0,16).replace(/-/g,"/")
                     let tdeadline = t.substring(0,16).replace(/-/g,"/")
                     let bicycle = document.createElement("i")
                     let subway = document.createElement("i")
@@ -93,6 +96,7 @@
                     seebutton.setAttribute("requirement", task[i].trequirement)
                     seebutton.setAttribute("award", task[i].taward)
                     seebutton.setAttribute("type", ttype)
+                    seebutton.setAttribute("startime", tstartime)
                     seebutton.setAttribute("deadline", tdeadline)
                     //为删除按钮添加tid
                     deletebutton.setAttribute("id", task[i].tid)
@@ -104,6 +108,7 @@
                         document.getElementById("modaltaskrequirement").value = seebutton.getAttribute("requirement")
                         document.getElementById("modaltaskaward").value = seebutton.getAttribute("award")
                         document.getElementById("modaltasktype").value = seebutton.getAttribute("type")
+                        document.getElementById("modaltaskstartime").value = seebutton.getAttribute("startime")
                         document.getElementById("modaltaskdeadline").value = seebutton.getAttribute("deadline")
                         document.getElementById('taskmodal').style.display = 'block'
                     }
@@ -121,9 +126,10 @@
                     cell3.appendChild(document.createTextNode(task[i].tname))
                     cell4.appendChild(document.createTextNode(task[i].trequirement))
                     cell5.appendChild(document.createTextNode(tdeadline))
-                    cell6.appendChild(document.createTextNode(task[i].taward))
-                    cell7.appendChild(seebutton)
-                    cell7.appendChild(deletebutton)
+                    cell6.appendChild(document.createTextNode(tstartime))
+                    cell7.appendChild(document.createTextNode(task[i].taward))
+                    cell8.appendChild(seebutton)
+                    cell8.appendChild(deletebutton)
                     row.appendChild(cell1)
                     row.appendChild(cell2)
                     row.appendChild(cell3)
@@ -131,6 +137,7 @@
                     row.appendChild(cell5)
                     row.appendChild(cell6)
                     row.appendChild(cell7)
+                    row.appendChild(cell8)
                     table.appendChild(row)
                 }
             })
@@ -163,6 +170,7 @@
                 alert(res.message)
                 admin_deleteTable()
                 selecttask()
+                document.getElementById('taskmodal').style.display = 'none'
             })
         }
 
@@ -179,6 +187,7 @@
                 let cell5 = document.createElement("td")
                 let cell6 = document.createElement("td")
                 let cell7 = document.createElement("td")
+                let cell8 = document.createElement("td")
                 let seebutton = document.createElement("button")
                 let deletebutton = document.createElement("button")
                 seebutton.type = "button"
@@ -216,6 +225,7 @@
                 seebutton.setAttribute("award", task.taward)
                 seebutton.setAttribute("type", ttype)
                 seebutton.setAttribute("deadline", task.tdeadline)
+                seebutton.setAttribute("startime",task.tstartime)
                 //为删除按钮添加tid
                 deletebutton.setAttribute("id", task.tid)
                 /*查看按钮-在拟态框中显示详细数据*/
@@ -226,6 +236,7 @@
                     document.getElementById("modaltaskrequirement").value = seebutton.getAttribute("requirement")
                     document.getElementById("modaltaskaward").value = seebutton.getAttribute("award")
                     document.getElementById("modaltasktype").value = seebutton.getAttribute("type")
+                    document.getElementById("modaltaskstartime").value = seebutton.getAttribute("startime")
                     document.getElementById("modaltaskdeadline").value = seebutton.getAttribute("deadline")
                     document.getElementById('taskmodal').style.display = 'block'
                 }
@@ -242,10 +253,11 @@
                 cell2.appendChild(document.createTextNode(ttype))
                 cell3.appendChild(document.createTextNode(task.tname))
                 cell4.appendChild(document.createTextNode(task.trequirement))
-                cell5.appendChild(document.createTextNode(task.tdeadline))
-                cell6.appendChild(document.createTextNode(task.taward))
-                cell7.appendChild(seebutton)
-                cell7.appendChild(deletebutton)
+                cell5.appendChild(document.getElementById(task.tstartime))
+                cell6.appendChild(document.createTextNode(task.tdeadline))
+                cell7.appendChild(document.createTextNode(task.taward))
+                cell8.appendChild(seebutton)
+                cell8.appendChild(deletebutton)
                 row.appendChild(cell1)
                 row.appendChild(cell2)
                 row.appendChild(cell3)
@@ -253,6 +265,7 @@
                 row.appendChild(cell5)
                 row.appendChild(cell6)
                 row.appendChild(cell7)
+                row.appendChild(cell8)
                 table.appendChild(row)
             })
         }
@@ -339,7 +352,7 @@
                 <i id="span1" class="app-menu__icon fa fa-angle-up"></i></span></a>
         </li>
         <ul id="adminControl_1" style="display:none">
-            <li><a class="app-menu__item_child" href="#">个人信息</a></li>
+            <li><a class="app-menu__item_child" href="admin_index.html">账号信息</a></li>
             <li><a class="app-menu__item_child" href="#">修改密码</a></li>
             <li><a class="app-menu__item_child" href="#">注销账号</a></li>
         </ul>
@@ -409,11 +422,9 @@
                 <form class="form-group col-md-12" id="courseList">
                     <div class="row">
                         <div class="col-lg-2">
-                            <!--<label>教师姓名</label>-->
-                            <input class="form-control" type="text" name="teacher" id="searchid" placeholder="查询任务">
+                            <input class="form-control" type="text" name="task" id="searchid" placeholder="查询任务">
                         </div>
                         <div class="col-lg-3">
-                            <!--<input class="form-control" type="submit" value="查询">-->
                             <button class="btn btn-primary" id="select_course" type="button"
                                     onclick="admin_deleteTable();tasksearch();">查询
                             </button>
@@ -436,9 +447,10 @@
                                 <th>任务编号</th>
                                 <th>任务类型</th>
                                 <th>任务名称</th>
-                                <th>任务要求</th>
+                                <th>目标里程</th>
+                                <th>开始时间</th>
                                 <th>截止时间</th>
-                                <th>任务奖励</th>
+                                <th>奖励积分</th>
                                 <th>操作</th>
                             </tr>
                             </thead>
@@ -479,13 +491,16 @@
             <label><b>任务类型</b></label>
             <input type="text" id="modaltasktype" style=" width: 80%;" required><br>
 
-            <label><b>任务要求</b></label>
+            <label><b>目标里程</b></label>
             <input type="text" id="modaltaskrequirement" style=" width: 80%;" required><br>
+
+            <label><b>开始时间</b></label>
+            <input type="text" id="modaltaskstartime" style=" width: 80%;" required><br>
 
             <label><b>截止时间</b></label>
             <input type="text" id="modaltaskdeadline" style=" width: 80%;" required><br>
 
-            <label><b>任务奖励</b></label>
+            <label><b>奖励积分</b></label>
             <input type="text" id="modaltaskaward" style=" width: 80%;" required><br>
 
             <label><b>任务描述</b></label>
@@ -500,6 +515,20 @@
     </form>
 </div>
 <script>
+    /*日历*/
+    $('#modaltaskstartime').datetimepicker({
+        forceParse: 0,//设置为0，时间不会跳转1899，会显示当前时间
+        language: 'zh-CN',
+        startdate: new Date(),
+        format: 'yyyy/mm/dd hh:ii',
+        minView: 0,
+        initialDate: new Date(),
+        autoclose: true,
+        todayBtn: true,
+        todayHighlight: true
+
+    });
+    $("#taskSt").datetimepicker("setDate", new Date());
     /*日历*/
     $('#modaltaskdeadline').datetimepicker({
         forceParse: 0,//设置为0，时间不会跳转1899，会显示当前时间
