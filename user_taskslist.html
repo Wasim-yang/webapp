@@ -130,60 +130,6 @@
         let ucintegral
 
 
-        // 按id查询
-        // function selecttaskbyid() {
-        //     let wid = document.getElementById("selecttaskid").value
-        //
-        //     request("http://127.0.0.1:8080/welfare/selectid", `wid=${wid}`, res => {
-        //         let table = document.getElementById("tbody_list")
-        //         /*生成表单并打印数据与操作按钮*/
-        //         let row = document.createElement("tr")
-        //         let cell1 = document.createElement("td")
-        //         let cell2 = document.createElement("td")
-        //         let cell3 = document.createElement("td")
-        //         let cell4 = document.createElement("td")
-        //         let cell5 = document.createElement("td")
-        //         let cell6 = document.createElement("td")
-        //         let receivebutton = document.createElement("button")
-        //         receivebutton.type = "button"
-        //         receivebutton.className = "btn btn-primary"
-        //         receivebutton.appendChild(document.createTextNode("捐赠"))
-        //         receivebutton.setAttribute("wid", res.wid)
-        //         receivebutton.setAttribute("wname", res.wname)
-        //         receivebutton.setAttribute("wtotal", res.wtotal)
-        //         receivebutton.setAttribute("wgain", res.wgain)
-        //         receivebutton.setAttribute("wdescription", res.wdescription)
-        //         //当项目达到启动条件时，设置捐赠按钮为不可选中
-        //         if(res.wtotal<=res.wgain) { receivebutton.disabled=true; }
-        //         receivebutton.onclick = function () {
-        //             request("http://127.0.0.1:8080/usr/selectUsrUcintegral",`uid=${uid}`, res => {
-        //                 receivebutton.setAttribute("ucintegral", res)
-        //                 document.getElementById("modalucintegral").value = receivebutton.getAttribute("ucintegral")
-        //             })
-        //             document.getElementById("modalwelfareid").value = receivebutton.getAttribute("wid")
-        //             document.getElementById("modalwelfaregain").value = receivebutton.getAttribute("wgain")
-        //             document.getElementById("modalwelfare
-        //     total").value = receivebutton.getAttribute("wtotal")
-        //             document.getElementById('taskmodal').style.display = 'block'
-        //         }
-        //         cell1.appendChild(document.createTextNode(res.wid))
-        //         cell2.appendChild(document.createTextNode(res.wname))
-        //         cell3.appendChild(document.createTextNode(res.wtotal))
-        //         cell4.appendChild(document.createTextNode(res.wgain))
-        //         cell5.appendChild(document.createTextNode(res.wdescription))
-        //         cell6.appendChild(receivebutton)
-        //
-        //         row.appendChild(cell1)
-        //         row.appendChild(cell2)
-        //         row.appendChild(cell3)
-        //         row.appendChild(cell4)
-        //         row.appendChild(cell5)
-        //         row.appendChild(cell6)
-        //         table.appendChild(row)
-        //
-        //     })
-        //
-        // }
         /*按页号跳转*/
         function uploadPage() {
             let page = document.getElementById("selecttaskpage").value
