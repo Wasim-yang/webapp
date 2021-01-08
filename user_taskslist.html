@@ -8,6 +8,146 @@
     <link rel="stylesheet" type="text/css" href="lib/bootstrap/css/bootstrap.css">
     <link rel="stylesheet" type="text/css" href="css/main.css">
     <link rel="stylesheet" type="text/css" href="css/cart.css">
+<!--    返回按钮-->
+    <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="http://cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+    <style type="text/css">
+        .demo{
+            height: 400px;
+            min-height: 400px;
+        }
+        .pad-15{
+            padding: 15px 0;
+        }
+        .return{
+            color: #fff;
+            text-transform: uppercase;
+            border-radius: 0;
+            padding-left: 60px;
+            position: relative;
+            transform: translateZ(0px);
+            transition: all 0.5s ease 0s;
+        }
+        .return:after{
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: #fff;
+            z-index: -1;
+            transform: scaleX(0);
+            transform-origin: 100% 50% 0;
+            transition: all 0.5s ease-out 0s;
+        }
+        .return:hover:after{
+            transform: scaleX(1);
+            transition-timing-function: cubic-bezier(0.52, 1.64, 0.37, 0.66);
+        }
+        .return span{
+            width: 40px;
+            height: 100%;
+            line-height: 40px;
+            background: #fff;
+            position: absolute;
+            top: 0;
+            left: 0;
+            transition: all 0.3s linear 0s;
+        }
+        .return span:after{
+            content: "";
+            display: block;
+            width: 10px;
+            height: 10px;
+            background: #fff;
+            margin: auto 0;
+            position: absolute;
+            top: 0;
+            right: -6px;
+            bottom: 0;
+            transform: rotate(45deg);
+            transition: all 0.3s linear 0s;
+        }
+        /*.return.return-sm{*/
+        /*    padding-left: 40px;*/
+        /*}*/
+        /*.return.return-sm span{*/
+        /*    width: 27px;*/
+        /*    line-height: 27px;*/
+        /*}*/
+        /*.return.return-sm span:after{*/
+        /*    width: 8px;*/
+        /*    height: 8px;*/
+        /*    right: -5px;*/
+        /*}*/
+        .return.return-xs{
+            padding-left: 30px;
+        }
+        .return.return-xs span{
+            width: 20px;
+            line-height: 20px;
+        }
+        .return.return-xs span:after{
+            width: 7px;
+            height: 7px;
+            right: -4px;
+        }
+        /*.return.red{*/
+        /*    border: 1px solid #fe6d6d;*/
+        /*    background: #fe6d6d;*/
+        /*}*/
+        /*.return.red:hover,*/
+        /*.return.red span{*/
+        /*    color: #fe6d6d;*/
+        /*}*/
+        /*.return.red:hover span,*/
+        /*.return.red:hover span:after{*/
+        /*    background: #fe6d6d;*/
+        /*}*/
+        /*.return.blue{*/
+        /*    border: 1px solid #3bb4e5;*/
+        /*    background: #3bb4e5;*/
+        /*}*/
+        /*.return.blue:hover,*/
+        /*.return.blue span{*/
+        /*    color: #3bb4e5;*/
+        /*}*/
+        /*.return.blue:hover span,*/
+        /*.return.blue:hover span:after{*/
+        /*    background: #3bb4e5;*/
+        /*}*/
+        /*.return.orange{*/
+        /*    border: 1px solid #ee955b;*/
+        /*    background: #ee955b;*/
+        /*}*/
+        /*.return.orange:hover,*/
+        /*.return.orange span{*/
+        /*    color: #ee955b;*/
+        /*}*/
+        /*.return.orange:hover span,*/
+        /*.return.orange:hover span:after{*/
+        /*    background: #ee955b;*/
+        /*}*/
+        .return.green{
+            border: 1px solid #79d799;
+            background: #79d799;
+        }
+        .return.green:hover,
+        .return.green span{
+            color: #79d799;
+        }
+        .return.green:hover span,
+        .return.green:hover span:after{
+            background: #79d799;
+        }
+        .return:hover span{
+            color: #fff;
+        }
+        @media only screen and (max-width: 767px){
+            .return{ margin-bottom: 20px; }
+        }
+    </style>
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <script src="lib/html5shiv/html5shiv.min.js"></script>
@@ -166,20 +306,7 @@
                     // 当项目达到领取条件时，设置捐赠按钮为可选中
                     if(taskList[i].tgain >= taskList[i].trequirement) { receivebutton.disabled=false; }
                     else{receivebutton.disabled=true;}
-                    //领取积分后，更新后端
-                    receivebutton.onclick = function () {
-                        //赋值传回后端
-                        let tid = this.getAttribute("tid")
-                        let taward = this.getAttribute("taward")
 
-                        //更新用户积分,将任务状态信息插入用户_任务表
-                        request("http://127.0.0.1:8080/task/update_user",
-                            `uid=${uid}&taward=${taward}&tid=${tid}`, res => {
-                                alert(res.message)
-                                admin_deleteTable()
-                                selecttask()
-                            })
-                    }
                     cell1.appendChild(document.createTextNode(taskList[i].tname))
                     cell2.appendChild(document.createTextNode(type))
                     cell3.appendChild(document.createTextNode(taskList[i].tdescription))
@@ -197,6 +324,20 @@
                     row.appendChild(cell7)
                     row.appendChild(cell8)
                     table.appendChild(row)
+                    //领取积分后，更新后端
+                    receivebutton.onclick = function () {
+                        //赋值传回后端
+                        let tid = this.getAttribute("tid")
+                        let taward = this.getAttribute("taward")
+
+                        //更新用户积分,将任务状态信息插入用户_任务表
+                        request("http://127.0.0.1:8080/task/update_user",
+                            `uid=${uid}&taward=${taward}&tid=${tid}`, res => {
+                                alert(res.message)
+                                admin_deleteTable()
+                                selecttask()
+                            })
+                    }
 
                 }
             })
@@ -214,21 +355,13 @@
 </div>
 <div class="ad_picture">
 <div class="app-content">
+<!--    <a href="user_index.html"><label><</label></a>-->
+    <div class="col-sm-3">
+        <a href="#" class="return return-xs green">
+            <span class="fa fa-home"></span>返回
+        </a>
+    </div>
     <div class="col-md-offset-0 col-lg-offset-4 col-md-4">
-        <!--搜索框 start-->
-<!--        <div class="input-group" style="margin-top: 5px;">-->
-<!--            <input type="text" class="form-control"-->
-<!--                   id="selecttaskid"-->
-<!--                   placeholder="搜索任务">-->
-<!--            <span class="input-group-btn">-->
-<!--                    <button class="btn btn-danger"-->
-<!--                            onclick="admin_deleteTable();selecttaskbyid()"-->
-<!--                            id="selecttask_id"-->
-<!--                            type="button">-->
-<!--                        <i class="glyphicon glyphicon-search"></i>-->
-<!--                    </button>-->
-<!--                </span>-->
-<!--        </div>-->
         <div class="input-group" style="margin-top: 5px;" >
             <input class="form-control" type="text" id="selecttaskpage" placeholder="跳转到第几页"/>
             <span class="input-group-btn">
@@ -268,35 +401,6 @@
         </div>
     </div>
 </div>
-<!--<div id="taskmodal" class="modal">-->
-<!--    &lt;!&ndash;    公益详情拟态框　　&ndash;&gt;-->
-<!--    <form class="modal-content animate">-->
-<!--        <div class="imgcontainer">-->
-<!--            &lt;!&ndash; 点击×号，隐藏模态框&ndash;&gt;-->
-<!--            <span onclick="document.getElementById('taskmodal').style.display='none'" class="close"-->
-<!--                  title="Close Modal">×</span>-->
-<!--        </div>-->
-
-<!--        <div class="container">-->
-<!--            <br>-->
-<!--            <label><b>项目编号</b></label>-->
-<!--            <input type="text" id="modalwelfareid" style=" width: 80%;" required disabled><br>-->
-<!--            <label><b>已获碳积分</b></label>-->
-<!--            <input type="text" id="modalwelfaregain" style=" width: 80%;" required><br>-->
-<!--            <input type="text" id="modalwelfaretotal"  style="display: none">-->
-<!--            <label><b>您当前的碳积分为：</b></label>-->
-<!--            <input type="text" id="modalucintegral"  style="width: 80%; "required disabled><br>-->
-<!--            <label><b>请输入您想捐赠的积分</b></label>-->
-<!--            <input type="text" id="modalwelfaredonate" style=" width: 80%;" required>-->
-<!--            <br>-->
-<!--            <button type="button" id="button" style="margin-top: 10px;" onclick="updatetask();buttonreset();">确认捐赠</button>-->
-<!--            <br>-->
-<!--        </div>-->
-<!--        <div class="container" style="background-color:#f1f1f1">-->
-<!--            &lt;!&ndash; 点击cancel按钮，把模态框隐藏&ndash;&gt;-->
-<!--        </div>-->
-<!--    </form>-->
-<!--</div>-->
 </body>
 </div>
 </html>
