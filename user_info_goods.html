@@ -7,6 +7,8 @@
     <script src="js/user/infor/rem.js"></script>
     <script src="js/jquery-3.2.1.min.js" type="text/javascript"></script>
     <script src="js/request.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="css/goods.css">
     <link rel="stylesheet" type="text/css" href="css/infor/base.css"/>
     <link rel="stylesheet" type="text/css" href="css/infor/page.css"/>
     <link rel="stylesheet" type="text/css" href="css/infor/all.css"/>
@@ -14,19 +16,138 @@
     <link rel="stylesheet" type="text/css" href="css/infor/loaders.min.css"/>
     <link rel="stylesheet" type="text/css" href="css/iconfont/iconfont.css"/>
     <script>
-        function selectmygoods(){
-            request("http:127.0.0.1:8080/usr/goods/selectmygoods",`id=${uid}`,res=>{
+        let uid
+        window.onload = function () {
+            usr_authorization();
+            $(document).ajaxStop(function () {
+                selectmygoods()
+            });
+        }
+        let currentPage = 1
+        let totalPage
+        let totalRecord
+        let pageSize
 
+        function usr_delete(){
+            document.getElementById("mygoods").remove()
+            let mygoods=document.createElement("div")
+            mygoods.id="mygoods"
+            mygoods.className="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+            document.getElementById("mygoodsbody").appendChild(mygoods)
+        }
+
+        function usr_firstPage(){
+            currentPage=1
+            usr_delete()
+        }
+
+        function usr_nextPage(){
+           if(currentPage<totalPage)
+               currentPage=currentPage+1
+            usr_delete()
+        }
+
+        function usr_previousPage(){
+            if(currentPage>1)
+                currentPage=currentPage-1
+            usr_delete()
+
+        }
+
+        function usr_lastPage(){
+            currentPage=totalPage
+            usr_delete()
+        }
+
+
+
+        function selectmygoods() {
+            request("http://127.0.0.1:8080/usr/goods/selectmygoods", `uid=${uid}&currentPage=${currentPage}`, res => {
+                let goodslist = res.dataList
+                currentPage=res.currentPage
+                totalPage=res.totalPage
+                totalRecord=res.totalRecord
+                pageSize=res.pageSize
+                for (let i = 0; i < goodslist.length; i++) {
+                    let area = document.getElementById("mygoods")
+                    let goods_display = document.createElement("div")
+                    goods_display.className = "mygoods_display goods_test"
+                    let name = document.createElement("name")
+                    name.className="mygoods_name"
+                    name.append(document.createTextNode(goodslist[i].gname))
+                    goods_display.appendChild(name)
+                    let title = document.createElement("div")
+                    title.className = "mygoods_display"
+                    let p1 = document.createElement("p")
+                    p1.append(document.createTextNode("交易成功"))
+                    title.appendChild(p1)
+                    goods_display.appendChild(title)
+                    let description = document.createElement("div")
+                    description.className="mygoods_description"
+                    description.append(document.createTextNode(goodslist[i].gdescription))
+                    goods_display.appendChild(description)
+                    let myimg = document.createElement("div")
+                    myimg.className = "mygoods_img"
+                    let img = document.createElement("img")
+                    img.src = goodslist[i].gimage
+                    img.style = "float:left;width:60%"
+                    myimg.appendChild(img)
+                    let mycost = document.createElement("div")
+                    mycost.append("实付款￥")
+                    mycost.append(document.createTextNode(goodslist[i].ugcost))
+                    myimg.appendChild(mycost)
+                    goods_display.appendChild(myimg)
+                    let menu = document.createElement("div")
+                    menu.className = "mygoods_menu"
+                    let label1 = document.createElement("label")
+                    label1.className = "mygoods_menu1"
+                    label1.append("更多")
+                    menu.appendChild(label1)
+                    let menu_1 = document.createElement("div")
+                    menu_1.className = "mygoods_menu2"
+                    let button1 = document.createElement("button")
+                    button1.className = "mygoods_button"
+                    button1.append("加入购物车")
+                    let button2 = document.createElement("button")
+                    button2.className = "mygoods_button"
+                    button2.append("追加评价")
+                    let button3 = document.createElement("button")
+                    button3.className = "mygoods_button"
+                    button3.append("退货")
+                    menu_1.appendChild(button1)
+                    menu_1.appendChild(button2)
+                    menu_1.appendChild(button3)
+                    menu.appendChild(menu_1)
+                    goods_display.appendChild(menu)
+                    area.appendChild(goods_display)
+                    button3.onclick=function (){
+                        request("http://127.0.0.1:8080/usr/goods/rejected",`uid=${uid}$gid=${gid}&gtime=${gtime}`,res=>{
+
+                        })
+                    }
+                }
             })
         }
     </script>
 </head>
-<body onpageshow="usr_authorization()" onload="selectmygoods()">
-<header class="mui-bar mui-bar1 mui-bar-nav mui-bar-nav1" id="header">
+<body>
+<header class="mui-bar mui-bar1 mui-bar-nav mui-bar-nav1 " id="header">
     <a class="back-btn" href="javascript:history.go(-1)">
         <i class="iconfont icon-fanhui"></i>
     </a>
     <div class="mui-title">购买记录</div>
 </header>
+<div style="height:70px"></div>
+<div class="row" id="mygoodsbody">
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 " id="mygoods">
+
+</div>
+</div>
+<div style="margin-bottom: 5%;text-align: center">
+    <a href="#" onclick="usr_firstPage();selectmygoods();">首页</a>&nbsp;&nbsp;
+    <a href="#" onclick="usr_previousPage();selectmygoods();">上一页</a>&nbsp;&nbsp;
+    <a href="#" onclick="usr_nextPage();selectmygoods();">下一页</a>&nbsp;&nbsp;
+    <a href="#" onclick="usr_lastPage();selectmygoods();">尾页</a>
+</div>
 </body>
 </html>

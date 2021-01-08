@@ -172,5 +172,67 @@
     outline: 0;
 }
 
+.mygoods_display{
+    margin-left: 1%;
+    margin-bottom: 10%;
+    width: 94%;
+    background: snow;
+    border-radius: 10px;
+}
+
+.mygoods_title{
+    width: 20%;
+    float: right;
+}
+
+.mygoods_img{
+    margin-top: 20%;
+
+}
+
+.mygoods_button{
+    border-radius: 10px;
+    border: 1px solid silver;
+    margin-right: 3%;
+}
+
+.mygoods_cost{
+    margin-top: 20%;
+    float: right;
+    margin-left: 10%;
+    margin-right: 2%;
+}
+
+.mygoods_menu{
+    margin-top: 30%;
+}
+
+.mygoods_menu1{
+    color: silver;
+    float: left;
+    width: 20%;
+    margin-top: 2%;
+}
+
+.mygoods_name{
+    margin-left: 4%;
+    float: left;
+    width: 70%;
+    word-wrap: break-word;
+}
+.mygoods_description{
+    margin-left: 4%;
+    float: left;
+    width: 70%;
+    word-wrap: break-word;
+}
+
+.backtopbtn{
+    position: fixed;
+    right: 0;
+    bottom: 0;
+}
+
+
 
 
