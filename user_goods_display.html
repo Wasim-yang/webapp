@@ -53,6 +53,17 @@
                 let description = document.getElementById("goods_description")
                 description.append(res.gdescription)
             })
+            request("http://127.0.0.1:8080/usr/selectNoPid",`id=${uid}`,res=>{
+                let address=document.getElementById("usr_address")
+                if(res.uaddress==null){
+                    address.append(document.createTextNode("您还没有设置地址哦 去设置!"))
+                }
+                else{
+                    address.append("您的收货地址:")
+                    address.appendChild(document.createElement("br"))
+                    address.append(document.createTextNode(res.uaddress))
+                }
+            })
         }
 
         function readybuy() {
@@ -147,12 +158,12 @@
 
     </Script>
 </head>
-<body onpageshow="selectgoodsbyid()">
+<body style="color: black" onpageshow="selectgoodsbyid()">
 <div class="goods_menu">
-    <span></span>
-    <div style="color: black">
-        <a href="" style="margin-left: 100px">2221</a>
-    </div>
+    <a class="back-btn" style="color:#525252;float: left;width: 10%;margin-left: 5%;" href="javascript:history.go(-1)">
+        <li class="glyphicon glyphicon-chevron-left"></li>
+    </a>
+    <div style="float: left;width: 20%;margin-left: 30%;color:#525252">商品详情页</div>
 </div>
 <div class="row">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -197,12 +208,17 @@
         <div class="goods_des3 " id="goods_name">
 
         </div>
-        <div class="goods_des3_1 ">
-
+        <div class="goods_des3_1" style="color: silver">
+            <div id="usr_address" style="float: left">
+                <a style="color: silver;float: right" href="user_address.html">
+                    <li class="glyphicon glyphicon-chevron-right">
+                    </li>
+                </a>
+            </div>
         </div>
     </div>
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-        <div class="goods_des3" id="goods_description">
+        <div class="goods_des3 " id="goods_description">
 
         </div>
     </div>
@@ -235,7 +251,7 @@
         </div>
         <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <div class="imagebox goods_test">
+                <div class="imagebox">
                     <img src="" id="modalgoodsimage" alt="Avatar" class="avatar"/>
                 </div>
             </div>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>我的购买记录</title>
+    <script src="js/user/infor/rem.js"></script>
+    <script src="js/jquery-3.2.1.min.js" type="text/javascript"></script>
+    <script src="js/request.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/infor/base.css"/>
+    <link rel="stylesheet" type="text/css" href="css/infor/page.css"/>
+    <link rel="stylesheet" type="text/css" href="css/infor/all.css"/>
+    <link rel="stylesheet" type="text/css" href="css/infor/mui.min.css"/>
+    <link rel="stylesheet" type="text/css" href="css/infor/loaders.min.css"/>
+    <link rel="stylesheet" type="text/css" href="css/iconfont/iconfont.css"/>
+    <script>
+        function selectmygoods(){
+            request("http:127.0.0.1:8080/usr/goods/selectmygoods",`id=${uid}`,res=>{
+
+            })
+        }
+    </script>
+</head>
+<body onpageshow="usr_authorization()" onload="selectmygoods()">
+<header class="mui-bar mui-bar1 mui-bar-nav mui-bar-nav1" id="header">
+    <a class="back-btn" href="javascript:history.go(-1)">
+        <i class="iconfont icon-fanhui"></i>
+    </a>
+    <div class="mui-title">购买记录</div>
+</header>
+</body>
+</html>
