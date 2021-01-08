@@ -35,22 +35,22 @@
                 </a>
             </li>
             <li class="box-s">
-                <a href="user_infoname.html">
+                <a href="user_info_name.html">
                     <p>昵称</p>
                     <em><em class="just-name">就好像风吹过大海</em>&nbsp;&nbsp;<i class="iconfont icon-jiantou1"></i></em>
                 </a>
             </li>
 
             <li class="box-s">
-                <a href="#">
+                <a href="user_infosex.html">
                     <p>性别</p>
                     <em><em class="just-sex">男</em>&nbsp;&nbsp;<i class="iconfont icon-jiantou1"></i></em>
                 </a>
             </li>
             <li class="box-s">
-                <a href="#">
+                <a href="user_info_age.html">
                     <p>年龄</p>
-                    <em><em class="just-age">20</em>&nbsp;&nbsp;<i class="iconfont icon-jiantou1"></i></em>
+                    <em><em class="just-age"></em>&nbsp;&nbsp;<i class="iconfont icon-jiantou1"></i></em>
                 </a>
             </li>
             <li class="box-s">
@@ -79,8 +79,13 @@
         request("http://127.0.0.1:8080/usr/selectAll", `uid=${uid}`, user => {
             $(".just-count").html(user.uid)
             $(".just-name").html(user.uname)
-            $(".just-sex").html(user.usex)
-            $(".just-age").html(user.uge)
+            if (user.usex == "1"){
+                $(".just-sex").html("男")
+            }
+            else{
+                $(".just-sex").html("女")
+            }
+            $(".just-age").html(user.uage)
         })
     }
 </script>

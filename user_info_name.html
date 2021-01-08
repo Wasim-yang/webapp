@@ -21,24 +21,21 @@
     <a class="back-btn" href="javascript:history.go(-1)">
         <i class="iconfont icon-fanhui"></i>
     </a>
-    <div class="mui-title">修改性别</div>
+    <div class="mui-title">修改昵称</div>
 </header>
 <!--header end-->
 
 <div class="warp clearfloat">
     <div class="cashlist clearfloat">
-        <p style="margin-bottom: .3rem;padding-top:.3rem;color: black">性别:</p>
-        <select class="form-control inpt-form" id="sex">
-            <option value="1" selected>男</option>
-            <option value="2">女</option>
-        </select>
+        <p style="margin-bottom: .3rem;padding-top:.3rem;color: black">昵称:</p>
+        <input type="text" class="form-control inpt-form" id="name"
+               style="color: black" value=" 就好像风吹过大海">
+        <p>以英文字母或汉字开头，限4-16个字符，一个汉字为2个字符</p>
     </div>
-
     <div class="clearfloat">
         <a href="javascript:history.go(-1)" class="center-btn db ra3" style="width: 30%" onclick="updateName();">保存</a>
     </div>
 </div>
-
 
 <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
 <script src="js/user/infor/mui.min.js"></script>
@@ -50,22 +47,18 @@
 </body>
 <script src="js/request.js"></script>
 <script type="text/javascript">
+
     let uid = 1;
 
     function myonload() {
         request("http://127.0.0.1:8080/usr/selectAll", `uid=${uid}`, user => {
-            if (user.usex == "1"){
-                $("#sex").val("1")
-            }
-            else{
-                $("#sex").val("2")
-            }
+            $("#name").val(user.uname)
         })
     }
 
     function updateName() {
-        usex = $("#sex").val();
-        request("http://127.0.0.1:8080/usr/info/updateSex", `uid=${uid}&usex=${usex}`, res => {
+        uname = $("#name").val();
+        request("http://127.0.0.1:8080/usr/info/updateName", `uid=${uid}&uname=${uname}`, res => {
             alert(res.message)
         })
     }

@@ -21,18 +21,19 @@
     <a class="back-btn" href="javascript:history.go(-1)">
         <i class="iconfont icon-fanhui"></i>
     </a>
-    <div class="mui-title">修改昵称</div>
+    <div class="mui-title">修改收货地址</div>
 </header>
 <!--header end-->
 
 <div class="warp clearfloat">
     <div class="cashlist clearfloat">
-        <p style="margin-bottom: .3rem;padding-top:.3rem;color: black">用户名:</p>
-        <input type="text" class="form-control inpt-form" id="name" value="就好像风吹过大海">
-        <p>以英文字母或汉字开头，限4-16个字符，一个汉字为2个字符</p>
+        <p style="margin-bottom: .3rem;padding-top:.3rem;color: black">收货地址:</p>
+        <input type="text" class="form-control inpt-form" id="addr"
+               style="color: black" value="">
+        <p>填写所在地区与详细地址</p>
     </div>
     <div class="clearfloat">
-        <a href="user_info.html" class="center-btn db ra3" style="width: 30%">确认</a>
+        <a href="javascript:history.go(-1)" class="center-btn db ra3" style="width: 30%" onclick="updateAddr();">保存</a>
     </div>
 </div>
 
@@ -46,14 +47,19 @@
 </body>
 <script src="js/request.js"></script>
 <script type="text/javascript">
+
     let uid = 1;
 
     function myonload() {
         request("http://127.0.0.1:8080/usr/selectAll", `uid=${uid}`, user => {
-            $(".just-count").html(user.uid)
-            $(".just-name").html(user.uname)
-            $(".just-sex").html(user.usex)
-            $(".just-age").html(user.uge)
+            $("#addr").val(user.uaddress)
+        })
+    }
+
+    function updateAddr() {
+        uaddr = $("#addr").val();
+        request("http://127.0.0.1:8080/usr/info/updateAddr", `uid=${uid}&uaddr=${uaddr}`, res => {
+            alert(res.message)
         })
     }
 </script>
