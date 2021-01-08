@@ -28,7 +28,7 @@
         /*按id搜索*/
         function selectusrbyid() {
             let id = document.getElementById("selectusrid").value
-            request("http://127.0.0.1:8080/usr/selectNoPid", `id=${id}`, res => {
+            request("http://127.0.0.1:8080/admin/usr/selectNoPid", `id=${id}`, res => {
                 let table = document.getElementById("tbody_list")
                 /*生成表单并打印数据与操作按钮*/
                 let row = document.createElement("tr")
@@ -67,7 +67,7 @@
                 /*删除按钮-删除改项数据*/
                 deletebutton.onclick = function () {
                     let gid = this.getAttribute("id")
-                    request("http://127.0.0.1:8080/usr/delete", `id=${gid}`, res => {
+                    request("http://127.0.0.1:8080/admin/usr/delete", `id=${gid}`, res => {
                         alert(res.message)
                         admin_deleteTable()
                         selectusr()
@@ -114,7 +114,7 @@
             let age = document.getElementById("modalusrage").value;
             let address = document.getElementById("modalusraddress").value;
             let cintegral = document.getElementById("modalusrcintegral").value;
-            request("http://127.0.0.1:8080/usr/updateNoP", `id=${id}&name=${name}&sex=${sex}&age=${age}&address=${address}&cintegral=${cintegral}`, res => {
+            request("http://127.0.0.1:8080/admin/usr/updateNoP", `id=${id}&name=${name}&sex=${sex}&age=${age}&address=${address}&cintegral=${cintegral}`, res => {
                 alert(res.message)
                 admin_deleteTable()
                 selectusr()
@@ -123,7 +123,7 @@
         }
         /*查询并生成表单*/
         function selectusr() {
-            request("http://127.0.0.1:8080/usr/selectNoPpage", `currentPage=${currentPage}`, res => {
+            request("http://127.0.0.1:8080/admin/usr/selectNoPpage", `currentPage=${currentPage}`, res => {
                 currentPage = res.currentPage
                 totalPage = res.totalPage
                 PageSize = res.pageSize
@@ -174,7 +174,7 @@
                     /*删除按钮-删除改项数据*/
                     deletebutton.onclick = function () {
                         let id = this.getAttribute("id")
-                        request("http://127.0.0.1:8080/usr/delete", `id=${id}`, res => {
+                        request("http://127.0.0.1:8080/admin/usr/delete", `id=${id}`, res => {
                             alert(res.message)
                             admin_deleteTable()
                             selectusr()
@@ -276,7 +276,7 @@
                 <i id="span1" class="app-menu__icon fa fa-angle-up"></i></span></a>
         </li>
         <ul id="adminControl_1" style="display:none">
-            <li><a class="app-menu__item_child" href="#">个人信息</a></li>
+            <li><a class="app-menu__item_child" href="admin_index.html">账号信息</a></li>
             <li><a class="app-menu__item_child" href="#">修改密码</a></li>
             <li><a class="app-menu__item_child" href="#">注销账号</a></li>
         </ul>

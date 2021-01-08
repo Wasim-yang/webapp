@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
+    <title>签到</title>
+    <link rel="stylesheet" type="text/css" href="lib/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <link rel="stylesheet" href="css/qiandao.css">
+    <!--icon-->
+    <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="lib/html5shiv/html5shiv.min.js"></script>
+    <script src="lib/respond/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+<!-- 顶部导航 start -->
+<div id="top">
+    <div class="topBar visible-md visible-lg">
+        <div class="container">
+            <div class="row">
+                <div class=" col-md-3 text-center t-position">
+                    <i class="glyphicon glyphicon-map-marker"></i>
+                    <a href="javascript:;" id="positionText">北京</a>
+                    <ul id="position">
+                    </ul>
+                </div>
+                <div class="col-md-2 text-center">
+                    <a href="login.html"><i class="glyphicon glyphicon-user"></i>登录</a>&nbsp;
+                    <a href="register.html">免费注册</a>
+                </div>
+                <div class="col-md-1 text-center">
+                    <a href="javascript:;">我的订单</a>
+                </div>
+                <div class="col-md-1 text-center">
+                    <a href="user_index.html">我的趣购</a>
+                </div>
+                <div class="col-md-1 text-center">
+                    <a href="javascript:;">趣购会员</a>
+                </div>
+                <div class="col-md-1 text-center">
+                    <a href="javascript:;">企业采购</a>
+                </div>
+                <div class="col-md-1 text-center">
+                    <a href="javascript:;">客户服务</a>
+                </div>
+                <div class="col-md-1 text-center" id="navBar">
+                    <a href="javascript:;">网站导航<i class="glyphicon glyphicon-menu-down"></i>
+                    </a>
+                    <ul class="nav-bar">
+                        <li class="nav-item">特色主题
+                            <div>
+                                <small>趣购金融</small><small>趣购会员</small>
+                                <br>
+                                <small>优惠券</small><small>陪伴计划</small>
+                                <br>
+                                <small>买什么</small><small>趣购秒杀</small>
+                                <br>
+                                <small>全球购</small><small>0元测评</small>
+                                <br>
+                            </div>
+                        </li>
+                        <li class="nav-item">行业频道
+                            <div>
+                                <small>家用电器</small><small>手机数码</small>
+                                <br>
+                                <small>精选家居</small><small>服装鞋包</small>
+                                <br>
+                                <small>美妆个护</small><small>食品生鲜</small>
+                                <br>
+                                <small>礼品鲜花</small><small>汽车用品</small>
+                                <br>
+                            </div>
+                        </li>
+                        <li class="nav-item">生活服务
+                            <div>
+                                <small>趣购金融</small><small>优惠券</small>
+                                <br>
+                                <small>话费</small><small>加油卡</small>
+                                <br>
+                                <small>火车票</small><small>旅游出行</small>
+                                <br>
+                                <small>电影票</small><small>酒店住宿</small>
+                                <br>
+                            </div>
+                        </li>
+                        <li class="nav-item">更多精选
+                            <div>
+                                <small>合作招商</small><small>服装市场</small>
+                                <br>
+                                <small>企业采购</small><small>游戏社区</small>
+                                <br>
+                                <small>智能家居</small><small>知识产权</small>
+                                <br>
+                                <small>乡村招募</small><small>校园加盟</small>
+                                <br>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-1 text-center">
+                    <a href="javascript:;" class="mobile-link">手机趣购<i class="glyphicon glyphicon-phone"></i>
+                        <img src="images/01.png" alt="扫一扫">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 顶部导航面板 小屏和超小屏可见 start-->
+    <nav id="fixed" class="navbar navbar-inverse visible-sm visible-xs fixednav">
+        <div class="container-fluid">
+            <!-- 导航栏 三斜杠-->
+            <div class="navbar-header">
+                <!--                <div class="logo">
+                                </div>-->
+                <a href="user_index.html"><img src="images/logo.png" alt="Main Logo" width="100" height="46"></a>
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                        data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <!-- sm 小按钮-->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="javascript:;"><i class="glyphicon glyphicon-map-marker"></i>北京 <span
+                            class="sr-only">(current)</span></a></li>
+                    <li><a href="index.html">首页</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false">个人中心<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="login.html">用户登录</a>
+                                <a href="register.html">免费注册</a>
+                            </li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="javascript:;">我的积分</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="javascript:;">我的好友</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="javascript:;">我的成就</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="javascript:;">服务与反馈</a></li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                           aria-haspopup="true" aria-expanded="false">积分商城<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="javascript:;">家用电器</a>
+                            </li>
+                            <li>
+                                <a href="javascript:;">数码手机</a>
+                            </li>
+                            <li>
+                                <a href="javascript:;">电脑办公</a>
+                            </li>
+                            <li>
+                                <a href="javascript:;">家居厨具</a>
+                            </li>
+                            <li>
+                                <a href="javascript:;">服装鞋靴</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li><a href="cart.html">购物车</a></li>
+                </ul>
+                <!-- 搜索 -->
+                <form class="navbar-form navbar-left">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="查询">
+                    </div>
+                    <button type="submit" class="btn btn-danger"><i class="glyphicon glyphicon-search"></i></button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 顶部导航菜单 end-->
+</div>
+<!-- 顶部导航 end -->
+
+<div class="qiandao-warp ">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-offset-2 col-lg-8 col-md-offset-2 col-md-8 col-sm-12 col-xs-12">
+                <!--          -->
+                <img src="images/checkin/qiandao_banner.jpg" width="110%" alt="">
+            </div>
+            <div class="qiandao-con clear ">
+                <div class="qiandao-left col-lg-8  col-md-8 col-sm-6 col-xs-6">
+
+                    <div class="qiandao-left-top clear">
+                        <!--当前日期-->
+                        <div class="current-date"></div>
+                        <div class="qiandao-history qiandao-tran qiandao-radius" id="js-qiandao-history">我的签到</div>
+                        <div class="visible-xs visible-md  qiandao-history qiandao-tran qiandao-radius js-just-qiandao">
+                            签到
+                        </div>
+                    </div>
+                    <div class="qiandao-main" id="js-qiandao-main">
+                        <ul class="qiandao-list" id="js-qiandao-list">
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="qiandao-right col-lg-4  col-md-4 visible-lg visible-md">
+                    <div class="qiandao-top">
+                        <div class="just-qiandao qiandao-sprits js-just-qiandao ">
+                        </div>
+                        <!--                    <p class="qiandao-notic">恭喜您签到成功! 今日可领取积分：<span>1</span></p>-->
+                    </div>
+                    <div class="qiandao-bottom">
+                        <div class="qiandao-rule-list">
+                            <h4>签到规则</h4>
+                            <p>1、首次签到获得1个碳积分</p>
+                            <p>2、连续签到每日可增加1个碳积分</p>
+                            <p>3、连续签到7天及以上每天获得7个碳积分</p>
+                        </div>
+                        <div class="qiandao-rule-list">
+                            <h4>其他说明</h4>
+                            <p>1、如果中间有一天间断未签到的，重先开始计算连续签到时间。</p>
+                            <p>2、连续签到获得奖励后分享到QQ空间、微信朋友圈后可获得0.5碳积分奖励，每天只限分享一次。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 我的签到 layer start -->
+        <div class="qiandao-layer qiandao-history-layer">
+            <div class="qiandao-layer-con qiandao-radius">
+                <a href="javascript:;" class="close-qiandao-layer qiandao-sprits"></a>
+
+                <div class="qiandao-history-table">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>签到日期</th>
+                            <th>奖励</th>
+                            <th>说明</th>
+                        </tr>
+                        </thead>
+
+                        <tbody id="tbody_list">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="qiandao-layer-bg"></div>
+        </div>
+        <!-- 我的签到 layer end -->
+        <!-- 签到 layer start -->
+        <div class="qiandao-layer qiandao-active">
+            <div class="qiandao-layer-con qiandao-radius">
+                <a href="javascript:;" class="close-qiandao-layer qiandao-sprits"></a>
+                <div class="yiqiandao clear">
+                    <div class="yiqiandao-icon qiandao-sprits"></div>
+                    恭喜您签到成功！<span></span>
+                </div>
+                <div class="qiandao-jiangli qiandao-sprits">
+                    <span class="qiandao-jiangli-num">1<em>积分</em></span>
+                </div>
+                <!--                <a href="#" class="qiandao-share qiandao-tran">分享获取额外积分</a>-->
+            </div>
+            <div class="qiandao-layer-bg"></div>
+        </div>
+        <!-- 签到 layer end -->
+    </div>
+</div>
+</body>
+<script type="text/javascript" src="lib/jquery/jquery.js"></script>
+<script type="text/javascript" src="lib/bootstrap/js/bootstrap.js"></script>
+<script src="js/jquery-3.2.1.min.js"></script>
+<script src="js/request.js"></script>
+<script type="text/javascript">
+    $(function () {
+        let uid = 1
+        /*获取当前时间*/
+        let $currentDate = $(".current-date"),
+            myDate = new Date();
+        let year = parseInt(myDate.getFullYear()),
+            month = parseInt(myDate.getMonth() + 1),
+            day = parseInt(myDate.getDate())
+
+
+        let signFun = function () {
+            //添加当前时间到html
+            $currentDate.text(myDate.getFullYear() + '年' + parseInt(myDate.getMonth() + 1) + '月' + myDate.getDate() + '日');
+
+            let monthFirst = new Date(myDate.getFullYear(), parseInt(myDate.getMonth()), 1).getDay();
+            let d = new Date(myDate.getFullYear(), parseInt(myDate.getMonth() + 1), 0);
+            let totalDay = d.getDate();
+            let _handle = true;
+            /*添加日历网格*/
+            // ul表格
+            let $dateBox = $("#js-qiandao-list"),
+                //  待添加的html
+                _html = '';
+            //生成日历网格
+            for (let i = 0; i < 42; i++) {
+                _html += ' <li><div class="qiandao-icon"></div></li>'
+            }
+            $dateBox.html(_html);
+            let $dateLi = $dateBox.find("li");
+
+            request("http://127.0.0.1:8080/cal/selectAll", `uid=${uid}&year=${year}&month=${month}`, res => {
+                for (let i = 0; i <= totalDay; i++) {
+                    $dateLi.eq(i + monthFirst - 1).addClass("date" + parseInt(i));
+                    for (let j = 0; j < res.length; j++) {
+                        if (i == res[j].caday) {
+                            if (i == day) { //当日已签到
+                                $qiandaoBnt.addClass('actived');
+                                _handle = false;
+                            }
+                            $dateLi.eq(i + monthFirst - 1).addClass("qiandao");
+                        }
+                    }
+                }//生成当月的日历并添加已签到日期标识
+            });
+
+
+            //为当前日期在网格上添加标记（able-qiandao）
+            $(".date" + myDate.getDate()).addClass('able-qiandao');
+
+            //签到按钮
+            let $qiandaoBnt = $(".js-just-qiandao");
+            // 点击日历签到
+            /*            $dateBox.on("click", "li", function () {
+                            if ($(this).hasClass('able-qiandao') && _handle) {
+                                $(this).addClass('qiandao');
+                                Clickqiandao();
+                            }
+                        })*/
+
+            /*点击签到按钮*/
+            $qiandaoBnt.on("click", function () {
+                if (_handle) {
+                    Clickqiandao();
+                }
+            });
+
+            //签到函数
+            function Clickqiandao() {
+                //添加活跃 不可再点击
+                $qiandaoBnt.addClass('actived');
+                //打开弹窗
+                openLayer("qiandao-active", qianDao);
+                //标识为false，不可再点击签到
+                _handle = false;
+                request("http://127.0.0.1:8080/cal/addCalendar", `uid=${uid}&year=${year}&month=${month}&day=${day}`, res => {
+                });
+            }
+
+            //为日历表格中的当前时间添加已签到的标识
+            function qianDao() {
+                $(".date" + myDate.getDate()).addClass('qiandao');
+            }
+        }();
+
+        /*
+          打开弹窗
+        * a:需要显示的class名
+        * Fun:函数*/
+        function openLayer(a, Fun) {
+            $('.' + a).fadeIn(Fun)
+        }
+
+        let closeLayer = function () {
+            $("body").on("click", ".close-qiandao-layer", function () {
+                $(this).parents(".qiandao-layer").fadeOut()
+            })
+        }(); //关闭弹窗
+        let myform = $("#js-qiandao-history")
+        let b = true;
+        //我的签到
+        myform.on("click", function () {
+            if (b) {
+                request("http://127.0.0.1:8080/cal/selectMyform", `uid=${uid}`, res => {
+                    let table = document.getElementById("tbody_list");
+
+                    let award = 1
+                    let t = res[0].cayear + "-" + res[0].camonth + "-" + res[0].caday
+                    for (let i = 0; i < res.length; i++) {
+                        let row = document.createElement("tr")
+                        let cell1 = document.createElement("td")
+                        let cell2 = document.createElement("td")
+                        let date = res[i].cayear + "-" + res[i].camonth + "-" + res[i].caday
+                        cell1.appendChild(document.createTextNode(date))
+                        cell2.appendChild(document.createTextNode(award))
+                        row.appendChild(cell1)
+                        row.appendChild(cell2)
+                        table.appendChild(row)
+                    }
+                    b = false
+                });
+            }
+            openLayer("qiandao-history-layer", myFun);
+            function myFun() {
+                console.log(1)
+            } //打开弹窗返回函数
+        })
+    });
+
+</script>
+
+</html>
