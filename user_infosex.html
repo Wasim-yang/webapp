@@ -15,54 +15,30 @@
     <link rel="stylesheet" type="text/css" href="css/infor/loaders.min.css"/>
     <link rel="stylesheet" type="text/css" href="css/iconfont/iconfont.css"/>
 </head>
-<body onload="myonload()">
+<body>
 <!--header star-->
 <header class="mui-bar mui-bar1 mui-bar-nav mui-bar-nav1" id="header">
     <a class="back-btn" href="javascript:history.go(-1)">
         <i class="iconfont icon-fanhui"></i>
     </a>
-    <div class="mui-title">个人信息</div>
+    <div class="mui-title">修改性别</div>
 </header>
 <!--header end-->
 
 <div class="warp clearfloat">
     <div class="cashlist clearfloat">
-        <ul>
-            <li class="box-s">
-                <a href="#">
-                    <p>账号</p>
-                    <em><em class="just-count">276683372</em>&nbsp;&nbsp;<i class="iconfont icon-jiantou1"></i></em>
-                </a>
-            </li>
-            <li class="box-s">
-                <a href="user_infoname.html">
-                    <p>昵称</p>
-                    <em><em class="just-name">就好像风吹过大海</em>&nbsp;&nbsp;<i class="iconfont icon-jiantou1"></i></em>
-                </a>
-            </li>
-
-            <li class="box-s">
-                <a href="#">
-                    <p>性别</p>
-                    <em><em class="just-sex">男</em>&nbsp;&nbsp;<i class="iconfont icon-jiantou1"></i></em>
-                </a>
-            </li>
-            <li class="box-s">
-                <a href="#">
-                    <p>年龄</p>
-                    <em><em class="just-age">20</em>&nbsp;&nbsp;<i class="iconfont icon-jiantou1"></i></em>
-                </a>
-            </li>
-            <li class="box-s">
-                <a href="#">
-                    <p>手机号</p>
-                    <em><em class="just-phone">13097793728</em>&nbsp;&nbsp;<i class="iconfont icon-jiantou1"></i></em>
-                </a>
-            </li>
-        </ul>
+        <p style="margin-bottom: .3rem;padding-top:.3rem;color: black">性别:</p>
+        <select class="form-control inpt-form">
+            <option value="1">男</option>
+            <option value="2">女</option>
+        </select>
     </div>
 
+    <div class="clearfloat">
+        <a href="user_info.html" class="center-btn db ra3" style="width: 30%">确认</a>
+    </div>
 </div>
+
 
 <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
 <script src="js/user/infor/mui.min.js"></script>
@@ -75,12 +51,10 @@
 <script src="js/request.js"></script>
 <script type="text/javascript">
     let uid = 1;
-    function myonload() {
+
+    function update() {
         request("http://127.0.0.1:8080/usr/selectAll", `uid=${uid}`, user => {
-            $(".just-count").html(user.uid)
-            $(".just-name").html(user.uname)
-            $(".just-sex").html(user.usex)
-            $(".just-age").html(user.uge)
+
         })
     }
 </script>
