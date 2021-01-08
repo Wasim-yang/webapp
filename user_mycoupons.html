@@ -41,11 +41,8 @@
                 let table = document.getElementById("tbody_list")
                 /*生成表单并打印数据与操作按钮*/
                 let couponList = res.dataList;
-                let j = 0
                 document.getElementById("pageResult").append("共有" + usrmytotalRecord + "条记录 共" + usrmytotalPage + "页 当前第" + usrmycurrentPage + "页")
-                for (let i = 0; i < usrmytotalRecord; i++) {
-                    j = j + 1
-                    if (j > usrmyPageSize) break
+                for (let i = 0; i < couponList.length; i++) {
                     let row = document.createElement("tr")
                     let cell1 = document.createElement("td")
                     let cell2 = document.createElement("td")

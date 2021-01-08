@@ -126,12 +126,8 @@
                 let table = document.getElementById("tbody_list")
                 /*生成表单并打印数据与操作按钮*/
                 let welfareList = res.dataList
-                let j = 0
                 document.getElementById("pageResult").append("共有" + totalRecord + "条记录 共" + totalPage + "页 当前第" + currentPage + "页")
-                for (let i = 0; i < totalRecord; i++) {
-                    j = j + 1
-                    if (j > PageSize)
-                        break
+                for (let i = 0; i < welfareList.length; i++) {
                     let row = document.createElement("tr")
                     let cell1 = document.createElement("td")
                     let cell2 = document.createElement("td")
