@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>商品信息页</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
     <link rel="stylesheet" type="text/css" href="lib/bootstrap/css/bootstrap.css">
     <link rel="stylesheet" type="text/css" href="css/main.css">
     <link rel="stylesheet" type="text/css" href="css/goods.css">
@@ -15,6 +16,7 @@
     <Script>
         let gid
         let uid
+
 
         function GetRequest() {
             let url = location.search; //获取url中"?"符后的字串
@@ -42,78 +44,94 @@
                 let area = document.getElementById("goods_display")
                 let image = document.createElement("img")
                 image.src = res.gimage
-                image.style = "width:500px;"
+                image.style="width:100%"
                 area.appendChild(image)
-                let name=document.getElementById("goods_name")
+                let cost=document.getElementById("goods_cost")
+                cost.append(res.gcost)
+                let name = document.getElementById("goods_name")
                 name.append(res.gname)
-                let description=document.getElementById("goods_description")
+                let description = document.getElementById("goods_description")
                 description.append(res.gdescription)
             })
         }
-                // description.appendChild(buy)
-                // area.appendChild(description)
-        function readybuy(){
-                    document.getElementById('modalbuy').style.display = "block"
-                    let coupon_list1 = document.getElementById("coupon_list1")
-                    let coupon_list2 = document.getElementById("coupon_list2")
-                    let coupon_list3 = document.getElementById("coupon_list3")
-                    request("http://127.0.0.1:8080/usr/goods/readybuy", `uid=${uid}&gid=${gid}`, res => {
-                        document.getElementById("modalgoodsimage").src = res.goods.gimage
-                        let number=document.createTextNode(res.goods.gnumber)
-                        document.getElementById("modalgoodsnumber").append(number)
-                        let cost=document.createTextNode(res.goods.gcost)
-                        document.getElementById("modalgoodscost").append(cost)
-                        let description=document.createTextNode(res.goods.gdescription)
-                        document.getElementById("modalgoodsdescription").append(description)
-                        let couponlist = res.datalist
-                        for (let i = 0; i < couponlist.length; i++) {
-                            let couponimage = document.createElement("img")
-                            couponimage.src = "images/couponimage.jpeg"
-                            couponimage.style = "margin-top:5px;margin-bottom:5px;height:4rem;weight:5rem;"
-                            let cell1 = document.createElement("p")
-                            let cell2 = document.createElement("p")
-                            let cell3 = document.createElement("p")
-                            let _radio = document.createElement("input");
-                            _radio.type = "radio";
-                            _radio.name = "_radio";
-                            if ((i + 1) % 2 == 0) {
-                                coupon_list2.appendChild(couponimage)
-                                cell1.appendChild(document.createTextNode(couponlist[i].cname))
-                                cell3.appendChild(document.createTextNode("折扣度:" + couponlist[i].cdiscount))
-                                _radio.name = "myradio"
-                                _radio.value = couponlist[i].cid
-                                coupon_list2.appendChild(cell1)
-                                coupon_list2.appendChild(cell2)
-                                coupon_list2.appendChild(cell3)
-                                coupon_list2.appendChild(_radio)
-                            } else if ((i + 1) % 3 == 0) {
-                                coupon_list3.appendChild(couponimage)
-                                cell1.appendChild(document.createTextNode(couponlist[i].cname))
-                                cell3.appendChild(document.createTextNode("折扣度:" + couponlist[i].cdiscount))
-                                _radio.value = couponlist[i].cid
-                                _radio.name = "myradio"
-                                coupon_list3.appendChild(cell1)
-                                coupon_list3.appendChild(cell2)
-                                coupon_list3.appendChild(cell3)
-                                coupon_list3.appendChild(_radio)
-                            } else {
-                                coupon_list1.appendChild(couponimage)
-                                cell1.appendChild(document.createTextNode(couponlist[i].cname))
-                                cell3.appendChild(document.createTextNode("折扣度:" + couponlist[i].cdiscount))
-                                _radio.value = couponlist[i].cid
-                                _radio.name = "myradio"
-                                coupon_list1.appendChild(cell1)
-                                coupon_list1.appendChild(cell2)
-                                coupon_list1.appendChild(cell3)
-                                coupon_list1.appendChild(_radio)
-                            }
+
+        function readybuy() {
+            document.getElementById('modalbuy').style.display = "block"
+            let coupon_list1 = document.getElementById("coupon_list1")
+            let coupon_list2 = document.getElementById("coupon_list2")
+            let coupon_list3 = document.getElementById("coupon_list3")
+            request("http://127.0.0.1:8080/usr/goods/readybuy", `uid=${uid}&gid=${gid}`, res => {
+                document.getElementById("modalgoodsimage").src = res.goods.gimage
+                let number = document.createTextNode(res.goods.gnumber)
+                document.getElementById("modalgoodsnumber").append(number)
+                if (res.goods.gnumber == 0) {
+                    document.getElementById("modalgoodsnumber").append("      当前商品已售罄！请移步其它商品")
+                    document.getElementById("buy_button").disabled="true"
+                }
+                let cost = document.createTextNode(res.goods.gcost)
+                document.getElementById("modalgoodscost").append(cost)
+                let description = document.createTextNode(res.goods.gdescription)
+                document.getElementById("modalgoodsdescription").append(description)
+                let couponlist = res.datalist
+                if (couponlist.length == 0) {
+                    document.getElementById("coupontip").append(document.createTextNode("您没有可用的优惠券哦"))
+                } else {
+                    for (let i = 0; i < couponlist.length; i++) {
+                        let couponimage = document.createElement("img")
+                        couponimage.src = "images/couponimage.jpeg"
+                        couponimage.style = "margin-top:5px;margin-bottom:5px;height:4rem;weight:5rem;"
+                        let cell1 = document.createElement("p")
+                        let cell2 = document.createElement("p")
+                        let cell3 = document.createElement("p")
+                        let _radio = document.createElement("input")
+                        _radio.type = "radio";
+                        _radio.name = "_radio";
+                        cell3.appendChild(_radio)
+                        cell1.style="margin-bottom:0"
+                        cell2.style="margin-bottom:0"
+                        if (i % 3 == 0) {
+                            coupon_list1.appendChild(couponimage)
+                            cell1.appendChild(document.createTextNode(couponlist[i].cname))
+                            cell2.appendChild(document.createTextNode("折扣度:" + couponlist[i].cdiscount))
+                            _radio.value = couponlist[i].cid
+                            _radio.name = "myradio"
+                            coupon_list1.appendChild(cell1)
+                            coupon_list1.appendChild(cell2)
+                            coupon_list1.appendChild(cell3)
+                        } else if (i % 3 == 1) {
+                            coupon_list2.appendChild(couponimage)
+                            cell1.appendChild(document.createTextNode(couponlist[i].cname))
+                            cell2.appendChild(document.createTextNode("折扣度:" + couponlist[i].cdiscount))
+                            _radio.name = "myradio"
+                            _radio.value = couponlist[i].cid
+                            coupon_list2.appendChild(cell1)
+                            coupon_list2.appendChild(cell2)
+                            coupon_list2.appendChild(cell3)
+                        } else {
+                            coupon_list3.appendChild(couponimage)
+                            cell1.appendChild(document.createTextNode(couponlist[i].cname))
+                            cell2.appendChild(document.createTextNode("折扣度:" + couponlist[i].cdiscount))
+                            _radio.value = couponlist[i].cid
+                            _radio.name = "myradio"
+                            coupon_list3.appendChild(cell1)
+                            coupon_list3.appendChild(cell2)
+                            coupon_list3.appendChild(cell3)
                         }
-                    })
+                    }
+                }
+            })
         }
 
         function buy() {
-            let cid
+            let cid=0
             let buy_number = document.getElementById("buy_number").value
+            if(buy_number==null){
+                buy_number=1
+            }
+            if(buy_number<1){
+                alert("请购买1件以上商品");
+                return
+            }
             let myradios = document.getElementsByName("myradio")
             myradios.forEach(function (myradio) {
                 if (myradio.checked) {
@@ -121,7 +139,8 @@
                 }
             })
             request("http://127.0.0.1:8080/usr/goods/buy", `uid=${uid}&gid=${gid}&cid=${cid}&number=${buy_number}`, res => {
-
+                alert(res.message)
+                //location.reload()
             })
         }
 
@@ -131,21 +150,24 @@
 <body onpageshow="selectgoodsbyid()">
 <div class="goods_menu">
     <span></span>
+    <div style="color: black">
+        <a href="" style="margin-left: 100px">2221</a>
+    </div>
 </div>
 <div class="row">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <div id="goods_display">
-            <div style="color: black">
-                <a href="" style="margin-left: 100px">2221</a>
-            </div>
+
         </div>
+    </div>
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <div class="goods_padding"></div>
-        <div class="goods_display">
-            <p style="margin-left: 20px;margin-bottom: 0;">¥<label
-                    style="margin-left: 5px;font-size: 30px;">58</label></p>
+        <div class="goods_display ">
+            <p style="margin-left: 20px;margin-bottom: 0;">¥<label id="goods_cost"
+                    style="margin-left: 5px;font-size: 30px;"></label></p>
             <p style="margin-left: 20px;margin-top: -5px;">新品促销</p>
         </div>
-        <div class="goods_indexdisplay">
+        <div class="goods_indexdisplay ">
             <div class="blackbox">
                 <span class="glyphicon glyphicon-gift">小黑盒新品</span>
                 <div class="goods_best"><p style="margin-left: 8px">优/选/新/品</p></div>
@@ -208,54 +230,48 @@
     <form class="modal-content animate">
         <div class="imgcontainer">
             <!-- 点击×号，隐藏模态框-->
-            <span onclick="document.getElementById('modalbuy').style.display='none'" class="close"
+            <span onclick="document.getElementById('modalbuy').style.display='none';location.reload()" class="close"
                   title="Close Modal">×</span>
         </div>
-        <div class="container" style="color: #0d1214">
-            <div class="row">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-
-                    <div class="imagebox">
-                        <img src="" id="modalgoodsimage" alt="Avatar" class="avatar"
-                             style="margin-top: 5px;"/>
-                    </div>
-                </div>
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <label style="color: black;font-size: 25px;margin-left: 20px;">¥</label>
-                    <label id="modalgoodscost"></label>
-                    <br><br>
-                    <label>库存数量:</label>
-                    <label id="modalgoodsnumber"></label>
-                    <br>
-                    <label id="modalgoodsdescription"></label>
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="imagebox goods_test">
+                    <img src="" id="modalgoodsimage" alt="Avatar" class="avatar"/>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center"
-                     style="margin-top: 15px;border-top:1px dashed #000 ">
-                    <label>我的优惠券</label>
-                </div>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <label style="color: black;font-size: 25px;margin-left: 20px;">¥</label>
+                <label id="modalgoodscost"></label>
+                <br><br>
+                <label>库存数量:</label>
+                <label id="modalgoodsnumber"></label>
+                <br>
+                <label id="modalgoodsdescription"></label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center"
+                 style="margin-top: 15px;border-top:1px dashed #000 " id="coupontip">
+                <label>我的优惠券</label>
+            </div>
 
-                <div id="coupon_list1" class="col-lg-4 col-md-4 col-sm-4 col-xs-4 text-center"
-                     style="height: 270px;">
+            <div id="coupon_list1" class="col-lg-4 col-md-4 col-sm-4 col-xs-4 text-center">
 
-                </div>
-                <div id="coupon_list2" class="col-lg-4 col-md-4 col-sm-4 col-xs-4 text-center"
-                     style="height: 270px;">
+            </div>
+            <div id="coupon_list2" class="col-lg-4 col-md-4 col-sm-4 col-xs-4 text-center">
 
-                </div>
-                <div id="coupon_list3" class="col-lg-4 col-md-4 col-sm-4 col-xs-4 text-center"
-                     style="height: 270px;">
+            </div>
+            <div id="coupon_list3" class="col-lg-4 col-md-4 col-sm-4 col-xs-4 text-center">
 
-                </div>
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 goods_test" style="border-top:1px dashed #000;">
-                    <label>购买数量&nbsp&nbsp</label>
-                    <input id="buy_number" type="text"/>
-                </div>
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 goods_test">
-                    <button type="button" class="btn btn-primary" style="margin-left: 380px;" onclick="buy()">点击结算
-                    </button>
-                </div>
+            </div>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="border-top:1px dashed #000;">
+                <label>购买数量&nbsp&nbsp</label>
+                <input id="buy_number" type="text" placeholder="1" min="1"/>
+            </div>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <button type="button" class="btn btn-primary" id="buy_button" style="margin-left: 380px;"
+                        onclick="buy()">点击结算
+                </button>
             </div>
         </div>
     </form>

@@ -104,7 +104,7 @@
 }
 
 .goods_des1_2{
-    margin-right: 280px;
+    margin-right: 250px;
     float: right;
     border-radius: 10px;
     background:#FFEFCC8C;
@@ -125,7 +125,7 @@
 .goods_des2_1{
     margin-top: 8px;
     float: right;
-    margin-right: 280px;
+    margin-right: 250px;
 }
 
 .goods_des3{
@@ -157,66 +157,20 @@
     margin-bottom: 1%;
 }
 
-
 .modalgoodsbuy {
+    color: black;
     position: fixed;
-    top: 0;
+    top:0;
     bottom: 0;
     left: 0;
     right: 0;
     z-index: 1050;
-    display: none;
-    overflow: hidden;
+    display:none;
+    overflow-y:scroll;
+    overflow-x:hidden;
     -webkit-overflow-scrolling: touch;
     outline: 0;
 }
 
 
-.usr_coupon {
-    height: 600px;
-}
 
-.buy_button {
-    height: 100px;
-}
-
-
-.modalgoodsimage {
-    width: 20rem;
-    height: 30rem;
-    margin-left: 20px;
-    margin-top: 20px;
-}
-
-.modalgoodscontainer {
-    width: 50%;
-    float: left;
-}
-
-.demo_line_01 {
-    padding: 0 20px 0;
-    margin: 20px 0;
-    line-height: 1px;
-    border-left: 190px solid #ddd;
-    border-right: 190px solid #ddd;
-    text-align: center;
-}
-
-.topbody {
-    height: 40%;
-    text-align: center;
-    margin: 24px 0 12px 0;
-    position: relative;
-}
-
-.bottombody {
-    position: relative;
-    top: 350px;
-    border: 1px dashed #000;
-}
-
-.couponlist {
-    margin-left: 20px;
-    width: 33.33%;
-    border: 1px dashed #000;
-}
