@@ -15,7 +15,7 @@
     <link rel="stylesheet" type="text/css" href="css/infor/loaders.min.css"/>
     <link rel="stylesheet" type="text/css" href="css/iconfont/iconfont.css"/>
 </head>
-<body onload="myonload()">
+<body>
 <!--header star-->
 <header class="mui-bar mui-bar1 mui-bar-nav mui-bar-nav1" id="header">
     <a class="back-btn" href="javascript:history.go(-1)">
@@ -74,12 +74,18 @@
 </body>
 <script src="js/request.js"></script>
 <script type="text/javascript">
-    let uid = 1;
+    let uid;
+    window.onload = function () {
+        usr_authorization()
+        $(document).ajaxStop(function(){
+            myonload();
+        });
+    }
     function myonload() {
         request("http://127.0.0.1:8080/usr/selectAll", `uid=${uid}`, user => {
             $(".just-count").html(user.uid)
             $(".just-name").html(user.uname)
-            if (user.usex == "1"){
+            if (user.usex == "0"){
                 $(".just-sex").html("男")
             }
             else{
