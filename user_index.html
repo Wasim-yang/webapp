@@ -10,19 +10,22 @@
     <link rel="stylesheet" type="text/css" href="css/main.css">
     <link rel="stylesheet" type="text/css" href="css/index.css">
     <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
-    <script src="js/request.js"></script>
+    <script src="lib/html5shiv/html5shiv.min.js"></script>
+    <script src="lib/respond/respond.min.js"></script>
     <script src="js/jquery-3.2.1.min.js"></script>
     <script src="js/popper.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/main.js"></script>
     <script type="text/javascript" src="js/Control.js"></script>
+    <script src="js/request.js"></script>
     <script>
         let uid
-        window.onload = function () {
-          //  usr_authorization()
+        window.onpageshow = function () {
+            usr_authorization()
             $(document).ajaxStop(function(){
-                //todo
-                //  document.getElementById("cscore").appendChild(document.createTextNode(uid))
+                request("http://127.0.0.1:8080/user/usr/selectUsrUcintegral", `uid=${uid}`, res => {
+                    document.getElementById("cscore").appendChild(document.createTextNode(res))
+                })
             });
         }
         function bike() {
@@ -143,7 +146,7 @@
         </div>
     </nav>
     <!-- 顶部导航菜单 end-->
-</div>
+
 <!-- 顶部导航 end -->
 
 <!-- 轮播图、功能插件 start-->

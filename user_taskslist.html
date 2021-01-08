@@ -6,94 +6,11 @@
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
     <title>我的任务</title>
     <link rel="stylesheet" type="text/css" href="lib/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="css/main.css">
     <link rel="stylesheet" type="text/css" href="css/cart.css">
 <!--    返回按钮-->
-    <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-    <link href="http://cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
     <style type="text/css">
-        .return{
-            color: #fff;
-            text-transform: uppercase;
-            border-radius: 0;
-            padding-left: 60px;
-            position: relative;
-            transform: translateZ(0px);
-            transition: all 0.5s ease 0s;
-        }
-        .return:after{
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            bottom: 0;
-            right: 0;
-            background: #fff;
-            z-index: -1;
-            transform: scaleX(0);
-            transform-origin: 100% 50% 0;
-            transition: all 0.5s ease-out 0s;
-        }
-        .return:hover:after{
-            transform: scaleX(1);
-            transition-timing-function: cubic-bezier(0.52, 1.64, 0.37, 0.66);
-        }
-        .return span{
-            width: 40px;
-            height: 100%;
-            line-height: 40px;
-            background: #fff;
-            position: absolute;
-            top: 0;
-            left: 0;
-            transition: all 0.3s linear 0s;
-        }
-        .return span:after{
-            content: "";
-            display: block;
-            width: 10px;
-            height: 10px;
-            background: #fff;
-            margin: auto 0;
-            position: absolute;
-            top: 0;
-            right: -6px;
-            bottom: 0;
-            transform: rotate(45deg);
-            transition: all 0.3s linear 0s;
-        }
-
-        .return.return-xs{
-            padding-left: 30px;
-        }
-        .return.return-xs span{
-            width: 20px;
-            line-height: 20px;
-        }
-        .return.return-xs span:after{
-            width: 7px;
-            height: 7px;
-            right: -4px;
-        }
-        .return.green{
-            border: 1px solid #79d799;
-            background: #79d799;
-        }
-        .return.green:hover,
-        .return.green span{
-            color: #79d799;
-        }
-        .return.green:hover span,
-        .return.green:hover span:after{
-            background: #79d799;
-        }
-        .return:hover span{
-            color: #fff;
-        }
-        @media only screen and (max-width: 767px){
-            .return{ margin-bottom: 20px; }
-        }
-
         .modal2 {
             position: fixed;
             top: 8%;
@@ -126,10 +43,15 @@
         let totalPage = 1
         let PageSize
         let totalRecord = 0
-        let uid= 1
+        let uid
         let ucintegral
 
-
+        window.onload = function () {
+            usr_authorization()
+            $(document).ajaxStop(function(){
+                selecttask()
+            });
+        }
         /*按页号跳转*/
         function uploadPage() {
             let page = document.getElementById("selecttaskpage").value
@@ -159,12 +81,8 @@
                 let table = document.getElementById("tbody_list")
                 /*生成表单并打印数据与操作按钮*/
                 let taskList = res.dataList
-                let j = 0
                 document.getElementById("pageResult").append("共有" + totalRecord + "条记录 共" + totalPage + "页 当前第" + currentPage + "页")
-                for (let i = 0; i < totalRecord; i++) {
-                    j = j + 1
-                    if (j > PageSize)
-                        break
+                for (let i = 0; i < taskList.length; i++) {
                     let row = document.createElement("tr")
                     let cell1 = document.createElement("td")
                     let cell2 = document.createElement("td")
@@ -175,10 +93,8 @@
 
                     let receivebutton = document.createElement("button")
                     let seebutton = document.createElement("button")
-                    seebutton.className = "btn btn-primary"
+                    seebutton.className = "btn btn-info"
                     seebutton.appendChild(document.createTextNode("详情"))
-                    receivebutton.className = "btn btn-primary"
-                    receivebutton.appendChild(document.createTextNode("领取"))
 
                     //待转换的参数
                     let type = taskList[i].ttype
@@ -224,8 +140,16 @@
 
 
                     // 当项目达到领取条件时，设置捐赠按钮为可选中
-                    if(taskList[i].tgain >= taskList[i].trequirement) { receivebutton.disabled=false; }
-                    else{receivebutton.disabled=true;}
+                    if(taskList[i].tgain >= taskList[i].trequirement) {
+                        receivebutton.className = "btn btn-primary"
+                        receivebutton.appendChild(document.createTextNode("领取"))
+                        receivebutton.disabled=false;
+                    }
+                    else{
+                        receivebutton.className = "btn btn-warning"
+                        receivebutton.appendChild(document.createTextNode("领取"))
+                        receivebutton.disabled=true;
+                    }
 
                     cell1.appendChild(document.createTextNode(taskList[i].tname))
                     cell2.appendChild(document.createTextNode(type))
@@ -270,23 +194,21 @@
         }
     </script>
 </head>
-<body class="tsak_body" onload='selecttask()'>
+<body class="task_body" >
 <div id="header">
     <div class="container">
         <div class="row">
-            <div class="kb-coll3 cart-body title-col"><h2><strong>做任务<br>赚取碳积分</strong></h2>
+            <div class="col-xs-2 text-right"><a href="user_index.html">
+                <i class="glyphicon glyphicon-menu-left kb-coll1"style="font-size: 34px;top: 8px;color:#368306;" ></i></a></div>
+            <div class="col-xs-10">
+                <div class="kb-coll3 cart-body"><h2><strong>做任务&nbsp&nbsp&nbsp赚取碳积分</strong></h2></div>
+            </div>
             </div>
         </div>
     </div>
 </div>
 <div class="ad_picture">
 <div class="app-content">
-<!--    <a href="user_index.html"><label><</label></a>-->
-    <div class="col-sm-3">
-        <a href="#" class="return return-xs green">
-            <span class="fa fa-home"></span>返回
-        </a>
-    </div>
     <div class="col-md-offset-0 col-lg-offset-4 col-md-4">
         <div class="input-group" style="margin-top: 5px;" >
             <input class="form-control" type="text" id="selecttaskpage" placeholder="跳转到第几页"/>
