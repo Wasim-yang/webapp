@@ -120,9 +120,20 @@
                     menu.appendChild(menu_1)
                     goods_display.appendChild(menu)
                     area.appendChild(goods_display)
+                    button3.setAttribute("number",goodslist[i].ugnumber)
+                    button3.setAttribute("gtime",goodslist[i].gtime)
+                    button3.setAttribute("ugcost",goodslist[i].ugcost)
+                    button3.setAttribute("gid",goodslist[i].gid)
                     button3.onclick=function (){
-                        request("http://127.0.0.1:8080/usr/goods/rejected",`uid=${uid}$gid=${gid}&gtime=${gtime}`,res=>{
-
+                        let number=button3.getAttribute("number")
+                        let gtime=button3.getAttribute("gtime")
+                        let ugcost=button3.getAttribute("ugcost")
+                        let gid=button3.getAttribute("gid")
+                        request("http://127.0.0.1:8080/usr/goods/rejected",
+                            `uid=${uid}&gid=${gid}&number=${number}&gcost=${ugcost}&gtime=${gtime}`,res=>{
+                                alert(res.message)
+                                usr_delete()
+                                selectmygoods()
                         })
                     }
                 }
