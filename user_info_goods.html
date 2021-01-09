@@ -82,7 +82,13 @@
                     let title = document.createElement("div")
                     title.className = "mygoods_display"
                     let p1 = document.createElement("p")
-                    p1.append(document.createTextNode("交易成功"))
+                    if (goodslist[i].gstate == 0) {
+                        p1.append(document.createTextNode("未发货"))
+                    } else if (goodslist[i].gstate == 1) {
+                        p1.append(document.createTextNode("已发货"))
+                    } else {
+                        p1.append(document.createTextNode("交易成功"))
+                    }
                     title.appendChild(p1)
                     goods_display.appendChild(title)
                     let description = document.createElement("div")
@@ -143,16 +149,16 @@
             request("http://127.0.0.1:8080/usr/goods/rejected",
                 `uid=${uid}&gid=${gid}&number=${number}&gcost=${ugcost}&gtime=${gtime}`, res => {
                     alert(res.message)
-                    document.getElementById("mybox").style.display="none"
-                    document.getElementById("hidebg").style.display="none"
+                    document.getElementById("mybox").style.display = "none"
+                    document.getElementById("hidebg").style.display = "none"
                     usr_delete()
                     selectmygoods()
                 })
         }
 
-        function mycancel(){
-            document.getElementById("mybox").style.display="none"
-            document.getElementById("hidebg").style.display="none"
+        function mycancel() {
+            document.getElementById("mybox").style.display = "none"
+            document.getElementById("hidebg").style.display = "none"
         }
 
     </script>
