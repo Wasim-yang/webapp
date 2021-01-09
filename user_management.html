@@ -14,6 +14,8 @@
     <link rel="stylesheet" type="text/css" href="css/infor/mui.min.css"/>
     <link rel="stylesheet" type="text/css" href="css/infor/loaders.min.css"/>
     <link rel="stylesheet" type="text/css" href="css/iconfont/iconfont.css"/>
+
+    <script src="js/request.js"></script>
 </head>
 <body>
 <!--header star-->
@@ -240,7 +242,7 @@
 
     </ul>
 </div>
-<a href="login.html" class="center-btn db ra3">退出登录</a>
+<a onclick="usr_logout()" class="center-btn db ra3">退出登录</a>
 </div>
 
 <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
@@ -250,7 +252,6 @@
 <!-- <link rel="stylesheet" href="css/infor/swiper.min.css">
 <script src="js/user/infor/swiper.jquery.min.js"></script> -->
 </body>
-<script src="js/request.js"></script>
 <script type="text/javascript">
     let uid;
     window.onload = function () {
