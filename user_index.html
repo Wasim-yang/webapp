@@ -44,75 +44,70 @@
 </head>
 
 <body>
-    <!-- 顶部导航面板 start-->
-    <nav class="navbar navbar-inverse visible-sm visible-xs">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
-                        data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-            </div>
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav">
-                    <li class="active"><a href="javascript:;"><i class="glyphicon glyphicon-map-marker"></i>北京 <span
-                            class="sr-only">(current)</span></a></li>
-                    <li><a href="user_index.html">我的趣购</a></li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                           aria-expanded="false">个人中心<span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="login.html">你好,请登录</a>
-                                <a href="register.html">免费注册</a>
-                            </li>
-                            <li><a href="javascript:;">我的订单</a></li>
-                            <li><a href="user_index.html">我的趣购</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="javascript:;">趣购会员</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="javascript:;">企业采购</a></li>
-                            <li><a href="javascript:;">客户服务</a></li>
-                            <li><a href="javascript:;">网站导航</a></li>
-                        </ul>
-                    </li>
-                </ul>
-                <form class="navbar-form navbar-left">
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Search">
-                    </div>
-                    <button type="submit" class="btn btn-danger"><i class="glyphicon glyphicon-search"></i></button>
-                </form>
-                <ul class="nav navbar-nav navbar-right">
-                    <li class="dropdown">
-                        <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" role="button"
-                           aria-haspopup="true" aria-expanded="false">积分商城<span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li>
-                                <a href="javascript:;">家用电器</a>
-                            </li>
-                            <li>
-                                <a href="javascript:;">数码手机</a>
-                            </li>
-                            <li>
-                                <a href="javascript:;">电脑办公</a>
-                            </li>
-                            <li>
-                                <a href="javascript:;">家居厨具</a>
-                            </li>
-                            <li>
-                                <a href="javascript:;">服装鞋靴</a>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
+<nav id="fixed" class="navbar navbar-inverse visible-sm visible-xs">
+    <div class="container-fluid">
+        <!-- 导航栏 三斜杠-->
+        <div class="navbar-header">
+            <!--                <div class="logo">
+                            </div>-->
+            <a class="navbar-brand" href="user_index.html">绿色出行app</a>
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
         </div>
-    </nav>
-    <!-- 顶部导航菜单 end-->
-
+        <!-- sm 小按钮-->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="javascript:;"><i class="glyphicon glyphicon-map-marker"></i>杭州 <span
+                        class="sr-only">(current)</span></a></li>
+                <li><a href="user_index.html">首页</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false">个人中心<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li role="separator" class="divider"></li>
+                        <li><a href="user_info.html">我的信息</a></li>
+                        <li><a href="user_info_address.html">收货地址</a></li>
+                        <li><a href="user_accountSafety.html">账号与安全</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="javascript:;">我的优惠券</a></li>
+                        <li><a href="javascript:;">我的购买</a></li>
+                        <li><a href="javascript:;">我的兑换</a></li>
+                        <li><a href="javascript:;">我的任务</a></li>
+                        <li><a href="javascript:;">我的公益项目</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="javascript:;">系统设置</a></li>
+                        <li><a href="javascript:;">通用</a></li>
+                        <li><a href="javascript:;">服务与反馈</a></li>
+                        <li role="separator" class="divider"></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="user_travelbike.html">绿色出行,环保低碳</a></li>
+                <li><a href="user_checkin.html">每日签到,"壕"礼相伴</a></li>
+                <li><a href="user_taskslist.html">领任务,"绿"享积分</a></li>
+                <li><a href="user_publickwelfarelist.html">做公益,"爱"布八方</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="user_coupons.html">兑换优惠券</a></li>
+                <li><a href="user_goods.html">积分商城</a></li>
+                <li><a href="#">购物车</a></li>
+            </ul>
+            <!-- 搜索 -->
+            <form class="navbar-form navbar-left">
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="查询">
+                </div>
+                <a href="https://www.baidu.com/" class="btn btn-danger"><i class="glyphicon glyphicon-search"></i></a>
+            </form>
+        </div>
+    </div>
+</nav>
 <!-- 顶部导航 end -->
 
 <!-- 轮播图、功能插件 start-->
