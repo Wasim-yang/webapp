@@ -20,110 +20,102 @@
 
     <script src="js/request.js"></script>
     <script>
-        let bid;
-        window.onload = function () {
-            business_authorization();
-            $(document).ajaxStop(function(){
-                //todo
-            });
-        }
-
-        //图片操作全局变量
-        let flag = 0
-        let originpath
-        let path
-        /*更改图片处理*/
-        $(function () {
-            $("#modalgoodsfile").change(function () {
-                flag = 1
-                var objUrl = getObjectURL(this.files[0]);//获取文件信息
-                console.log("objUrl = " + objUrl);
-                if (objUrl) {
-                    $("#modalgoodsimage").attr("src", objUrl);
-                }
-            });
-        })
-
-        function getObjectURL(file) {
-            var url = null;
-            if (window.createObjectURL != undefined) {
-                url = window.createObjectURL(file);
-            } else if (window.URL != undefined) { // mozilla(firefox)
-                url = window.URL.createObjectURL(file);
-            } else if (window.webkitURL != undefined) { // webkit or chrome
-                url = window.webkitURL.createObjectURL(file);
-            }
-            return url;
-        }
         // 分页处理全局变量
         let currentPage = 1
         let totalPage = 1
         let PageSize
         let totalRecord = 0
+        let bid;
+        let selectIdorName = 1;   //0——id,1——name
+        let gid;
+        let gname;
+        window.onload = function () {
+            business_authorization();
+            $(document).ajaxStop(function(){
+                selectgoodsByname()
+            });
+        }
+
+        /*选择进入*/
+        function selectIorN() {
+            if(selectIdorName == 1)
+                selectgoodsByname();
+            else
+                selectgoodsById();
+        }
         /*按id搜索*/
-        function selectgoodsbyid() {
-            let id = document.getElementById("selectgoodsid").value
-            request("http://127.0.0.1:8080/admin/goods/selectid", `id=${id}`, res => {
+        function selectgoodsById() {
+            if(currentPage == 0){
+                currentPage=1
+            }
+            selectIdorName = 0;
+            gid = document.getElementById("selectgoodsid").value
+            if(gid == ""){
+                document.getElementById("selectgoodsname").value = ""
+                selectgoodsByname()
+                return
+            }
+            let type = document.getElementById("select_type").value;
+            request("http://127.0.0.1:8080/business/selectByGidPage", `currentPage=${currentPage}&gid=${gid}&bid=${bid}&type=${type}`, res => {
+                currentPage = res.currentPage
+                totalPage = res.totalPage
+                PageSize = res.pageSize
+                totalRecord = res.totalRecord
                 let table = document.getElementById("tbody_list")
                 /*生成表单并打印数据与操作按钮*/
-                let row = document.createElement("tr")
-                let cell1 = document.createElement("td")
-                let cell2 = document.createElement("td")
-                let cell3 = document.createElement("td")
-                let cell4 = document.createElement("td")
-                let cell5 = document.createElement("td")
-                let cell6 = document.createElement("td")
-                let seebutton = document.createElement("button")
-                let deletebutton = document.createElement("button")
-                seebutton.type = "button"
-                deletebutton.type = "button"
-                seebutton.className = "btn btn-primary"
-                deletebutton.className = "btn btn-danger"
-                deletebutton.style = "margin-right: -40px;margin-left: 10px"
-                seebutton.appendChild(document.createTextNode("查看"))
-                deletebutton.appendChild(document.createTextNode("删除"))
-                seebutton.setAttribute("id", res.gid)
-                seebutton.setAttribute("name", res.gname)
-                seebutton.setAttribute("cost", res.gcost)
-                seebutton.setAttribute("number", res.gnumber)
-                seebutton.setAttribute("ean", res.gean)
-                seebutton.setAttribute("description", res.gdescription)
-                seebutton.setAttribute("image", res.gimage)
-                deletebutton.setAttribute("id", res.gid)
-                seebutton.onclick = function () {
-                    document.getElementById("modalgoodsid").value = seebutton.getAttribute("id")
-                    document.getElementById("modalgoodsname").value = seebutton.getAttribute("name")
-                    document.getElementById("modalgoodscost").value = seebutton.getAttribute("cost")
-                    document.getElementById("modalgoodsnumber").value = seebutton.getAttribute("number")
-                    document.getElementById("modalgoodsean").value = seebutton.getAttribute("ean")
-                    document.getElementById("modalgoodsdescription").value = seebutton.getAttribute("description")
-                    originpath = seebutton.getAttribute("image")
-                    $("#modalgoodsimage").attr("src", seebutton.getAttribute("image"));
-                    document.getElementById('goodsmodal').style.display = 'block'
+                let goodsList = res.dataList
+                document.getElementById("pageResult").append("共有" + totalRecord + "条记录 共" + totalPage + "页 当前第" + currentPage + "页")
+                for (let i = 0; i < goodsList.length; i++) {
+                    let row = document.createElement("tr")
+                    let cell1 = document.createElement("td")
+                    let cell2 = document.createElement("td")
+                    let cell3 = document.createElement("td")
+                    let cell4 = document.createElement("td")
+                    let cell5 = document.createElement("td")
+                    let cell6 = document.createElement("td")
+                    let cell7 = document.createElement("td")
+                    let cell8 = document.createElement("td")
+                    let cell9 = document.createElement("td")
+                    let pushbutton = document.createElement("button")
+                    pushbutton.type = "button"
+                    pushbutton.className = "btn btn-primary"
+                    pushbutton.appendChild(document.createTextNode("发货"))
+                    pushbutton.style = "font-size:10px"
+                    /*发送按钮-更新发货状态*/
+                    pushbutton.onclick = function () {
+                        let uid = goodsList[i].uid
+                        let gid = goodsList[i].gid
+                        let gtime=goodsList[i].gtime
+                        request("http://127.0.0.1:8080/business/updateDeliver", `uid=${uid}&gid=${gid}&gtime=${gtime}`, res => {
+                            alert(res.message)
+                            admin_deleteTable()
+                            selectgoodsById()
+                        })
+                    }
+                    if(select_type == 0){
+                        if(goodsList[i].gstate == 1)
+                            pushbutton.disabled=true;
+                    }
+                    cell1.appendChild(document.createTextNode(goodsList[i].uid))
+                    cell2.appendChild(document.createTextNode(goodsList[i].gid))
+                    cell3.appendChild(document.createTextNode(goodsList[i].gname))
+                    cell4.appendChild(document.createTextNode(goodsList[i].ugnumber))
+                    cell5.appendChild(document.createTextNode(goodsList[i].gean))
+                    cell6.appendChild(document.createTextNode(goodsList[i].uaddress))
+                    cell7.appendChild(document.createTextNode(goodsList[i].gtime))
+                    cell8.appendChild(document.createTextNode(goodsList[i].gstate))
+                    cell9.appendChild(pushbutton)
+                    row.appendChild(cell1)
+                    row.appendChild(cell2)
+                    row.appendChild(cell3)
+                    row.appendChild(cell4)
+                    row.appendChild(cell5)
+                    row.appendChild(cell6)
+                    row.appendChild(cell7)
+                    row.appendChild(cell8)
+                    row.appendChild(cell9)
+                    table.appendChild(row)
                 }
-                /*删除按钮-删除改项数据*/
-                deletebutton.onclick = function () {
-                    let gid = this.getAttribute("id")
-                    request("http://127.0.0.1:8080/goods/delete", `id=${gid}`, res => {
-                        alert(res.message)
-                        admin_deleteTable()
-                        selectgoods()
-                    })
-                }
-                cell1.appendChild(document.createTextNode(res.gid))
-                cell2.appendChild(document.createTextNode(res.gname))
-                cell3.appendChild(document.createTextNode(res.gcost))
-                cell4.appendChild(document.createTextNode(res.gnumber))
-                cell5.appendChild(document.createTextNode(res.gean))
-                cell6.appendChild(seebutton)
-                cell6.appendChild(deletebutton)
-                row.appendChild(cell1)
-                row.appendChild(cell2)
-                row.appendChild(cell3)
-                row.appendChild(cell4)
-                row.appendChild(cell5)
-                row.appendChild(cell6)
-                table.appendChild(row)
             })
         }
         /*按页号跳转*/
@@ -132,53 +124,20 @@
             if (page >= 1 && page <= totalPage) {
                 admin_deleteTable()
                 currentPage = page
-                selectgoods()
+                selectIorN()
             } else
                 alert("输入的页面超出范围")
         }
-        /*向后端发送更新数据*/
-        function updategoods() {
-            let id = document.getElementById("modalgoodsid").value;
-            let name = document.getElementById("modalgoodsname").value;
-            let cost = document.getElementById("modalgoodscost").value;
-            let number = document.getElementById("modalgoodsnumber").value;
-            let ean = document.getElementById("modalgoodsean").value;
-            let description = document.getElementById("modalgoodsdescription").value;
-            if (flag == 1) {
-                let formData = new FormData();
-                formData.append('upload', $("#modalgoodsfile")[0].files[0]);
-                formData.append('originpath', originpath)
-                $.ajax({
-                    url: "http://127.0.0.1:8080/admin/upload/update",//后端接口
-                    type: "post",
-                    data: formData,
-                    contentType: false,
-                    processData: false,
-                    mimeType: "multipart/form-data",
-                    success: function (data) {
-                        flag = 0
-                        path = data
-                        alert('image upload successful!')
-                        request("http://127.0.0.1:8080/admin/goods/update", `id=${id}&name=${name}&cost=${cost}&number=${number}&ean=${ean}&description=${description}&path=${path}`, res => {
-                            alert(res.message)
-                            admin_deleteTable()
-                            selectgoods()
-                            document.getElementById('goodsmodal').style.display = 'none'
-                        })
-                    }
-                })
-            } else {
-                request("http://127.0.0.1:8080/admin/goods/update", `id=${id}&name=${name}&cost=${cost}&number=${number}&ean=${ean}&description=${description}&path=${originpath}`, res => {
-                    alert(res.message)
-                    admin_deleteTable()
-                    selectgoods()
-                    document.getElementById('goodsmodal').style.display = 'none'
-                })
+
+        /*按名字模板查询，查询并生成表单*/
+        function selectgoodsByname() {
+            if(currentPage == 0){
+                currentPage=1
             }
-        }
-        /*查询并生成表单*/
-        function selectgoods() {
-            request("http://127.0.0.1:8080/admin/goods/selectpage", `currentPage=${currentPage}`, res => {
+            selectIdorName = 1;
+            gname = document.getElementById("selectgoodsname").value
+            let type = document.getElementById("select_type").value;
+            request("http://127.0.0.1:8080/business/selectByNamePage", `currentPage=${currentPage}&gname=${gname}&bid=${bid}&type=${type}`, res => {
                 currentPage = res.currentPage
                 totalPage = res.totalPage
                 PageSize = res.pageSize
@@ -186,12 +145,8 @@
                 let table = document.getElementById("tbody_list")
                 /*生成表单并打印数据与操作按钮*/
                 let goodsList = res.dataList
-                let j = 0
                 document.getElementById("pageResult").append("共有" + totalRecord + "条记录 共" + totalPage + "页 当前第" + currentPage + "页")
-                for (let i = 0; i < totalRecord; i++) {
-                    j = j + 1
-                    if (j > PageSize)
-                        break
+                for (let i = 0; i < goodsList.length; i++) {
                     let row = document.createElement("tr")
                     let cell1 = document.createElement("td")
                     let cell2 = document.createElement("td")
@@ -199,57 +154,50 @@
                     let cell4 = document.createElement("td")
                     let cell5 = document.createElement("td")
                     let cell6 = document.createElement("td")
-                    let seebutton = document.createElement("button")
-                    let deletebutton = document.createElement("button")
-                    seebutton.type = "button"
-                    deletebutton.type = "button"
-                    seebutton.className = "btn btn-primary"
-                    deletebutton.className = "btn btn-danger"
-                    deletebutton.style = "margin-right: -40px;margin-left: 10px"
-                    seebutton.appendChild(document.createTextNode("查看"))
-                    deletebutton.appendChild(document.createTextNode("删除"))
-                    seebutton.setAttribute("id", goodsList[i].gid)
-                    seebutton.setAttribute("name", goodsList[i].gname)
-                    seebutton.setAttribute("cost", goodsList[i].gcost)
-                    seebutton.setAttribute("number", goodsList[i].gnumber)
-                    seebutton.setAttribute("ean", goodsList[i].gean)
-                    seebutton.setAttribute("description", goodsList[i].gdescription)
-                    seebutton.setAttribute("image", goodsList[i].gimage)
-                    deletebutton.setAttribute("id", goodsList[i].gid)
-                    /*查看按钮-在拟态框中显示详细数据*/
-                    seebutton.onclick = function () {
-                        document.getElementById("modalgoodsid").value = seebutton.getAttribute("id")
-                        document.getElementById("modalgoodsname").value = seebutton.getAttribute("name")
-                        document.getElementById("modalgoodscost").value = seebutton.getAttribute("cost")
-                        document.getElementById("modalgoodsnumber").value = seebutton.getAttribute("number")
-                        document.getElementById("modalgoodsean").value = seebutton.getAttribute("ean")
-                        document.getElementById("modalgoodsdescription").value = seebutton.getAttribute("description")
-                        originpath = seebutton.getAttribute("image")
-                        $("#modalgoodsimage").attr("src", seebutton.getAttribute("image"));
-                        document.getElementById('goodsmodal').style.display = 'block'
-                    }
-                    /*删除按钮-删除改项数据*/
-                    deletebutton.onclick = function () {
-                        let gid = this.getAttribute("id")
-                        request("http://127.0.0.1:8080/admin/goods/delete", `id=${gid}`, res => {
+                    let cell7 = document.createElement("td")
+                    let cell8 = document.createElement("td")
+                    let cell9 = document.createElement("td")
+                    let pushbutton = document.createElement("button")
+                    pushbutton.type = "button"
+                    pushbutton.className = "btn btn-primary"
+                    pushbutton.appendChild(document.createTextNode("发货"))
+                    pushbutton.style = "font-size:10px"
+                    /*发送按钮-更新发货状态*/
+                    pushbutton.onclick = function () {
+                        let uid = goodsList[i].uid
+                        let gid = goodsList[i].gid
+                        let gtime=goodsList[i].gtime
+                        request("http://127.0.0.1:8080/business/updateDeliver", `uid=${uid}&gid=${gid}&gtime=${gtime}`, res => {
                             alert(res.message)
                             admin_deleteTable()
-                            selectgoods()
+                            selectgoodsByname()
                         })
+                    }
+                    if(select_type == 0){
+                        if(goodsList[i].gstate == 1)
+                            pushbutton.disabled=true;
                     }
                     cell1.appendChild(document.createTextNode(goodsList[i].gid))
                     cell2.appendChild(document.createTextNode(goodsList[i].gname))
-                    cell3.appendChild(document.createTextNode(goodsList[i].gcost))
-                    cell4.appendChild(document.createTextNode(goodsList[i].gnumber))
+                    cell3.appendChild(document.createTextNode(goodsList[i].uid))
+                    cell4.appendChild(document.createTextNode(goodsList[i].ugnumber))
                     cell5.appendChild(document.createTextNode(goodsList[i].gean))
-                    cell6.appendChild(seebutton)
-                    cell6.appendChild(deletebutton)
+                    cell6.appendChild(document.createTextNode(goodsList[i].uaddress))
+                    cell7.appendChild(document.createTextNode(goodsList[i].gtime))
+                    if(goodsList[i].gstate == 0)
+                        cell8.appendChild(document.createTextNode("未发货"))
+                    else
+                        cell8.appendChild(document.createTextNode("已发货"))
+                    cell9.appendChild(pushbutton)
                     row.appendChild(cell1)
                     row.appendChild(cell2)
                     row.appendChild(cell3)
                     row.appendChild(cell4)
                     row.appendChild(cell5)
                     row.appendChild(cell6)
+                    row.appendChild(cell7)
+                    row.appendChild(cell8)
+                    row.appendChild(cell9)
                     table.appendChild(row)
                 }
             })
@@ -301,7 +249,7 @@
                 搜索
             </button>
         </form>
-        <a href="admin_login.html" class="btn btn-outline-light ml-4">
+        <a onclick="business_logout()" class="btn btn-outline-light ml-4" href="#">
             <svg class="bi bi-power" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor"
                  xmlns="http://www.w3.org/2000/svg">
                 <path fill-rule="evenodd" d="M5.578 4.437a5 5 0 1 0 4.922.044l.5-.866a6 6 0 1 1-5.908-.053l.486.875z"
@@ -338,7 +286,7 @@
         </li>
         <ul id="adminControl_2" style="">
             <li><a class="app-menu__item_child active" href="business_deliver.html">发货</a></li>
-            <li><a class="app-menu__item_child" href="#">上架</a></li>
+            <li><a class="app-menu__item_child" href="#">联系管理员</a></li>
         </ul>
     </ul>
 </aside>
@@ -358,21 +306,43 @@
             <div class="tile">
                 <form class="form-group col-md-12" id="courseList">
                     <div class="row">
-                        <div class="col-lg-2">
-                            <input class="form-control" type="text" id="selectgoodsid" placeholder="查询商品"/>
+                        <div class="col-lg-2 col-md-2">
+                            <input class="form-control" type="text" id="selectgoodsid"
+                                   onkeyup="this.value=this.value.replace(/[^\d.]/g,'')"
+                                   maxlength=11 placeholder="根据id查询商品(仅数字)"/>
                         </div>
-                        <div class="col-lg-3">
+                        <div class="col-lg-1 col-md-1">
                             <button class="btn btn-primary" id="selectgoods_id" type="button"
-                                    onclick="//todo">查询
+                                    onclick="admin_deleteTable();selectgoodsById()">查询
                             </button>
                         </div>
-                        <div class="col-lg-2">
+                        <div class="col-lg-2 col-md-2">
+                            <input class="form-control" type="text" id="selectgoodsname"
+                                   placeholder="根据名字查询商品"/>
+                        </div>
+                        <div class="col-lg-1 col-md-1">
+                            <button class="btn btn-primary" id="selectgoods_name" type="button"
+                                    onclick="admin_deleteTable();selectgoodsByname()">查询
+                            </button>
+                        </div>
+                        <div class="col-lg-2 col-md-2">
                             <input class="form-control" type="text" id="selectgoodspage" placeholder="跳转到第几页"/>
                         </div>
-                        <div class="col-lg-3">
+                        <div class="col-lg-1 col-md-1">
                             <button class="btn btn-primary" id="selectgoods_page" type="button"
                                     onclick="uploadPage()">查询
                             </button>
+                        </div>
+                        <div class="col-lg-2 col-md-2" style="margin-left: 100px;">
+                            <div class="form-inline">
+                                <div class="form-group">
+                                    <label><b>发货类型&nbsp;&nbsp;</b></label>
+                                    <select id="select_type" class="form-control" >
+                                        <option value = "0" selected>全部</option>
+                                        <option value = "1">未发货</option>
+                                     </select>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </form>
@@ -381,10 +351,10 @@
                         <table class="table table-hover table-bordered" id="cTable">
                             <thead>
                             <tr>
-                                <th>买家账号</th>
                                 <th>商品编号</th>
                                 <th>商品名称</th>
-                                <th>库存</th>
+                                <th>买家账号</th>
+                                <th>购买数量</th>
                                 <th>商品条码</th>
                                 <th>买家地址</th>
                                 <th>下单时间</th>
@@ -400,10 +370,10 @@
                             <p id="pageResult"/>
                         </div>
                         <div style="text-align: center">
-                            <a href="#" onclick="admin_firstPage();selectgoods();">首页</a>&nbsp;&nbsp;
-                            <a href="#" onclick="admin_previousPage();selectgoods();">上一页</a>&nbsp;&nbsp;
-                            <a href="#" onclick="admin_nextPage();selectgoods();">下一页</a>&nbsp;&nbsp;
-                            <a href="#" onclick="admin_lastPage();selectgoods();">尾页</a>
+                            <a href="#" onclick="admin_firstPage();selectIorN();">首页</a>&nbsp;&nbsp;
+                            <a href="#" onclick="admin_previousPage();selectIorN();">上一页</a>&nbsp;&nbsp;
+                            <a href="#" onclick="admin_nextPage();selectIorN();">下一页</a>&nbsp;&nbsp;
+                            <a href="#" onclick="admin_lastPage();selectIorN();">尾页</a>
                         </div>
                     </div>
                 </div>

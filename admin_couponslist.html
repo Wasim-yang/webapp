@@ -29,7 +29,11 @@
         /*按id搜索*/
         function selectcouponsbyid() {
             let id = document.getElementById("selectcouponsid").value
-            request("http://127.0.0.1:8080/coupon/selectid", `id=${id}`, res => {
+            if(id == "") {
+                selectcoupons();
+                return;
+            }
+            request("http://127.0.0.1:8080/admin/coupon/selectid", `id=${id}`, res => {
                 let table = document.getElementById("tbody_list")
                 /*生成表单并打印数据与操作按钮*/
                 let row = document.createElement("tr")
@@ -52,7 +56,7 @@
                 seebutton.setAttribute("id", res.cid)
                 seebutton.setAttribute("name", res.cname)
                 seebutton.setAttribute("discount", res.cdiscount)
-                seebutton.setAttribute("expoints", res.cexpoints)
+                seebutton.setAttribute("expoints", res.cexpoint)
                 seebutton.setAttribute("description", res.cdescription)
                 deletebutton.setAttribute("id", res.cid)
                 seebutton.onclick = function () {
@@ -66,7 +70,7 @@
                 /*删除按钮-删除改项数据*/
                 deletebutton.onclick = function () {
                     let cid = this.getAttribute("id")
-                    request("http://127.0.0.1:8080/coupon/delete", `id=${cid}`, res => {
+                    request("http://127.0.0.1:8080/admin/coupon/delete", `id=${cid}`, res => {
                         alert(res.message)
                         admin_deleteTable()
                         selectcoupons()
@@ -75,7 +79,7 @@
                 cell1.appendChild(document.createTextNode(res.cid))
                 cell2.appendChild(document.createTextNode(res.cname))
                 cell3.appendChild(document.createTextNode(res.cdiscount))
-                cell4.appendChild(document.createTextNode(res.cexpoints))
+                cell4.appendChild(document.createTextNode(res.cexpoint))
                 cell5.appendChild(document.createTextNode(res.cdescription))
                 cell6.appendChild(document.createTextNode("7天"))
                 cell7.appendChild(seebutton)
@@ -107,7 +111,7 @@
                 let discount = document.getElementById("modalcouponsdiscount").value;
                 let expoints = document.getElementById("modalcouponsexpoints").value;
                 let description = document.getElementById("modalcouponsdescription").value;
-                request("http://127.0.0.1:8080/coupon/update", `id=${id}&name=${name}&discount=${discount}&expoints=${expoints}&description=${description}`,
+                request("http://127.0.0.1:8080/admin/coupon/update", `id=${id}&name=${name}&discount=${discount}&expoints=${expoints}&description=${description}`,
                     res => {
                 alert(res.message)
                 admin_deleteTable()
@@ -116,7 +120,7 @@
         }
         /*查询并生成表单*/
         function selectcoupons() {
-                request("http://127.0.0.1:8080/coupon/selectpage", `currentpage=${currentPage}`,
+                request("http://127.0.0.1:8080/admin/coupon/selectpage", `currentpage=${currentPage}`,
                     res => {
                 currentPage = res.currentPage
                 totalPage = res.totalPage
@@ -127,9 +131,7 @@
                 let couponList = res.dataList;
                 let j = 0
                 document.getElementById("pageResult").append("共有" + totalRecord + "条记录 共" + totalPage + "页 当前第" + currentPage + "页")
-                for (let i = 0; i < totalRecord; i++) {
-                    j = j + 1
-                    if (j > PageSize) break
+                for (let i = 0; i < couponList.length; i++) {
                 let row = document.createElement("tr")
                 let cell1 = document.createElement("td")
                 let cell2 = document.createElement("td")
@@ -150,7 +152,7 @@
                 seebutton.setAttribute("id", couponList[i].cid)
                 seebutton.setAttribute("name", couponList[i].cname)
                 seebutton.setAttribute("discount", couponList[i].cdiscount)
-                seebutton.setAttribute("expoints", couponList[i].cexpoints)
+                seebutton.setAttribute("expoints", couponList[i].cexpoint)
                 seebutton.setAttribute("description", couponList[i].cdescription)
                 deletebutton.setAttribute("id", couponList[i].cid)
                 /*查看按钮-在拟态框中显示详细数据*/
@@ -165,7 +167,7 @@
                 /*删除按钮-删除改项数据*/
                 deletebutton.onclick = function () {
                     let cid = this.getAttribute("id")
-                    request("http://127.0.0.1:8080/coupon/delete", `id=${cid}`, res => {
+                    request("http://127.0.0.1:8080/admin/coupon/delete", `id=${cid}`, res => {
                         alert(res.message)
                         admin_deleteTable()
                         selectcoupons()
@@ -174,7 +176,7 @@
                 cell1.appendChild(document.createTextNode(couponList[i].cid))
                 cell2.appendChild(document.createTextNode(couponList[i].cname))
                 cell3.appendChild(document.createTextNode(couponList[i].cdiscount))
-                cell4.appendChild(document.createTextNode(couponList[i].cexpoints))
+                cell4.appendChild(document.createTextNode(couponList[i].cexpoint))
                 cell5.appendChild(document.createTextNode(couponList[i].cdescription))
                 cell6.appendChild(document.createTextNode("7天"))
                 cell7.appendChild(seebutton)
@@ -192,7 +194,7 @@
     }
     </script>
 </head>
-<body class="app sidebar-mini rtl" onload="selectcoupons()">
+<body class="app sidebar-mini rtl"  onpageshow="admin_authorization()" onload="selectcoupons()">
 <!-- Navbar-->
 <header class="navbar navbar-dark bg-dark shadow fixed-top ">
     <!--左侧-->
@@ -237,7 +239,7 @@
                 搜索
             </button>
         </form>
-        <a href="admin_login.html" class="btn btn-outline-light ml-4">
+        <a onclick="admin_logout()" class="btn btn-outline-light ml-4" href="#">
             <svg class="bi bi-power" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor"
                  xmlns="http://www.w3.org/2000/svg">
                 <path fill-rule="evenodd" d="M5.578 4.437a5 5 0 1 0 4.922.044l.5-.866a6 6 0 1 1-5.908-.053l.486.875z"

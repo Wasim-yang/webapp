@@ -10,23 +10,23 @@
     <link rel="stylesheet" type="text/css" href="css/main.css">
     <link rel="stylesheet" type="text/css" href="css/index.css">
     <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
-    <script src="js/request.js"></script>
+    <script src="lib/html5shiv/html5shiv.min.js"></script>
+    <script src="lib/respond/respond.min.js"></script>
     <script src="js/jquery-3.2.1.min.js"></script>
     <script src="js/popper.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/main.js"></script>
     <script type="text/javascript" src="js/Control.js"></script>
+    <script src="js/request.js"></script>
     <script>
         let uid
-        window.onload = function () {
-          //  usr_authorization()
+        window.onpageshow = function () {
+            usr_authorization()
             $(document).ajaxStop(function(){
-                //todo
-                //  document.getElementById("cscore").appendChild(document.createTextNode(uid))
+                request("http://127.0.0.1:8080/usr/selectUsrUcintegral", `uid=${uid}`, res => {
+                    document.getElementById("cscore").appendChild(document.createTextNode(res))
+                })
             });
-        }
-        function A(){
-            alert("A")
         }
         function bike() {
             window.location.href = "./user_travelbike.html"
@@ -86,10 +86,9 @@
                     <button type="submit" class="btn btn-danger"><i class="glyphicon glyphicon-search"></i></button>
                 </form>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="cart.html">购物车</a></li>
                     <li class="dropdown">
                         <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" role="button"
-                           aria-haspopup="true" aria-expanded="false">随便逛逛<span class="caret"></span></a>
+                           aria-haspopup="true" aria-expanded="false">积分商城<span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             <li>
                                 <a href="javascript:;">家用电器</a>
@@ -106,39 +105,6 @@
                             <li>
                                 <a href="javascript:;">服装鞋靴</a>
                             </li>
-                            <li>
-                                <a href="javascript:;">美妆个护</a>
-                            </li>
-                            <li>
-                                <a href="javascript:;">钟表珠宝</a>
-                            </li>
-                            <li>
-                                <a href="javascript:;">运动户外</a>
-                            </li>
-                            <li>
-                                <a href="javascript:;">汽车用品</a>
-                            </li>
-                            <li>
-                                <a href="javascript:;">母婴玩具</a>
-                            </li>
-                            <li>
-                                <a href="javascript:;">食品生鲜</a>
-                            </li>
-                            <li>
-                                <a href="javascript:;">鲜花绿植</a>
-                            </li>
-                            <li>
-                                <a href="javascript:;">医药保健</a>
-                            </li>
-                            <li>
-                                <a href="javascript:;">图书音像</a>
-                            </li>
-                            <li>
-                                <a href="javascript:;">住宿旅游</a>
-                            </li>
-                            <li>
-                                <a href="javascript:;">理财保险</a>
-                            </li>
                         </ul>
                     </li>
                 </ul>
@@ -146,7 +112,7 @@
         </div>
     </nav>
     <!-- 顶部导航菜单 end-->
-</div>
+
 <!-- 顶部导航 end -->
 
 <!-- 轮播图、功能插件 start-->
@@ -219,7 +185,7 @@
                     <div class="container-fluid">
                         <div class="row">
                             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                                <a href="#"><img src="images/index/attend3.png" alt=""
+                                <a href="user_checkin.html"><img src="images/index/attend3.png" alt=""
                                                          class="img-rounded img-responsive center-block"></a>
                                 <label class="label_h">签到</label>
                             </div>
@@ -307,7 +273,7 @@
                         <h4 class="kb-coll2 col-sm-5 "><strong>&nbsp;&nbsp;个人中心</strong></h4>
                     </div>
                     <div class="userCenterBox-rh col-md-6 col-lg-6 col-sm-6 col-xs-6 text-right">
-                        <a class="kb-coll3" style="font-size: 15px;" href="javascript:;"><strong>管理</strong>
+                        <a class="kb-coll3" style="font-size: 15px;" href="user_management.html"><strong>管理</strong>
                             <i class="glyphicon glyphicon-menu-right kb-coll4"></i></a>
                     </div>
                 </div>
@@ -437,7 +403,7 @@
 <!--                                        <span class="icon-bar"></span>-->
 <!--                                        <span class="icon-bar"></span>-->
 <!--                                    </button>-->
-                                    <a class="navbar-brand" href="admin_Publicwelfarelist.html">公益</a>
+                                    <a class="navbar-brand" href="user_publickwelfarelist.html">公益</a>
 
                                 </div>
 

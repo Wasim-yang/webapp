@@ -5880,6 +5880,20 @@ button.close {
   -webkit-overflow-scrolling: touch;
   outline: 0;
 }
+.modal1 {
+  position: fixed;
+  top: 300px;
+  width: 200px;
+  left: 30%;
+  right: 30%;
+  bottom: 0;
+  /*left: 0;*/
+  z-index: 1050;
+  display: none;
+  overflow: hidden;
+  -webkit-overflow-scrolling: touch;
+  outline: 0;
+}
 .modal.fade .modal-dialog {
   -webkit-transition: -webkit-transform .3s ease-out;
        -o-transition:      -o-transform .3s ease-out;
@@ -6238,6 +6252,7 @@ button.close {
 }
 .carousel {
   position: relative;
+  padding-top: 50px;
 }
 .carousel-inner {
   position: relative;

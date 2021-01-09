@@ -24,28 +24,45 @@
             let id = document.getElementById("loginId").value
             let password = document.getElementById("loginPassword").value
             let type = document.getElementById("type").value
-            if(type == 2){
-                request("http://127.0.0.1:8080/business/login",
-                    `id=${id}&password=${password}`, res => {
-                        if(res.code==200){
-                            window.location.href="business_index.html"
-                        }
-                        else{
-                            alert("商家登录失败，请检查账号或密码是否正确！")
-                        }
-                    })
-            }
-            else{
-                request("http://127.0.0.1:8080/admin/login",
-                    `id=${id}&password=${password}`, res => {
-                        if(res.code==200){
-                            window.location.href="admin_index.html"
-                        }
-                        else{
-                            alert("管理员登录失败，请检查账号或密码是否正确！")
-                        }
-                    })
-            }
+            if(type == 1){
+                    if(id==""&&password=="") {alert("您还没有输入账号和密码！")}
+                    else if(id==""&&password!="") {alert("您还没有输入账户！")}
+                    else if(id!=""&&password=="") {alert("您还没有输入密码！")}
+                    else{
+                    request("http://127.0.0.1:8080/admin/login",
+                        `id=${id}&password=${password}`, res => {
+                            if(res.code==200){
+                                window.location.href="admin_index.html"
+                            }
+                            else{
+                                alert("管理员登录失败，请检查账号或密码是否正确！")
+                            }
+                        })
+                    }
+                }
+            else if(type==2){
+                    if(id=="" &&password=="") {alert("您还没有输入账号和密码！")}
+                    else if(id==""&&password!="") {alert("您还没有输入账户！")}
+                    else if(id!="" &&password=="") {alert("您还没有输入密码！")}
+                    else {
+                        request("http://127.0.0.1:8080/business/login",
+                            `id=${id}&password=${password}`, res => {
+                                if (res.code == 200) {
+                                    window.location.href = "business_index.html"
+                                } else {
+                                    alert("商家登录失败，请检查账号或密码是否正确！")
+                                }
+                            })
+                    }
+                }
+            else if(type==3){
+                    if(id==""&&password=="") {alert("您还没有输入账号和密码！")}
+                    else if(id==""&&password!="") {alert("您还没有输入账户！")}
+                    else if(id!=""&&password=="") {alert("您还没有输入密码！")}
+                    else{alert("您不是公益项目负责人，请重新选择您的账户类型！")}
+
+                }
+            else{ alert("登录失败，请选择您的账户类型！") }
         }
     </script>
 </head>
@@ -99,7 +116,7 @@
                         </div>
                         <div class="alert alert-info" role="alert">
                             如有任何问题请联系我们<br>
-                            201806061907@zjut.cn<br>
+                            201806061416@zjut.edu.cn<br>
                         </div>
                         </div>
                     </form>

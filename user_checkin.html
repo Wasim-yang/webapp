@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
+    <title>签到</title>
+    <link rel="stylesheet" type="text/css" href="lib/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <link rel="stylesheet" href="css/qiandao.css">
+    <!--icon-->
+    <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
+    <script src="lib/html5shiv/html5shiv.min.js"></script>
+    <script src="lib/respond/respond.min.js"></script>
+    <style type="text/css">
+        .demo{
+            height: 400px;
+            min-height: 400px;
+        }
+        .pad-15{
+            padding: 15px 0;
+        }
+        .btn{
+            color: #fff;
+            text-transform: uppercase;
+            border-radius: 0;
+            padding-left: 60px;
+            position: relative;
+            transform: translateZ(0px);
+            transition: all 0.5s ease 0s;
+        }
+        .btn:after{
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: #fff;
+            z-index: -1;
+            transform: scaleX(0);
+            transform-origin: 100% 50% 0;
+            transition: all 0.5s ease-out 0s;
+        }
+        .btn:hover:after{
+            transform: scaleX(1);
+            transition-timing-function: cubic-bezier(0.52, 1.64, 0.37, 0.66);
+        }
+        .btn span{
+            width: 40px;
+            height: 100%;
+            line-height: 40px;
+            background: #fff;
+            position: absolute;
+            top: 0;
+            left: 0;
+            transition: all 0.3s linear 0s;
+        }
+        .btn span:after{
+            content: "";
+            display: block;
+            width: 10px;
+            height: 10px;
+            background: #fff;
+            margin: auto 0;
+            position: absolute;
+            top: 0;
+            right: -6px;
+            bottom: 0;
+            transform: rotate(45deg);
+            transition: all 0.3s linear 0s;
+        }
+        .btn.btn-sm{
+            padding-left: 40px;
+        }
+        .btn.btn-sm span{
+            width: 27px;
+            line-height: 27px;
+        }
+        .btn.btn-sm span:after{
+            width: 8px;
+            height: 8px;
+            right: -5px;
+        }
+        .btn.orange{
+            border: 1px solid #ee955b;
+            background: #ee955b;
+        }
+        .btn.orange:hover,
+        .btn.orange span{
+            color: #ee955b;
+        }
+        .btn.orange:hover span,
+        .btn.orange:hover span:after{
+            background: #ee955b;
+        }
+        .btn:hover span{
+            color: #fff;
+        }
+        @media only screen and (max-width: 767px){
+            .btn{ margin-bottom: 20px; }
+        }
+    </style>
+</head>
+
+<body>
+<div class="qiandao-warp ">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-offset-2 col-lg-8 col-md-offset-2 col-md-8 col-sm-12 col-xs-12">
+                <!--          -->
+                <img src="images/checkin/qiandao_banner.jpg" width="110%" alt="">
+            </div>
+            <div class="qiandao-con clear">
+                <div class="qiandao-left col-lg-8  col-md-8 col-sm-6 col-xs-6">
+
+                    <div class="qiandao-left-top clear">
+                        <!--当前日期-->
+                        <div class="current-date"></div>
+                        <div class="qiandao-history qiandao-tran qiandao-radius" id="js-qiandao-history">我的签到</div>
+                        <div class="visible-xs qiandao-history qiandao-tran qiandao-radius js-just-qiandao" id="xsqiandao">
+                            签到
+                        </div>
+                    </div>
+                    <div class="qiandao-main" id="js-qiandao-main">
+                        <ul class="qiandao-list" id="js-qiandao-list">
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="qiandao-right col-lg-4  col-md-4 visible-lg visible-md visible-sm">
+                    <div class="qiandao-top">
+                        <div class="just-qiandao qiandao-sprits js-just-qiandao ">
+                        </div>
+                        <!--                    <p class="qiandao-notic">恭喜您签到成功! 今日可领取积分：<span>1</span></p>-->
+                    </div>
+                    <div class="qiandao-bottom">
+                        <div class="qiandao-rule-list">
+                            <h4>签到规则</h4>
+                            <p>1、首次签到获得1个碳积分</p>
+                            <p>2、连续签到每日可增加1个碳积分</p>
+                            <p>3、连续签到7天及以上每天获得7个碳积分</p>
+                        </div>
+                        <div class="qiandao-rule-list">
+                            <h4>其他说明</h4>
+                            <p>1、如果中间有一天间断未签到的，重先开始计算连续签到时间。</p>
+                            <p>2、连续签到获得奖励后分享到QQ空间、微信朋友圈后可获得0.5碳积分奖励，每天只限分享一次。</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="qiandao-right col-xs-12  col-sm-12 visible-xs visible-sm">
+                        <div class="qiandao-bottom">
+                            <div class="qiandao-rule-list" style="color: #f8efef">
+                                <h4>签到规则</h4>
+                                <p>1、签到获得10个碳积分</p>
+                                <p>2、不可重复签到</p>
+                            </div>
+                        </div>
+                        <div class="demo" style="margin-top: -15px;margin-left: -10px">
+                            <div class="container">
+                                <div class="row pad-15">
+                                    <div class="col-sm-3">
+                                        <a href="javascript:history.go(-1)" class="btn btn-sm orange">
+                                            <span class="fa fa-home"></span>返回
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 我的签到 layer start -->
+        <div class="qiandao-layer qiandao-history-layer col-lg-4  col-xs-12">
+            <div class="qiandao-layer-con qiandao-radius">
+                <a href="javascript:;" class="close-qiandao-layer qiandao-sprits"></a>
+
+                <div class="qiandao-history-table">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>签到日期</th>
+                            <th>奖励</th>
+                            <th>说明</th>
+                        </tr>
+                        </thead>
+
+                        <tbody id="tbody_list">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="qiandao-layer-bg"></div>
+        </div>
+        <!-- 我的签到 layer end -->
+        <!-- 签到 layer start -->
+        <div class="qiandao-layer qiandao-active">
+            <div class="qiandao-layer-con qiandao-radius">
+                <a href="javascript:;" class="close-qiandao-layer qiandao-sprits"></a>
+                <div class="yiqiandao clear">
+                    <div class="yiqiandao-icon qiandao-sprits"></div>
+                    恭喜您签到成功！<span></span>
+                </div>
+                <div class="qiandao-jiangli qiandao-sprits">
+                    <span class="qiandao-jiangli-num">10<em>积分</em></span>
+                </div>
+                <!--                <a href="#" class="qiandao-share qiandao-tran">分享获取额外积分</a>-->
+            </div>
+            <div class="qiandao-layer-bg"></div>
+        </div>
+        <!-- 签到 layer end -->
+    </div>
+</div>
+</body>
+<script type="text/javascript" src="lib/jquery/jquery.js"></script>
+<script type="text/javascript" src="lib/bootstrap/js/bootstrap.js"></script>
+<script src="js/jquery-3.2.1.min.js"></script>
+<script src="js/request.js"></script>
+<script type="text/javascript">
+    $(function () {
+        let uid;
+        $.when(
+            $.ajax({
+            url: "http://127.0.0.1:8080/usr/authorization",
+            type: "POST",
+            contentType: false,
+            data: {},
+            xhrFields: {withCredentials: true},
+            success: function (data) {
+                if (data.code != 200) {
+                    alert("未登录，请您先登录！")
+                    window.location.href="./user_login.html"
+                }
+                else
+                    uid=data.uid
+            }
+        })).done(function () {
+            /*获取当前时间*/
+            let $currentDate = $(".current-date"),
+                myDate = new Date();
+            let year = parseInt(myDate.getFullYear()),
+                month = parseInt(myDate.getMonth() + 1),
+                day = parseInt(myDate.getDate())
+
+
+            let signFun = function () {
+                //添加当前时间到html
+                $currentDate.text(myDate.getFullYear() + '年' + parseInt(myDate.getMonth() + 1) + '月' + myDate.getDate() + '日');
+
+                let monthFirst = new Date(myDate.getFullYear(), parseInt(myDate.getMonth()), 1).getDay();
+                let d = new Date(myDate.getFullYear(), parseInt(myDate.getMonth() + 1), 0);
+                let totalDay = d.getDate();
+                let _handle = true;
+                /*添加日历网格*/
+                // ul表格
+                let $dateBox = $("#js-qiandao-list"),
+                    //  待添加的html
+                    _html = '';
+                //生成日历网格
+                for (let i = 0; i < 42; i++) {
+                    _html += ' <li><div class="qiandao-icon"></div></li>'
+                }
+                $dateBox.html(_html);
+                let $dateLi = $dateBox.find("li");
+
+                request("http://127.0.0.1:8080/usr/cal/selectAll", `uid=${uid}&year=${year}&month=${month}`, res => {
+                    for (let i = 0; i <= totalDay; i++) {
+                        $dateLi.eq(i + monthFirst - 1).addClass("date" + parseInt(i));
+                        for (let j = 0; j < res.length; j++) {
+                            if (i == res[j].caday) {
+                                if (i == day) { //当日已签到
+                                    $qiandaoBnt.addClass('actived');
+                                    _handle = false;
+                                    $("#xsqiandao").html("已签到")
+                                }
+                                $dateLi.eq(i + monthFirst - 1).addClass("qiandao");
+                            }
+                        }
+                    }//生成当月的日历并添加已签到日期标识
+                });
+
+
+                //为当前日期在网格上添加标记（able-qiandao）
+                $(".date" + myDate.getDate()).addClass('able-qiandao');
+
+                //签到按钮
+                let $qiandaoBnt = $(".js-just-qiandao");
+                // 点击日历签到
+                /*            $dateBox.on("click", "li", function () {
+                            if ($(this).hasClass('able-qiandao') && _handle) {
+                                $(this).addClass('qiandao');
+                                Clickqiandao();
+                            }
+                        })*/
+
+                /*点击签到按钮*/
+                $qiandaoBnt.on("click", function () {
+                    if (_handle) {
+                        Clickqiandao();
+                    }
+                });
+
+                //签到函数
+                function Clickqiandao() {
+                    //添加活跃 不可再点击
+                    $qiandaoBnt.addClass('actived');
+                    //打开弹窗
+                    openLayer("qiandao-active", qianDao);
+                    //标识为false，不可再点击签到
+                    _handle = false;
+                    $("#xsqiandao").html("已签到")
+                    request("http://127.0.0.1:8080/usr/cal/addCalendar", `uid=${uid}&year=${year}&month=${month}&day=${day}`, res => {
+                    });
+                }
+
+                //为日历表格中的当前时间添加已签到的标识
+                function qianDao() {
+                    $(".date" + myDate.getDate()).addClass('qiandao');
+                }
+            }();
+
+            /*
+          打开弹窗
+        * a:需要显示的class名
+        * Fun:函数*/
+            function openLayer(a, Fun) {
+                $('.' + a).fadeIn(Fun)
+            }
+
+            let closeLayer = function () {
+                $("body").on("click", ".close-qiandao-layer", function () {
+                    $(this).parents(".qiandao-layer").fadeOut()
+                })
+            }(); //关闭弹窗
+            let myform = $("#js-qiandao-history")
+            let b = true;
+            //我的签到
+            myform.on("click", function () {
+                if (b) {
+                    request("http://127.0.0.1:8080/usr/cal/selectMyform", `uid=${uid}`, res => {
+                        let table = document.getElementById("tbody_list");
+
+                        let award = 10
+                        let t = res[0].cayear + "-" + res[0].camonth + "-" + res[0].caday
+                        for (let i = 0; i < res.length; i++) {
+                            let row = document.createElement("tr")
+                            let cell1 = document.createElement("td")
+                            let cell2 = document.createElement("td")
+                            let date = res[i].cayear + "-" + res[i].camonth + "-" + res[i].caday
+                            cell1.appendChild(document.createTextNode(date))
+                            cell2.appendChild(document.createTextNode(award))
+                            row.appendChild(cell1)
+                            row.appendChild(cell2)
+                            table.appendChild(row)
+                        }
+                        b = false
+                    });
+                }
+                openLayer("qiandao-history-layer", myFun);
+
+                function myFun() {
+                    console.log(1)
+                } //打开弹窗返回函数
+            })
+        });
+    })
+</script>
+
+</html>

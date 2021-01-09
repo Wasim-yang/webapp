@@ -22,6 +22,7 @@
     <!-- Data table plugin-->
     <script>
         let path
+        let bid=8888
 
         function submit_good() {
             let formData = new FormData();
@@ -33,6 +34,7 @@
                 contentType: false,
                 processData: false,
                 mimeType: "multipart/form-data",
+                xhrFields: {withCredentials: true},
                 success: function (data) {
                     path = data
                     alert('image upload successful!')
@@ -41,8 +43,21 @@
                     let number = document.getElementById("goodNumber").value
                     let ean = document.getElementById("goodEAN").value
                     let description = document.getElementById("goodsdescription").value
+                    if(name==null||name==""){
+                        alert("请输入商品名称")
+                    }
+                    if(cost==null||cost=="")
+                    {
+                        alert("请输入商品单价")
+                    }
+                    if(number==null||number==""){
+                        alert("请输入商品库存")
+                    }
+                    if(ean==null||ean==""){
+                        alert("请输入EAN条码")
+                    }
                     request("http://127.0.0.1:8080/admin/goods/insert",
-                        `name=${name}&cost=${cost}&number=${number}&ean=${ean}&description=${description}&path=${path}`, res => {
+                        `name=${name}&cost=${cost}&number=${number}&ean=${ean}&description=${description}&path=${path}&bid=${bid}`, res => {
                             alert(res.message)
                         })
                 },
@@ -120,7 +135,7 @@
                 搜索
             </button>
         </form>
-        <a href="admin_login.html" class="btn btn-outline-light ml-4">
+        <a onclick="admin_logout()" class="btn btn-outline-light ml-4" href="#">
             <svg class="bi bi-power" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor"
                  xmlns="http://www.w3.org/2000/svg">
                 <path fill-rule="evenodd" d="M5.578 4.437a5 5 0 1 0 4.922.044l.5-.866a6 6 0 1 1-5.908-.053l.486.875z"

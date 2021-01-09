@@ -266,7 +266,6 @@
 
 #product > .cd-main-content {
     position: relative;
-    z-index: 1;
 
 }
 
@@ -276,7 +275,6 @@
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center center;
-  z-index: 1;
   background-attachment: fixed;
 }
 
@@ -422,7 +420,7 @@
 /*首页轮播图下方控件css*/
 .ad_picture{
 	position:relative;
-	top:-20px;
+	top:1px;
 	left: 2%;
 	right: 2%;
 	width: 96%;
