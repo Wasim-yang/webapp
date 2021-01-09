@@ -102,8 +102,9 @@
     function cancel() {
         if(confirm("注销后无法恢复，您确定要注销吗?") == true){
             request("http://127.0.0.1:8080/usr/deleteUsr", `uid=${uid}`, res => {
-
-            }
+                alert(res.message)
+                window.location.href("/user_login.html")
+            })
         }
     }
 </script>
