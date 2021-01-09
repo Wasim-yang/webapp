@@ -35,9 +35,8 @@
                         <p class="hname">王小二</p>
                         <p class="hpthy">普通管理员</p>
                     </div> -->
-                <a class="content clearfloat" style="font-size: 0.5rem; color: #fff;display: block;"
-                   href="user_login.html">
-                    登录/注册
+                <a class="content clearfloat just-name" style="font-size: 0.5rem; color: #fff;display: block;"
+                   href="#">
                 </a>
 
             </div>
@@ -277,6 +276,7 @@
             $(".just-money").html(user.umoney)
             $(".just-credit").html(user.ucintegral)
             $(".just-addr").html(user.uaddress)
+            $(".just-name").html(user.uname)
         })
         request("http://127.0.0.1:8080/usr/getCouponNum", `uid=${uid}`, res => {
             $(".just-coupon").html(res)
