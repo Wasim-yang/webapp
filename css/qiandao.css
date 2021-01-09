@@ -13,7 +13,7 @@ img {
 
 @media only screen and (max-width: 500px) {
     .qiandao-con {
-        background-image: url("../images/checkin/qiandao_media.png");
+        background-image: url("../images/checkin/qiandao_media.png") ;
     }
 }
 
@@ -61,11 +61,12 @@ img {
 
 .qiandao-con {
     margin: 0 auto;
-    width: 1035px;
+    /*width: 1035px;*/
+    width: 102rem;
     height: 684px;
     background-image: url(../images/checkin/qiandao_con.jpg)
 }
-.qiandao-mcon {
+.qiandao-mycon {
     margin: 0 auto;
     width: 1035px;
     height: 684px;
