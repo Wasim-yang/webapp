@@ -136,19 +136,6 @@
                         </div>
                         <!--                    <p class="qiandao-notic">恭喜您签到成功! 今日可领取积分：<span>1</span></p>-->
                     </div>
-                    <div class="qiandao-bottom">
-                        <div class="qiandao-rule-list">
-                            <h4>签到规则</h4>
-                            <p>1、首次签到获得1个碳积分</p>
-                            <p>2、连续签到每日可增加1个碳积分</p>
-                            <p>3、连续签到7天及以上每天获得7个碳积分</p>
-                        </div>
-                        <div class="qiandao-rule-list">
-                            <h4>其他说明</h4>
-                            <p>1、如果中间有一天间断未签到的，重先开始计算连续签到时间。</p>
-                            <p>2、连续签到获得奖励后分享到QQ空间、微信朋友圈后可获得0.5碳积分奖励，每天只限分享一次。</p>
-                        </div>
-                    </div>
                 </div>
                 <div class="row">
                     <div class="qiandao-right col-xs-12  col-sm-12 visible-xs visible-sm">
@@ -225,20 +212,20 @@
         let uid;
         $.when(
             $.ajax({
-            url: "http://127.0.0.1:8080/usr/authorization",
-            type: "POST",
-            contentType: false,
-            data: {},
-            xhrFields: {withCredentials: true},
-            success: function (data) {
-                if (data.code != 200) {
-                    alert("未登录，请您先登录！")
-                    window.location.href="./user_login.html"
+                url: "http://127.0.0.1:8080/usr/authorization",
+                type: "POST",
+                contentType: false,
+                data: {},
+                xhrFields: {withCredentials: true},
+                success: function (data) {
+                    if (data.code != 200) {
+                        alert("未登录，请您先登录！")
+                        window.location.href="./user_login.html"
+                    }
+                    else
+                        uid=data.uid
                 }
-                else
-                    uid=data.uid
-            }
-        })).done(function () {
+            })).done(function () {
             /*获取当前时间*/
             let $currentDate = $(".current-date"),
                 myDate = new Date();

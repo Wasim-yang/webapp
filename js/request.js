@@ -104,6 +104,21 @@ function usr_logout() {
     });
 }
 
+function usr_delete() {
+    $.ajax({
+        url: "http://127.0.0.1:8080/usr/logout",
+        type: "POST",
+        contentType: false,
+        data: {},
+        xhrFields: {withCredentials: true},
+        success: function (data) {
+            if (data.code == 200) {
+                usr_authorization();
+            }
+        }
+    });
+}
+
 function admin_logout() {
     $.ajax({
         url: "http://127.0.0.1:8080/admin/logout",
