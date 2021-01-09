@@ -18,17 +18,16 @@
     <script src="js/request.js"></script>
     <script>
         /*分页处理全局变量*/
-        let usrmycurrentPage = 1
-        let usrmytotalPage = 1
-        let usrmyPageSize
-        let usrmytotalRecord = 0
+        let currentPage = 1
+        let totalPage = 1
+        let PageSize
+        let totalRecord = 0
         let uid
 
         window.onload = function () {
             usr_authorization()
             $(document).ajaxStop(function(){
-                selectcouponsbycname();
-                selectpoints();
+                selectmytask();
             });
         }
         /*按name搜索*/
@@ -62,28 +61,27 @@
         //     })
         // }
         /*查询并生成表单*/
-        function selectmycoupons() {
-            request("http://127.0.0.1:8080/usr/task/selectpage", `uid=${uid}&currentPage=${usrmycurrentPage}`,
+        function selectmytask() {
+            request("http://127.0.0.1:8080/usr/task/selectpage", `uid=${uid}&currentPage=${currentPage}`,
                 res => {
-                    usrmycurrentPage = res.usrmycurrentPage
-                    usrmytotalPage = res.usrmytotalPage
-                    usrmyPageSize = res.usrmyPageSize
-                    usrmytotalRecord = res.usrmytotalRecord
+                    currentPage = res.currentPage
+                    totalPage = res.totalPage
+                    PageSize = res.PageSize
+                    totalRecord = res.totalRecord
                     let table = document.getElementById("tbody_list")
                     /*生成表单并打印数据与操作按钮*/
                     let taskList = res.dataList;
                     let j = 0
-                    document.getElementById("pageResult").append("共有" + usrmytotalRecord + "条记录 共" + usrmytotalPage + "页 当前第" + usrmycurrentPage + "页")
+                    document.getElementById("pageResult").append("共有" + totalRecord + "条记录 共" + totalPage
+                        + "页 当前第" +currentPage + "页")
                     for (let i = 0; i < taskList.length; i++) {
-                        j = j + 1
-                        if (j > usrmyPageSize) break
                         let row = document.createElement("tr")
                         let cell1 = document.createElement("td")
                         let cell2 = document.createElement("td")
                         let cell3 = document.createElement("td")
                         let cell4 = document.createElement("td")
                         let tasktype
-                        if(taskList[i].ttpye==1){
+                        if(taskList[i].ttype==1){
                             tasktype="自行车"
                         }
                         else if(taskList[i].ttype==2){
@@ -154,11 +152,11 @@
                 <p id="pageResult"/>
             </div>
             <div style="text-align: center">
-                <a href="#" onclick="usr_firstPage();selectcouponsbycname()();">首页</a>&nbsp;&nbsp;
-                <a href="#" onclick="usr_previousPage();selectcouponsbycname();">上一页</a>&nbsp;&nbsp;
-                <a href="#" onclick="usr_nextPage();selectcouponsbycname();">下一页</a>&nbsp;&nbsp;
-                <a href="#" onclick="usr_lastPage();selectcouponsbycname();">尾页</a>
-                <a href="user_coupons.html">&nbsp;&nbsp;返回</a>
+                <a href="#" onclick="admin_firstPage();selectmytask();">首页</a>&nbsp;&nbsp;
+                <a href="#" onclick="admin_previousPage();selectmytask();">上一页</a>&nbsp;&nbsp;
+                <a href="#" onclick="admin_nextPage();selectmytask();">下一页</a>&nbsp;&nbsp;
+                <a href="#" onclick="admin_lastPage();selectmytask();">尾页</a>
+                <a href="javascript:history.go(-1)">&nbsp;&nbsp;返回</a>
             </div>
         </div>
     </div>
