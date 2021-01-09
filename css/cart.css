@@ -332,8 +332,16 @@
 	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 	font-size: 16px;
 	line-height: 1.42857143;
-	color:#368306;
 }
+.table-line{
+	table-layout: fixed; word-wrap: break-word;
+}
+.mycoupons{
+	margin-right: -44.6rem;
+	font-size: 8px;
+}
+
+
 
 
 

@@ -15,7 +15,7 @@
     <link rel="stylesheet" type="text/css" href="css/infor/loaders.min.css"/>
     <link rel="stylesheet" type="text/css" href="css/iconfont/iconfont.css"/>
 </head>
-<body onload="myonload()">
+<body>
 <!--header star-->
 <header class="mui-bar mui-bar1 mui-bar-nav mui-bar-nav1" id="header">
     <a class="back-btn" href="javascript:history.go(-1)">
@@ -33,8 +33,7 @@
         <p>0~100</p>
     </div>
     <div class="clearfloat">
-        <a href="javascript:history.go(-1)" class="center-btn db ra3" style="width: 30%"
-           onclick="updateAge();">保存</a>
+        <a class="center-btn db ra3" style="width: 30%" onclick="updateAge();">保存</a>
     </div>
 </div>
 
@@ -48,8 +47,13 @@
 </body>
 <script src="js/request.js"></script>
 <script type="text/javascript">
-
-    let uid = 1;
+    let uid;
+    window.onload = function () {
+        usr_authorization();
+        $(document).ajaxStop(function(){
+            myonload();
+        });
+    }
 
     function myonload() {
         request("http://127.0.0.1:8080/usr/selectAll", `uid=${uid}`, user => {
@@ -61,8 +65,7 @@
         uage = $("#age").val();
         request("http://127.0.0.1:8080/usr/info/updateAge", `uid=${uid}&uage=${uage}`, res => {
             alert(res.message)
-            settimeout(function () {
-            }, 1000);
+            window.location.href="javascript:history.go(-1)";
         })
     }
 </script>

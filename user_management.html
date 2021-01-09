@@ -15,7 +15,7 @@
     <link rel="stylesheet" type="text/css" href="css/infor/loaders.min.css"/>
     <link rel="stylesheet" type="text/css" href="css/iconfont/iconfont.css"/>
 </head>
-<body onload="myonload()">
+<body>
 <!--header star-->
 <header class="mui-bar mui-bar1 mui-bar-nav mui-bar-nav1" id="header">
     <a class="back-btn" href="user_index.html">
@@ -177,7 +177,7 @@
 <div class="cashlist clearfloat">
     <ul>
         <li class="box-s">
-            <a href="#">
+            <a href="user_mycoupons.html">
                 <p><i class="iconfont icon-youhuiquan1"></i>我的优惠券</p>
                 <i class="iconfont icon-jiantou1"></i>
             </a>
@@ -252,8 +252,13 @@
 </body>
 <script src="js/request.js"></script>
 <script type="text/javascript">
-    let uid = 1
-
+    let uid;
+    window.onload = function () {
+        usr_authorization()
+        $(document).ajaxStop(function(){
+            myonload();
+        });
+    }
     function myonload() {
         request("http://127.0.0.1:8080/usr/selectAll", `uid=${uid}`, user => {
             $(".just-money").html(user.umoney)

@@ -21,14 +21,19 @@
     <script src="js/request.js"></script>
     <script>
         let bid;
+        let money
         window.onload = function () {
             business_authorization();
             $(document).ajaxStop(function(){
-                pushId();
+                request("http://127.0.0.1:8080/business/selectMoney", `bid=${bid}`, res => {
+                    money = res;
+                    pushId();
+                })
             });
         }
         function pushId() {
             document.getElementById("admin_id2").appendChild(document.createTextNode(bid))
+            document.getElementById("admin_id3").appendChild(document.createTextNode(money))
         }
     </script>
 </head>
@@ -114,7 +119,7 @@
         </li>
         <ul id="adminControl_2" style="display: none">
             <li><a class="app-menu__item_child" href="business_deliver.html">发货</a></li>
-            <li><a class="app-menu__item_child" href="#">上架</a></li>
+            <li><a class="app-menu__item_child" href="#">联系管理员</a></li>
         </ul>
     </ul>
 </aside>
@@ -131,6 +136,7 @@
                 <div class="info">
                     <h3>合作商家</h3>
                     <h4>账号:&nbsp;&nbsp;<b id="admin_id2"></b></h4>
+                    <h4>存款:&nbsp;&nbsp;<b id="admin_id3"></b></h4>
                     <h4>所在地:&nbsp;&nbsp;<b>浙江</b></h4>
                 </div>
             </div>

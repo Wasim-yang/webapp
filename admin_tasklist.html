@@ -32,7 +32,7 @@
         let totalRecord = 0
         /*查询并生成表单*/
         function selecttask() {
-            request("http://127.0.0.1:8080/task/selectByPage", `currentPage=${currentPage}`, res => {
+            request("http://127.0.0.1:8080/admin/task/selectByPage", `currentPage=${currentPage}`, res => {
                 currentPage = res.currentPage
                 totalPage = res.totalPage
                 PageSize = res.pageSize
@@ -54,6 +54,7 @@
                     let cell5 = document.createElement("td")
                     let cell6 = document.createElement("td")
                     let cell7 = document.createElement("td")
+                    let cell8 = document.createElement("td")
                     let seebutton = document.createElement("button")
                     let deletebutton = document.createElement("button")
                     seebutton.type = "button"
@@ -66,6 +67,8 @@
                     //待转换的参数
                     let ttype = task[i].ttype
                     let t = task[i].tdeadline
+                    let s = task[i].tstartime
+                    let tstartime = s.substring(0,16).replace(/-/g,"/")
                     let tdeadline = t.substring(0,16).replace(/-/g,"/")
                     let bicycle = document.createElement("i")
                     let subway = document.createElement("i")
@@ -93,6 +96,7 @@
                     seebutton.setAttribute("requirement", task[i].trequirement)
                     seebutton.setAttribute("award", task[i].taward)
                     seebutton.setAttribute("type", ttype)
+                    seebutton.setAttribute("startime", tstartime)
                     seebutton.setAttribute("deadline", tdeadline)
                     //为删除按钮添加tid
                     deletebutton.setAttribute("id", task[i].tid)
@@ -104,13 +108,14 @@
                         document.getElementById("modaltaskrequirement").value = seebutton.getAttribute("requirement")
                         document.getElementById("modaltaskaward").value = seebutton.getAttribute("award")
                         document.getElementById("modaltasktype").value = seebutton.getAttribute("type")
+                        document.getElementById("modaltaskstartime").value = seebutton.getAttribute("startime")
                         document.getElementById("modaltaskdeadline").value = seebutton.getAttribute("deadline")
                         document.getElementById('taskmodal').style.display = 'block'
                     }
                     /*删除按钮-删除个项数据*/
                     deletebutton.onclick = function () {
                         let tid = this.getAttribute("id")
-                        request("http://127.0.0.1:8080/task/delete", `tid=${tid}`, res => {
+                        request("http://127.0.0.1:8080/admin/task/delete", `tid=${tid}`, res => {
                             alert(res.message)
                             admin_deleteTable()
                             selecttask()
@@ -121,9 +126,10 @@
                     cell3.appendChild(document.createTextNode(task[i].tname))
                     cell4.appendChild(document.createTextNode(task[i].trequirement))
                     cell5.appendChild(document.createTextNode(tdeadline))
-                    cell6.appendChild(document.createTextNode(task[i].taward))
-                    cell7.appendChild(seebutton)
-                    cell7.appendChild(deletebutton)
+                    cell6.appendChild(document.createTextNode(tstartime))
+                    cell7.appendChild(document.createTextNode(task[i].taward))
+                    cell8.appendChild(seebutton)
+                    cell8.appendChild(deletebutton)
                     row.appendChild(cell1)
                     row.appendChild(cell2)
                     row.appendChild(cell3)
@@ -131,6 +137,7 @@
                     row.appendChild(cell5)
                     row.appendChild(cell6)
                     row.appendChild(cell7)
+                    row.appendChild(cell8)
                     table.appendChild(row)
                 }
             })
@@ -159,7 +166,7 @@
             let award = document.getElementById("modaltaskaward").value;
             let descp = document.getElementById("modaltaskdescription").value;
             let deadline = document.getElementById("modaltaskdeadline").value;
-            request("http://127.0.0.1:8080/task/update", `tid=${id}&tname=${name}&tdescription=${descp}&trequirement=${require}&taward=${award}&ttype=${type}&tdeadline=${deadline}`, res => {
+            request("http://127.0.0.1:8080/admin/task/update", `tid=${id}&tname=${name}&tdescription=${descp}&trequirement=${require}&taward=${award}&ttype=${type}&tdeadline=${deadline}`, res => {
                 alert(res.message)
                 admin_deleteTable()
                 selecttask()
@@ -169,7 +176,11 @@
 
         function tasksearch() {
             let id = document.getElementById("searchid").value;
-            request("http://127.0.0.1:8080/task/selectOne", `tid=${id}`, task => {
+            if(id == "") {
+                selecttask();
+                return;
+            }
+            request("http://127.0.0.1:8080/admin/task/selectOne", `tid=${id}`, task => {
                 let table = document.getElementById("tbody_list")
                 /*生成表单并打印数据与操作按钮*/
                 let row = document.createElement("tr")
@@ -180,6 +191,7 @@
                 let cell5 = document.createElement("td")
                 let cell6 = document.createElement("td")
                 let cell7 = document.createElement("td")
+                let cell8 = document.createElement("td")
                 let seebutton = document.createElement("button")
                 let deletebutton = document.createElement("button")
                 seebutton.type = "button"
@@ -217,6 +229,7 @@
                 seebutton.setAttribute("award", task.taward)
                 seebutton.setAttribute("type", ttype)
                 seebutton.setAttribute("deadline", task.tdeadline)
+                seebutton.setAttribute("startime",task.tstartime)
                 //为删除按钮添加tid
                 deletebutton.setAttribute("id", task.tid)
                 /*查看按钮-在拟态框中显示详细数据*/
@@ -227,13 +240,14 @@
                     document.getElementById("modaltaskrequirement").value = seebutton.getAttribute("requirement")
                     document.getElementById("modaltaskaward").value = seebutton.getAttribute("award")
                     document.getElementById("modaltasktype").value = seebutton.getAttribute("type")
+                    document.getElementById("modaltaskstartime").value = seebutton.getAttribute("startime")
                     document.getElementById("modaltaskdeadline").value = seebutton.getAttribute("deadline")
                     document.getElementById('taskmodal').style.display = 'block'
                 }
                 /*删除按钮-删除个项数据*/
                 deletebutton.onclick = function () {
                     let tid = this.getAttribute("id")
-                    request("http://127.0.0.1:8080/task/delete", `tid=${tid}`, res => {
+                    request("http://127.0.0.1:8080/admin/task/delete", `tid=${tid}`, res => {
                         alert(res.message)
                         admin_deleteTable()
                         selecttask()
@@ -243,10 +257,11 @@
                 cell2.appendChild(document.createTextNode(ttype))
                 cell3.appendChild(document.createTextNode(task.tname))
                 cell4.appendChild(document.createTextNode(task.trequirement))
-                cell5.appendChild(document.createTextNode(task.tdeadline))
-                cell6.appendChild(document.createTextNode(task.taward))
-                cell7.appendChild(seebutton)
-                cell7.appendChild(deletebutton)
+                cell5.appendChild(document.getElementById(task.tstartime))
+                cell6.appendChild(document.createTextNode(task.tdeadline))
+                cell7.appendChild(document.createTextNode(task.taward))
+                cell8.appendChild(seebutton)
+                cell8.appendChild(deletebutton)
                 row.appendChild(cell1)
                 row.appendChild(cell2)
                 row.appendChild(cell3)
@@ -254,6 +269,7 @@
                 row.appendChild(cell5)
                 row.appendChild(cell6)
                 row.appendChild(cell7)
+                row.appendChild(cell8)
                 table.appendChild(row)
             })
         }
@@ -269,7 +285,7 @@
         }
     </script>
 </head>
-<body class="app sidebar-mini rtl" onload="selecttask()">
+<body class="app sidebar-mini rtl" onpageshow="admin_authorization()" onload="selecttask()">
 <!-- Navbar-->
 <header class="navbar navbar-dark bg-dark shadow fixed-top ">
     <!--左侧-->
@@ -436,6 +452,7 @@
                                 <th>任务类型</th>
                                 <th>任务名称</th>
                                 <th>目标里程</th>
+                                <th>开始时间</th>
                                 <th>截止时间</th>
                                 <th>奖励积分</th>
                                 <th>操作</th>
@@ -481,6 +498,9 @@
             <label><b>目标里程</b></label>
             <input type="text" id="modaltaskrequirement" style=" width: 80%;" required><br>
 
+            <label><b>开始时间</b></label>
+            <input type="text" id="modaltaskstartime" style=" width: 80%;" required><br>
+
             <label><b>截止时间</b></label>
             <input type="text" id="modaltaskdeadline" style=" width: 80%;" required><br>
 
@@ -499,6 +519,20 @@
     </form>
 </div>
 <script>
+    /*日历*/
+    $('#modaltaskstartime').datetimepicker({
+        forceParse: 0,//设置为0，时间不会跳转1899，会显示当前时间
+        language: 'zh-CN',
+        startdate: new Date(),
+        format: 'yyyy/mm/dd hh:ii',
+        minView: 0,
+        initialDate: new Date(),
+        autoclose: true,
+        todayBtn: true,
+        todayHighlight: true
+
+    });
+    $("#taskSt").datetimepicker("setDate", new Date());
     /*日历*/
     $('#modaltaskdeadline').datetimepicker({
         forceParse: 0,//设置为0，时间不会跳转1899，会显示当前时间

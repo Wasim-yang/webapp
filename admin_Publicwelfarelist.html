@@ -31,7 +31,11 @@
         // 按id查询
         function selectwelfarebyid() {
             let wid = document.getElementById("selectwelfareid").value
-            request("http://127.0.0.1:8080/welfare/selectid", `wid=${wid}`, res => {
+            if(wid == ""){
+                selectwelfare();
+                return;
+            }
+            request("http://127.0.0.1:8080/admin/welfare/selectid", `wid=${wid}`, res => {
                 let table = document.getElementById("tbody_list")
                 /*生成表单并打印数据与操作按钮*/
                 let row = document.createElement("tr")
@@ -67,7 +71,7 @@
                 /*删除按钮-删除改项数据*/
                 deletebutton.onclick = function () {
                     let wid = this.getAttribute("wid")
-                    request("http://127.0.0.1:8080/welfare/delete", `wid=${wid}`, res => {
+                    request("http://127.0.0.1:8080/admin/welfare/delete", `wid=${wid}`, res => {
                         alert(res.message)
                         admin_deleteTable()
                         selectwelfare()
@@ -107,7 +111,7 @@
             let wtotal = document.getElementById("modalwelfaretotal").value;
             let wgain = document.getElementById("modalwelfaregain").value;
             let wdescription = document.getElementById("modalwelfaredescription").value;
-            request("http://127.0.0.1:8080/welfare/update",
+            request("http://127.0.0.1:8080/admin/welfare/update",
                 `wid=${wid}&wname=${wname}&wtotal=${wtotal}&wgain=${wgain}&wdescription=${wdescription}`, res => {
                     alert(res.message)
                     admin_deleteTable()
@@ -117,7 +121,7 @@
         }
         /*查询并生成表单*/
         function selectwelfare() {
-            request("http://127.0.0.1:8080/welfare/selectpage", `currentPage=${currentPage}`, res => {
+            request("http://127.0.0.1:8080/admin/welfare/selectpage", `currentPage=${currentPage}`, res => {
                 currentPage = res.currentPage
                 totalPage = res.totalPage
                 PageSize = res.pageSize
@@ -165,7 +169,7 @@
                     /*删除按钮-删除改项数据*/
                     deletebutton.onclick = function () {
                         let wid = this.getAttribute("wid");
-                        request("http://127.0.0.1:8080/welfare/delete", `wid=${wid}`, res => {
+                        request("http://127.0.0.1:8080/admin/welfare/delete", `wid=${wid}`, res => {
                             alert(res.message)
                             admin_deleteTable()
                             selectwelfare()
@@ -192,7 +196,7 @@
 
     </script>
 </head>
-<body class="app sidebar-mini rtl" onload='selectwelfare()'>
+<body class="app sidebar-mini rtl" onpageshow="admin_authorization()" onload='selectwelfare()'>
 <!-- Navbar-->
 <header class="navbar navbar-dark bg-dark shadow fixed-top ">
     <!--左侧-->
@@ -345,7 +349,7 @@
                         </div>
                         <div class="col-lg-3">
                             <button class="btn btn-primary" id="selectwelfare_page" type="button"
-                                    onclick="uploadPage()">查询
+                                    onclick="uploadPage()">跳转
                             </button>
                         </div>
                     </div>
@@ -391,6 +395,7 @@
         </div>
 
         <div class="container">
+
 
             <label><b>项目编号</b></label>
             <input type="text" id="modalwelfareid" style=" width: 80%;" required disabled><br>

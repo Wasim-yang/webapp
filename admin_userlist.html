@@ -39,6 +39,7 @@
                 let cell5 = document.createElement("td")
                 let cell6 = document.createElement("td")
                 let cell7 = document.createElement("td")
+                let cell8 = document.createElement("td")
                 let seebutton = document.createElement("button")
                 let deletebutton = document.createElement("button")
                 seebutton.type = "button"
@@ -54,6 +55,7 @@
                 seebutton.setAttribute("age", res.uage)
                 seebutton.setAttribute("address", res.uaddress)
                 seebutton.setAttribute("cintegral", res.ucintegral)
+                seebutton.setAttribute("money", res.umoney)
                 deletebutton.setAttribute("id", res.uid)
                 seebutton.onclick = function () {
                     document.getElementById("modalusrid").value = seebutton.getAttribute("id")
@@ -62,6 +64,7 @@
                     document.getElementById("modalusrage").value = seebutton.getAttribute("age")
                     document.getElementById("modalusraddress").value = seebutton.getAttribute("address")
                     document.getElementById("modalusrcintegral").value = seebutton.getAttribute("cintegral")
+                    document.getElementById("modalusrmoney").value = seebutton.getAttribute("money")
                     document.getElementById('usrmodal').style.display = 'block'
                 }
                 /*删除按钮-删除改项数据*/
@@ -83,8 +86,9 @@
                 cell4.appendChild(document.createTextNode(res.uage))
                 cell5.appendChild(document.createTextNode(res.uaddress))
                 cell6.appendChild(document.createTextNode(res.ucintegral))
-                cell7.appendChild(seebutton)
-                cell7.appendChild(deletebutton)
+                cell7.appendChild(document.createTextNode(res.umoney))
+                cell8.appendChild(seebutton)
+                cell8.appendChild(deletebutton)
                 row.appendChild(cell1)
                 row.appendChild(cell2)
                 row.appendChild(cell3)
@@ -92,6 +96,7 @@
                 row.appendChild(cell5)
                 row.appendChild(cell6)
                 row.appendChild(cell7)
+                row.appendChild(cell8)
                 table.appendChild(row)
             })
         }
@@ -114,7 +119,8 @@
             let age = document.getElementById("modalusrage").value;
             let address = document.getElementById("modalusraddress").value;
             let cintegral = document.getElementById("modalusrcintegral").value;
-            request("http://127.0.0.1:8080/admin/usr/updateNoP", `id=${id}&name=${name}&sex=${sex}&age=${age}&address=${address}&cintegral=${cintegral}`, res => {
+            let money = document.getElementById("modalusrmoney").value;
+            request("http://127.0.0.1:8080/admin/usr/updateNoP", `id=${id}&name=${name}&sex=${sex}&age=${age}&address=${address}&cintegral=${cintegral}&money=${money}`, res => {
                 alert(res.message)
                 admin_deleteTable()
                 selectusr()
@@ -131,12 +137,8 @@
                 let table = document.getElementById("tbody_list")
                 /*生成表单并打印数据与操作按钮*/
                 let usrList = res.dataList
-                let j = 0
                 document.getElementById("pageResult").append("共有" + totalRecord + "条记录 共" + totalPage + "页 当前第" + currentPage + "页")
-                for (let i = 0; i < totalRecord; i++) {
-                    j = j + 1
-                    if (j > PageSize)
-                        break
+                for (let i = 0; i < usrList.length; i++) {
                     let row = document.createElement("tr")
                     let cell1 = document.createElement("td")
                     let cell2 = document.createElement("td")
@@ -145,6 +147,7 @@
                     let cell5 = document.createElement("td")
                     let cell6 = document.createElement("td")
                     let cell7 = document.createElement("td")
+                    let cell8 = document.createElement("td")
                     let seebutton = document.createElement("button")
                     let deletebutton = document.createElement("button")
                     seebutton.type = "button"
@@ -160,6 +163,7 @@
                     seebutton.setAttribute("age", usrList[i].uage)
                     seebutton.setAttribute("address", usrList[i].uaddress)
                     seebutton.setAttribute("cintegral", usrList[i].ucintegral)
+                    seebutton.setAttribute("money", usrList[i].umoney)
                     deletebutton.setAttribute("id", usrList[i].uid)
                     /*查看按钮-在拟态框中显示详细数据*/
                     seebutton.onclick = function () {
@@ -169,6 +173,7 @@
                         document.getElementById("modalusrage").value = seebutton.getAttribute("age")
                         document.getElementById("modalusraddress").value = seebutton.getAttribute("address")
                         document.getElementById("modalusrcintegral").value = seebutton.getAttribute("cintegral")
+                        document.getElementById("modalusrmoney").value = seebutton.getAttribute("money")
                         document.getElementById('usrmodal').style.display = 'block'
                     }
                     /*删除按钮-删除改项数据*/
@@ -190,8 +195,9 @@
                     cell4.appendChild(document.createTextNode(usrList[i].uage))
                     cell5.appendChild(document.createTextNode(usrList[i].uaddress))
                     cell6.appendChild(document.createTextNode(usrList[i].ucintegral))
-                    cell7.appendChild(seebutton)
-                    cell7.appendChild(deletebutton)
+                    cell7.appendChild(document.createTextNode(usrList[i].umoney))
+                    cell8.appendChild(seebutton)
+                    cell8.appendChild(deletebutton)
                     row.appendChild(cell1)
                     row.appendChild(cell2)
                     row.appendChild(cell3)
@@ -199,13 +205,14 @@
                     row.appendChild(cell5)
                     row.appendChild(cell6)
                     row.appendChild(cell7)
+                    row.appendChild(cell8)
                     table.appendChild(row)
                 }
             })
         }
     </script>
 </head>
-<body class="app sidebar-mini rtl" onload='selectusr()'>
+<body class="app sidebar-mini rtl" onpageshow="admin_authorization()" onload='selectusr()'>
 <!-- Navbar-->
 <header class="navbar navbar-dark bg-dark shadow fixed-top ">
     <!--左侧-->
@@ -373,6 +380,7 @@
                                 <th>年龄</th>
                                 <th>住址</th>
                                 <th>碳积分</th>
+                                <th>余额</th>
                                 <th>操作</th>
                             </tr>
                             </thead>
@@ -423,6 +431,9 @@
 
             <label><b>碳积分</b></label>
             <input type="text" id="modalusrcintegral" style=" width: 80%;" required><br>
+
+            <label><b>余额</b></label>
+            <input type="text" id="modalusrmoney" style=" width: 80%;" required><br>
 
             <button type="button" style="margin-top: 10px;" onclick="updateusr()">保存修改</button>
         </div>

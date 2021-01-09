@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html" xmlns:margin-top="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
+    <title>我的任务</title>
+    <link rel="stylesheet" type="text/css" href="lib/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <link rel="stylesheet" type="text/css" href="css/cart.css">
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <script src="lib/html5shiv/html5shiv.min.js"></script>
+    <script src="lib/respond/respond.min.js"></script>
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script type="text/javascript" src="js/Control.js"></script>
+    <script src="js/request.js"></script>
+    <script>
+        /*分页处理全局变量*/
+        let usrmycurrentPage = 1
+        let usrmytotalPage = 1
+        let usrmyPageSize
+        let usrmytotalRecord = 0
+        let uid
+        window.onload = function () {
+            usr_authorization()
+            $(document).ajaxStop(function(){
+                selectcouponsbycname();
+                selectpoints();
+            });
+        }
+        /*按name搜索*/
+        function selectcouponsbycname() {
+            let name = document.getElementById("selectcouponsname").value
+            request("http://127.0.0.1:8080/usr/coupon/selectmycname", `usrmycurrentPage=${usrmycurrentPage}&name=${name}&uid=${uid}`, res => {
+                usrmycurrentPage = res.usrmycurrentPage
+                usrmytotalPage = res.usrmytotalPage
+                usrmyPageSize = res.usrmyPageSize
+                usrmytotalRecord = res.usrmytotalRecord
+                let table = document.getElementById("tbody_list")
+                /*生成表单并打印数据与操作按钮*/
+                let couponList = res.dataList;
+                document.getElementById("pageResult").append("共有" + usrmytotalRecord + "条记录 共" + usrmytotalPage + "页 当前第" + usrmycurrentPage + "页")
+                for (let i = 0; i < couponList.length; i++) {
+                    let row = document.createElement("tr")
+                    let cell1 = document.createElement("td")
+                    let cell2 = document.createElement("td")
+                    let cell3 = document.createElement("td")
+                    let cell4 = document.createElement("td")
+                    cell1.appendChild(document.createTextNode(couponList[i].cname))
+                    cell2.appendChild(document.createTextNode(couponList[i].cdiscount))
+                    cell3.appendChild(document.createTextNode(couponList[i].cdescription))
+                    cell4.appendChild(document.createTextNode("7天"))
+                    row.appendChild(cell1)
+                    row.appendChild(cell2)
+                    row.appendChild(cell3)
+                    row.appendChild(cell4)
+                    table.appendChild(row)
+                }
+            })
+        }
+        /*查询并生成表单*/
+        // function selectmycoupons() {
+        //     request("http://127.0.0.1:8080/usr/coupon/selectmycoupons", `usrmycurrentPage=${usrmycurrentPage}&uid=${uid}`,
+        //         res => {
+        //             usrmycurrentPage = res.usrmycurrentPage
+        //             usrmytotalPage = res.usrmytotalPage
+        //             usrmyPageSize = res.usrmyPageSize
+        //             usrmytotalRecord = res.usrmytotalRecord
+        //             let table = document.getElementById("tbody_list")
+        //             /*生成表单并打印数据与操作按钮*/
+        //             let couponList = res.dataList;
+        //             let j = 0
+        //             document.getElementById("pageResult").append("共有" + usrmytotalRecord + "条记录 共" + usrmytotalPage + "页 当前第" + usrmycurrentPage + "页")
+        //             for (let i = 0; i < usrmytotalRecord; i++) {
+        //                 j = j + 1
+        //                 if (j > usrmyPageSize) break
+        //                 let row = document.createElement("tr")
+        //                 let cell1 = document.createElement("td")
+        //                 let cell2 = document.createElement("td")
+        //                 let cell3 = document.createElement("td")
+        //                 let cell4 = document.createElement("td")
+        //                 cell1.appendChild(document.createTextNode(couponList[i].cname))
+        //                 cell2.appendChild(document.createTextNode(couponList[i].cdiscount))
+        //                 cell3.appendChild(document.createTextNode(couponList[i].cdescription))
+        //                 cell4.appendChild(document.createTextNode("7天"))
+        //                 row.appendChild(cell1)
+        //                 row.appendChild(cell2)
+        //                 row.appendChild(cell3)
+        //                 row.appendChild(cell4)
+        //                 table.appendChild(row)
+        //             }
+        // })
+        // }
+        /*用户显示剩余碳积分*/
+        function selectpoints() {
+            request("http://127.0.0.1:8080/usr/coupon/selectpoints", `uid=${uid}`,
+                res => {
+                    document.getElementById("usrpoints").innerText="您当前的碳积分余额:"+res;
+                })
+        }
+    </script>
+<body class="coupons_body">
+<div id="header">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-2 text-right"><a  href="javascript:history.go(-1)">
+                <i class="glyphicon glyphicon-menu-left kb-coll1"style="font-size: 34px;top: 8px;color:#368306;" ></i></a></div>
+            <div class="col-xs-10">
+                <div class="kb-coll3 cart-body "><h2><strong>看看口袋里有哪些优惠券</strong></h2></div>
+            </div>
+        </div>
+        </div>
+    </div>
+</div>
+<div class="ad_picture">
+    <div class="app-content">
+        <div class="col-md-offset-0 col-lg-offset-4 col-md-4">
+            <!--搜索框 start-->
+            <div class="input-group" style="margin-top: 5px;">
+                <input type="text" class="form-control" id="selectcouponsname" placeholder="搜索优惠券">
+                <span class="input-group-btn">
+            <button class="btn btn-danger" type="button" onclick="admin_deleteTable(),selectcouponsbycname()"><i class="glyphicon glyphicon-search"></i></button>
+        </span>
+            </div>
+        </div>
+        <div style="margin-top: 20px" >
+            <strong><p id="usrpoints"></p></strong>
+        </div>
+        <div class="form-address">
+            <table class="table table-hover table-bordered table-line" id="cTable" style="text-align:center">
+                <thead>
+                <tr>
+                    <th>&nbsp;&nbsp;&nbsp;优惠券名称</th>
+                    <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;折扣度</th>
+                    <th>&nbsp;&nbsp;&nbsp;优惠券描述</th>
+                    <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;有效期</th>
+                </tr>
+                </thead>
+                <tbody id="tbody_list">
+                </tbody>
+            </table>
+            <div id="pageResultBox">
+                <p id="pageResult"/>
+            </div>
+            <div style="text-align: center">
+                <a href="#" onclick="usr_firstPage();selectcouponsbycname()();">首页</a>&nbsp;&nbsp;
+                <a href="#" onclick="usr_previousPage();selectcouponsbycname();">上一页</a>&nbsp;&nbsp;
+                <a href="#" onclick="usr_nextPage();selectcouponsbycname();">下一页</a>&nbsp;&nbsp;
+                <a href="#" onclick="usr_lastPage();selectcouponsbycname();">尾页</a>
+                <a href="user_coupons.html">&nbsp;&nbsp;返回</a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
