@@ -22,6 +22,7 @@
     <!-- Data table plugin-->
     <script>
         let path
+        let bid=8888
 
         function submit_good() {
             let formData = new FormData();
@@ -43,7 +44,7 @@
                     let ean = document.getElementById("goodEAN").value
                     let description = document.getElementById("goodsdescription").value
                     request("http://127.0.0.1:8080/admin/goods/insert",
-                        `name=${name}&cost=${cost}&number=${number}&ean=${ean}&description=${description}&path=${path}`, res => {
+                        `name=${name}&cost=${cost}&number=${number}&ean=${ean}&description=${description}&path=${path}&bid=${bid}`, res => {
                             alert(res.message)
                         })
                 },
