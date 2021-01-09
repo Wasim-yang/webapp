@@ -208,23 +208,27 @@
 </div>
 <div class="ad_picture">
     <div class="app-content">
-        <div class="col-md-offset-0 col-lg-offset-4 col-md-4">
-            <div class="input-group" style="margin-top: 5px;">
-                <input class="form-control" type="text" id="selecttaskpage" placeholder="跳转到第几页"/>
-                <span class="input-group-btn">
-                <button class="btn btn-danger" id="selecttask_page" type="button"
-                        onclick="uploadPage()">
-                    <i class="glyphicon glyphicon-search"></i>
-                </button>
-                </span>
+        <div class="row">
+            <div class="col-md-offset-0 col-lg-offset-4 col-md-4 col-sm-8 col-xs-8">
+                <div class="input-group" style="margin-top: 5px;">
+                    <input class="form-control" type="text" id="selecttaskpage" placeholder="跳转到第几页"/>
+                    <span class="input-group-btn">
+                    <button class="btn btn-danger" id="selecttask_page" type="button"
+                            onclick="uploadPage()">
+                        <i class="glyphicon glyphicon-search"></i>
+                    </button>
+                    </span>
+                </div>
             </div>
-        </div>
-        <div class="qiandao-left-top clear">
-            <!--用户积分以及我的公益-->
-            <div class="current-date">
-                <strong><p style="margin-left: -5.1rem" id="usrpoints"></p></strong>
+            <div class="col-md-offset-0 col-lg-offset-4 col-md-4 col-sm-4 col-xs-4">
+                <div class="qiandao-left-top clear" style="margin-top: -10px;">
+                    <!--用户积分以及我的任务-->
+                    <div class="current-date">
+                        <strong><p style="margin-left: -5.1rem" id="usrpoints"></p></strong>
+                    </div>
+                    <div class="qiandao-history qiandao-tran qiandao-radius" style="background: #a4d81d" onclick="toMyfinishtask();" id="mytask">已完成任务</div>
+                </div>
             </div>
-            <div class="qiandao-history qiandao-tran qiandao-radius" style="background: #a4d81d" onclick="toMyfinishtask();" id="mytask">完成任务</div>
         </div>
         <div class="form-address">
             <table class="table table-hover table-bordered" id="cTable">
@@ -254,7 +258,7 @@
     </div>
 </div>
 <div id="taskmodal" class="modal2">
-    <!--    公益详情拟态框　　-->
+    <!--    任务详情拟态框　　-->
     <form class="modal-content animate">
         <div class="container">
             <br>
