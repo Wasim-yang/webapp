@@ -9,7 +9,8 @@
     <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="css/main.css">
     <link rel="stylesheet" type="text/css" href="css/cart.css">
-<!--    返回按钮-->
+    <link rel="stylesheet" href="css/qiandao.css">
+    <!--    返回按钮-->
     <style type="text/css">
         .modal2 {
             position: fixed;
@@ -20,8 +21,8 @@
             /*left: 0;*/
             z-index: 1050;
             display: none;
-            overflow-y:scroll;
-            overflow-x:hidden;
+            overflow-y: scroll;
+            overflow-x: hidden;
             -webkit-overflow-scrolling: touch;
             outline: 0;
         }
@@ -34,10 +35,15 @@
     <script src="js/popper.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/main.js"></script>
-<!--    列表显示和操作-->
+    <!--    列表显示和操作-->
     <script src="js/request.js"></script>
     <script src="js/Control.js"></script>
     <script>
+
+        function toMyfinishtask() {
+            window.location.href = "user_info_task.html"
+        }
+
         // 分页处理全局变量
         let currentPage = 1
         let totalPage = 1
@@ -48,10 +54,11 @@
 
         window.onload = function () {
             usr_authorization()
-            $(document).ajaxStop(function(){
+            $(document).ajaxStop(function () {
                 selecttask()
             });
         }
+
         /*按页号跳转*/
         function uploadPage() {
             let page = document.getElementById("selecttaskpage").value
@@ -62,6 +69,7 @@
             } else
                 alert("输入的页面超出范围")
         }
+
         /*查询并生成表单*/
         function selecttask() {
             request("http://127.0.0.1:8080/usr/task/selectByPageUser", `currentPage=${currentPage}`, res => {
@@ -90,7 +98,7 @@
                     //待转换的参数
                     let type = taskList[i].ttype
                     let t = taskList[i].tdeadline
-                    let tdeadline = t.substring(0,16).replace(/-/g,"/")
+                    let tdeadline = t.substring(0, 16).replace(/-/g, "/")
                     let bicycle = document.createElement("i")
                     let subway = document.createElement("i")
                     let bus = document.createElement("i")
@@ -131,15 +139,14 @@
 
 
                     // 当项目达到领取条件时，设置捐赠按钮为可选中
-                    if(taskList[i].tgain >= taskList[i].trequirement) {
+                    if (taskList[i].tgain >= taskList[i].trequirement) {
                         receivebutton.className = "btn btn-primary"
                         receivebutton.appendChild(document.createTextNode("领取"))
-                        receivebutton.disabled=false;
-                    }
-                    else{
+                        receivebutton.disabled = false;
+                    } else {
                         receivebutton.className = "btn btn-warning"
                         receivebutton.appendChild(document.createTextNode("领取"))
-                        receivebutton.disabled=true;
+                        receivebutton.disabled = true;
                     }
 
                     cell1.appendChild(document.createTextNode(taskList[i].tname))
@@ -185,47 +192,55 @@
         }
     </script>
 </head>
-<body class="task_body" >
+<body class="task_body">
 <div id="header">
     <div class="container">
         <div class="row">
             <div class="col-xs-2 text-right"><a href="user_index.html">
-                <i class="glyphicon glyphicon-menu-left kb-coll1"style="font-size: 34px;top: 8px;color:#368306;" ></i></a></div>
+                <i class="glyphicon glyphicon-menu-left kb-coll1"
+                   style="font-size: 34px;top: 8px;color:#368306;"></i></a></div>
             <div class="col-xs-10">
                 <div class="kb-coll3 cart-body"><h2><strong>做任务&nbsp&nbsp&nbsp赚取碳积分</strong></h2></div>
-            </div>
             </div>
         </div>
     </div>
 </div>
+</div>
 <div class="ad_picture">
-<div class="app-content">
-    <div class="col-md-offset-0 col-lg-offset-4 col-md-4">
-        <div class="input-group" style="margin-top: 5px;" >
-            <input class="form-control" type="text" id="selecttaskpage" placeholder="跳转到第几页"/>
-            <span class="input-group-btn">
+    <div class="app-content">
+        <div class="col-md-offset-0 col-lg-offset-4 col-md-4">
+            <div class="input-group" style="margin-top: 5px;">
+                <input class="form-control" type="text" id="selecttaskpage" placeholder="跳转到第几页"/>
+                <span class="input-group-btn">
                 <button class="btn btn-danger" id="selecttask_page" type="button"
                         onclick="uploadPage()">
                     <i class="glyphicon glyphicon-search"></i>
                 </button>
                 </span>
+            </div>
         </div>
-    </div>
+        <div class="qiandao-left-top clear">
+            <!--用户积分以及我的公益-->
+            <div class="current-date">
+                <strong><p style="margin-left: -5.1rem" id="usrpoints"></p></strong>
+            </div>
+            <div class="qiandao-history qiandao-tran qiandao-radius" style="background: #a4d81d" onclick="toMyfinishtask();" id="mytask">完成任务</div>
+        </div>
         <div class="form-address">
-                <table class="table table-hover table-bordered" id="cTable">
-                    <thead>
-                    <tr>
-                        <th>任务名称</th>
-                        <th>任务类型</th>
-                        <th>目标里程</th>
-                        <th>当前进度</th>
-                        <th>奖励积分</th>
-                        <th>操作</th>
-                    </tr>
-                    </thead>
-                    <tbody id="tbody_list">
-                    </tbody>
-                </table>
+            <table class="table table-hover table-bordered" id="cTable">
+                <thead>
+                <tr>
+                    <th>任务名称</th>
+                    <th>任务类型</th>
+                    <th>目标里程</th>
+                    <th>当前进度</th>
+                    <th>奖励积分</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody id="tbody_list">
+                </tbody>
+            </table>
             <div id="pageResultBox">
                 <p id="pageResult"/>
             </div>
@@ -258,7 +273,9 @@
             <label><b>任务描述</b></label>
             <input type="text" id="modaltaskdescription" style=" width: 80%;" required disabled><br>
             <br>
-            <button type="button" id="button" style="margin-top: 10px;" onclick=document.getElementById('taskmodal').style.display='none'>关闭</button>
+            <button type="button" id="button" style="margin-top: 10px;"
+                    onclick=document.getElementById('taskmodal').style.display='none'>关闭
+            </button>
             <br>
         </div>
         <div class="container" style="background-color:#f1f1f1">

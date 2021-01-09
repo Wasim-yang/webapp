@@ -57,6 +57,7 @@
                 let address=document.getElementById("usr_address")
                 if(res.uaddress==null||res.uaddress==""){
                     address.append(document.createTextNode("您还没有设置地址哦 去设置!"))
+                    document.getElementById("readybuy").disabled="true"
                 }
                 else{
                     address.append("您的收货地址:")
@@ -238,7 +239,7 @@
                 <p>收藏</p>
             </div>
             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 ">
-                <button class="btn btn-primary" onclick="readybuy()">点击购买</button>
+                <button class="btn btn-primary" id="readybuy" onclick="readybuy()">点击购买</button>
             </div>
 
         </div>
