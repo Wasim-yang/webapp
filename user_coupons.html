@@ -58,14 +58,14 @@
                     exbutton.setAttribute("cid", couponList[i].cid)
                     exbutton.setAttribute("cname", couponList[i].cname)
                     exbutton.setAttribute("cdiscount", couponList[i].cdiscount)
-                    exbutton.setAttribute("cexpoints", couponList[i].cexpoint)
+                    exbutton.setAttribute("cexpoint", couponList[i].cexpoint)
                     exbutton.setAttribute("cdescription", couponList[i].cdescription)
                     exbutton.setAttribute("ctime", ctime)
                     exbutton.onclick = function () {
                         document.getElementById("usrmodalcouponscid").setAttribute("cid", exbutton.getAttribute("cid"))
                         document.getElementById("usrmodalcouponscname").value = exbutton.getAttribute("cname")
                         document.getElementById("usrmodalcouponscdiscount").value = exbutton.getAttribute("cdiscount")
-                        document.getElementById("usrmodalcouponscexpoints").value = exbutton.getAttribute("cexpoints")
+                        document.getElementById("usrmodalcouponscexpoint").value = exbutton.getAttribute("cexpoint")
                         document.getElementById("usrmodalcouponscdescription").value = exbutton.getAttribute("cdescription")
                         document.getElementById("usrmodalctime").value = exbutton.getAttribute("ctime")
                         document.getElementById('usrcouponsmodal').style.display = 'block'
@@ -90,9 +90,9 @@
             let cname = document.getElementById("usrmodalcouponscname").value;
             let cdiscount = document.getElementById("usrmodalcouponscdiscount").value;
             let cdescription = document.getElementById("usrmodalcouponscdescription").value
-            let cexpoints = document.getElementById("usrmodalcouponscexpoints").value;
+            let cexpoint = document.getElementById("usrmodalcouponscexpoint").value;
             request("http://127.0.0.1:8080/usr/coupon/exchange",
-                `uid=${uid}&cid=${cid}&cname=${cname}&cdiscount=${cdiscount}&cdescription=${cdescription}&cexpoints=${cexpoints}&ctime=${ctime}`,
+                `uid=${uid}&cid=${cid}&cname=${cname}&cdiscount=${cdiscount}&cdescription=${cdescription}&cexpoint=${cexpoint}&ctime=${ctime}`,
                 res => {
                     alert(res.message)
                     admin_deleteTable()
@@ -127,14 +127,14 @@
         //                 exbutton.setAttribute("cid",couponList[i].cid)
         //                 exbutton.setAttribute("cname",couponList[i].cname)
         //                 exbutton.setAttribute("cdiscount",couponList[i].cdiscount)
-        //                 exbutton.setAttribute("cexpoints",couponList[i].cexpoint)
+        //                 exbutton.setAttribute("cexpoint",couponList[i].cexpoint)
         //                 exbutton.setAttribute("cdescription",couponList[i].cdescription)
         //                 exbutton.setAttribute("ctime",ctime)
         //                 exbutton.onclick = function () {
         //                     document.getElementById("usrmodalcouponscid").setAttribute("cid",exbutton.getAttribute("cid"))
         //                     document.getElementById("usrmodalcouponscname").value = exbutton.getAttribute("cname")
         //                     document.getElementById("usrmodalcouponscdiscount").value = exbutton.getAttribute("cdiscount")
-        //                     document.getElementById("usrmodalcouponscexpoints").value = exbutton.getAttribute("cexpoints")
+        //                     document.getElementById("usrmodalcouponscexpoint").value = exbutton.getAttribute("cexpoint")
         //                     document.getElementById("usrmodalcouponscdescription").value = exbutton.getAttribute("cdescription")
         //                     document.getElementById("usrmodalctime").value = exbutton.getAttribute("ctime")
         //                     document.getElementById('usrcouponsmodal').style.display = 'block'
@@ -244,7 +244,7 @@
 
         <label><b>兑换积分</b></label>
         <center>
-            <input type="text" id="usrmodalcouponscexpoints" style=" width: 80%;" required disabled><br></center>
+            <input type="text" id="usrmodalcouponscexpoint" style=" width: 80%;" required disabled><br></center>
         <label><b>有效期</b></label>
         <center>
             <input type="text" id="usrmodalctime" style=" width: 80%;" required disabled><br></center>

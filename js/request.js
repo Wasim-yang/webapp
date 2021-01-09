@@ -87,3 +87,67 @@ function pleader_authorization() {
         }
     });
 }
+
+function usr_logout() {
+    $.ajax({
+        url: "http://127.0.0.1:8080/usr/logout",
+        type: "POST",
+        contentType: false,
+        data: {},
+        xhrFields: {withCredentials: true},
+        success: function (data) {
+            if (data.code == 200) {
+                alert("登出成功！");
+                usr_authorization();
+            }
+        }
+    });
+}
+
+function admin_logout() {
+    $.ajax({
+        url: "http://127.0.0.1:8080/admin/logout",
+        type: "POST",
+        contentType: false,
+        data: {},
+        xhrFields: {withCredentials: true},
+        success: function (data) {
+            if (data.code == 200) {
+                alert("登出成功！");
+                admin_authorization();
+            }
+        }
+    });
+}
+
+function business_logout() {
+    $.ajax({
+        url: "http://127.0.0.1:8080/business/logout",
+        type: "POST",
+        contentType: false,
+        data: {},
+        xhrFields: {withCredentials: true},
+        success: function (data) {
+            if (data.code == 200) {
+                alert("登出成功！");
+                business_authorization();
+            }
+        }
+    });
+}
+
+function pleader_logout() {
+    $.ajax({
+        url: "http://127.0.0.1:8080/pleader/logout",
+        type: "POST",
+        contentType: false,
+        data: {},
+        xhrFields: {withCredentials: true},
+        success: function (data) {
+            if (data.code == 200) {
+                alert("登出成功！");
+                pleader_authorization();
+            }
+        }
+    });
+}
