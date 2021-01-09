@@ -29,10 +29,19 @@
             let wname = document.getElementById("welfareName").value
             let wdescription = document.getElementById("welfareDescription").value
             let wtotal = document.getElementById("welfareTotal").value
-            request("http://127.0.0.1:8080/admin/welfare/insert",
-                `wname=${wname}&wdescription=${wdescription}&wtotal=${wtotal}`, res => {
-                    alert(res.message)
-                })
+            if(wname==""&&wdescription==""&&wtotal==""){alert("您还没有输入公益项目信息！")}
+            else if(wname==""&&wdescription!=""&&wtotal!=""){alert("您还没有输入公益项目名称！")}
+            else if(wname!=""&&wdescription!=""&&wtotal==""){alert("您还没有输入公益项目启动条件！")}
+            else if(wname!=""&&wdescription==""&&wtotal!=""){alert("您还没有输入公益项目描述！")}
+            else if(wname!=""&&wdescription==""&&wtotal==""){alert("您还没有输入公益项目启动条件和描述！")}
+            else if(wname==""&&wdescription!=""&&wtotal==""){alert("您还没有输入公益项目名称和启动条件！")}
+            else if(wname==""&&wdescription==""&&wtotal!=""){alert("您还没有输入公益项目名称和描述！")}
+            else{
+                request("http://127.0.0.1:8080/admin/welfare/insert",
+                    `wname=${wname}&wdescription=${wdescription}&wtotal=${wtotal}`, res => {
+                        alert(res.message)
+                    })
+            }
         }
     </script>
 </head>
@@ -166,10 +175,6 @@
         <div>
             <h1><i class="fa fa-building"></i> 新增公益</h1>
         </div>
-        <!--        <ul class="app-breadcrumb breadcrumb">-->
-        <!--            <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>-->
-        <!--            <li class="breadcrumb-item"><a href="/新增公益.html"></a></li>-->
-        <!--        </ul>-->
     </div>
     <div class="row">
         <div class="col-md-12">
@@ -180,36 +185,21 @@
                             <div class="col-lg-4">
                             <div class="form-inline">
                                 <div class="form-group">
+                                    <span class="fa fa-star-o">&nbsp;&nbsp;&nbsp;</span>
                                     <label>项目名称</label>&nbsp;&nbsp;
                                     <input class="form-control" type="text" id="welfareName" name="name" placeholder="请输入项目名称" required>
                                 </div>
                             </div>
                         </div>
-<!--                        <div class="col-lg-4">-->
-<!--                            <div class="form-inline">-->
-<!--                                <div class="form-group">-->
-<!--                                    <label>项目描述</label>&nbsp;&nbsp;-->
-<!--                                    <input class="form-control" type="text" id="welfareDescription" name="name" placeholder="请输入项目描述" required>-->
-
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
                             <div class="col-lg-4">
                             <div class="form-inline">
                                 <div class="form-group">
+                                    <span class="fa fa-star-o">&nbsp;&nbsp;&nbsp;</span>
                                     <label>启动条件</label>&nbsp;&nbsp;
                                     <input class="form-control" type="text" id="welfareTotal" name="name" placeholder="请输入启动条件" required>
                                 </div>
                             </div>
                         </div>
-<!--                            <div class="col-lg-4">-->
-<!--                            <div class="form-inline">-->
-<!--                                <div class="form-group">-->
-<!--                                    <label>项目描述</label>&nbsp;&nbsp;-->
-<!--                                    <input class="form-control" type="text" id="welfareDescription" name="name" placeholder="请输入项目描述" required>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
                         </div>
                     </div>
                     <div class="row">
