@@ -48,7 +48,7 @@
                 </a>
             </li>
             <li class="box-s">
-                <a href="#">
+                <a>
                     <p>手机号</p>
                     <em><em class="just-phone">13097793728</em>&nbsp;&nbsp;<i class="iconfont icon-jiantou1"></i></em>
                 </a>
@@ -59,15 +59,15 @@
     <div class="cashlist clearfloat">
         <ul>
             <li class="box-s">
-                <a href="#">
+                <a href="javascript:history.go(-1)">
                     <p>生物识别</p>
                     <em><em>人脸、指纹识别</em>&nbsp<i class="iconfont icon-jiantou1"></i></em>
                 </a>
             </li>
             <li>
-                <a href="#">
+                <a class=".just-cancel" onclick="cancel()">
                     <p>注销账号</p>
-                    <em><i class="iconfont icon-jiantou1"></i></em>
+                    <em><em style="color:red;font-size: 0.35rem">注销后无法恢复，请谨慎操作!</em>&nbsp;&nbsp;<i class="iconfont icon-jiantou1"></i></em>
                 </a>
             </li>
         </ul>
@@ -78,7 +78,6 @@
 <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
 <script src="js/user/infor/mui.min.js"></script>
 <script type="text/javascript" src="js/user/infor/hmt.js"></script>
-<script src="iconfont/iconfont.js"></script>
 <!--插件-->
 <!-- <link rel="stylesheet" href="css/infor/swiper.min.css">
 <script src="js/user/infor/swiper.jquery.min.js"></script> -->
@@ -88,7 +87,7 @@
     let uid;
     window.onload = function () {
         usr_authorization()
-        $(document).ajaxStop(function(){
+        $(document).ajaxStop(function () {
             myonload();
         });
     }
@@ -99,6 +98,13 @@
             $(".just-sex").html(user.usex)
             $(".just-age").html(user.uge)
         })
+    }
+    function cancel() {
+        if(confirm("注销后无法恢复，您确定要注销吗?") == true){
+            request("http://127.0.0.1:8080/usr/deleteUsr", `uid=${uid}`, res => {
+
+            }
+        }
     }
 </script>
 </html>
