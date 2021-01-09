@@ -25,125 +25,127 @@
         let totalRecord = 0
 
         window.onload = function () {
-
-            function getDocumentTop() {
-                let scrollTop = 0
-                let bodyScrollTop = 0
-                let documentScrollTop = 0;
-                if (document.body) {
-                    bodyScrollTop = document.body.scrollTop;
-                }
-                if (document.documentElement) {
-                    documentScrollTop = document.documentElement.scrollTop;
-                }
-                scrollTop = (bodyScrollTop - documentScrollTop > 0) ? bodyScrollTop : documentScrollTop;
-                return scrollTop;
-            }
-
-            function getWindowHeight() {
-                let windowHeight = 0
-                if (document.compatMode == "CSS1Compat") {
-                    windowHeight = document.documentElement.clientHeight;
-                } else {
-                    windowHeight = document.body.clientHeight;
-                }
-                return windowHeight
-            }
-
-            function getScrollHeight() {
-                let scrollHeight = 0
-                let bodyScrollHeight = 0
-                let documentScrollHeight = 0
-                if (document.body) {
-                    bodyScrollHeight = document.body.scrollHeight;
-                }
-                if (document.documentElement) {
-                    documentScrollHeight = document.documentElement.scrollHeight;
-                }
-                scrollHeight = (bodyScrollHeight - documentScrollHeight > 0) ? bodyScrollHeight : documentScrollHeight;
-                return scrollHeight
-            }
-
-            window.onscroll = function () {
-                scroll().top > 0 ? show(gotop) : hide(gotop);
-                leader = scroll().top;
-                //监听事件内容
-                if (getScrollHeight() <= getWindowHeight() + getDocumentTop() + 0.1) {
-                    //当滚动条到底时,这里是触发内容
-                    //异步请求数据,局部刷新dom
-                    ajax_function()
-                }
-            }
-
-            function ajax_function() {
-                if (currentPage == totalPage) {
-                    let tip = document.createTextNode("已经拉到底了，没有其他商品了")
-
-                } else {
-                    currentPage = currentPage + 1
-                    selectgoods()
-                }
-            }
-
-            // 网站导航
-            var nav = document.getElementById('navBar');
-
-            //回到顶部
-
-            function show(obj) {
-                obj.style.display = "block";
-            }
-
-            function hide(obj) {
-                obj.style.display = "none";
-            }
-
-
-            function scroll() {
-                if (window.pageYOffset != null) //  ie9+ 和其他浏览器
-                {
-                    return {
-                        left: window.pageXOffset,
-                        top: window.pageYOffset
+           usr_authorization();
+            $(document).ajaxStop(function(){
+                selectgoods()
+                function getDocumentTop() {
+                    let scrollTop = 0
+                    let bodyScrollTop = 0
+                    let documentScrollTop = 0;
+                    if (document.body) {
+                        bodyScrollTop = document.body.scrollTop;
                     }
-                } else if (document.compatMode == "CSS1Compat") // 声明的了 DTD
-                    // 检测是不是怪异模式的浏览器 -- 就是没有 声明<!DOCTYPE html>
-                {
-                    return {
-                        left: document.documentElement.scrollLeft,
-                        top: document.documentElement.scrollTop
+                    if (document.documentElement) {
+                        documentScrollTop = document.documentElement.scrollTop;
+                    }
+                    scrollTop = (bodyScrollTop - documentScrollTop > 0) ? bodyScrollTop : documentScrollTop;
+                    return scrollTop;
+                }
+
+                function getWindowHeight() {
+                    let windowHeight = 0
+                    if (document.compatMode == "CSS1Compat") {
+                        windowHeight = document.documentElement.clientHeight;
+                    } else {
+                        windowHeight = document.body.clientHeight;
+                    }
+                    return windowHeight
+                }
+
+                function getScrollHeight() {
+                    let scrollHeight = 0
+                    let bodyScrollHeight = 0
+                    let documentScrollHeight = 0
+                    if (document.body) {
+                        bodyScrollHeight = document.body.scrollHeight;
+                    }
+                    if (document.documentElement) {
+                        documentScrollHeight = document.documentElement.scrollHeight;
+                    }
+                    scrollHeight = (bodyScrollHeight - documentScrollHeight > 0) ? bodyScrollHeight : documentScrollHeight;
+                    return scrollHeight
+                }
+
+                window.onscroll = function () {
+                    scroll().top > 0 ? show(gotop) : hide(gotop);
+                    leader = scroll().top;
+                    //监听事件内容
+                    if (getScrollHeight() <= getWindowHeight() + getDocumentTop() + 0.1) {
+                        //当滚动条到底时,这里是触发内容
+                        //异步请求数据,局部刷新dom
+                        ajax_function()
                     }
                 }
-                return { //  剩下的肯定是怪异模式的
-                    left: document.body.scrollLeft,
-                    top: document.body.scrollTop
-                }
-            }
 
-            var gotop = document.getElementById('gotop');
-            var leader = 0,
-                target = 0,
-                timer = null;
-            // window.onscroll = function() {
-            //     // scroll().top > 0 ? show(gotop) : hide(gotop);
-            //     // leader = scroll().top;
-            // }
-            gotop.onclick = function () {
-                target = 0; //点击完之后目标位置为0
-                timer = setInterval(function () {
-                    leader = leader + (target - leader) / 10;
-                    window.scrollTo(0, leader);
-                    if (leader == target) {
-                        clearInterval(timer);
+                function ajax_function() {
+                    if (currentPage == totalPage) {
+                        let tip = document.createTextNode("已经拉到底了，没有其他商品了")
+
+                    } else {
+                        currentPage = currentPage + 1
+                        selectgoods()
                     }
-                }, 20)
-            }
+                }
 
+                // 网站导航
+                var nav = document.getElementById('navBar');
+
+                //回到顶部
+
+                function show(obj) {
+                    obj.style.display = "block";
+                }
+
+                function hide(obj) {
+                    obj.style.display = "none";
+                }
+
+
+                function scroll() {
+                    if (window.pageYOffset != null) //  ie9+ 和其他浏览器
+                    {
+                        return {
+                            left: window.pageXOffset,
+                            top: window.pageYOffset
+                        }
+                    } else if (document.compatMode == "CSS1Compat") // 声明的了 DTD
+                        // 检测是不是怪异模式的浏览器 -- 就是没有 声明<!DOCTYPE html>
+                    {
+                        return {
+                            left: document.documentElement.scrollLeft,
+                            top: document.documentElement.scrollTop
+                        }
+                    }
+                    return { //  剩下的肯定是怪异模式的
+                        left: document.body.scrollLeft,
+                        top: document.body.scrollTop
+                    }
+                }
+
+                var gotop = document.getElementById('gotop');
+                var leader = 0,
+                    target = 0,
+                    timer = null;
+                // window.onscroll = function() {
+                //     // scroll().top > 0 ? show(gotop) : hide(gotop);
+                //     // leader = scroll().top;
+                // }
+                gotop.onclick = function () {
+                    target = 0; //点击完之后目标位置为0
+                    timer = setInterval(function () {
+                        leader = leader + (target - leader) / 10;
+                        window.scrollTo(0, leader);
+                        if (leader == target) {
+                            clearInterval(timer);
+                        }
+                    }, 20)
+                }
+            });
         }
 
 
         function selectgoods() {
-            name=document.getElementById("selectgoodsName").value
+            let name=document.getElementById("selectgoodsName").value
             request("http://127.0.0.1:8080/usr/goods/selectname", `name=${name}&currentPage=${currentPage}`, res => {
                 currentPage = res.currentPage
                 totalPage = res.totalPage
@@ -228,7 +230,7 @@
     </script>
 
 </head>
-<body class="goods_body" onpageshow="usr_authorization();selectgoods()">
+<body class="goods_body">
 <div id="top">
     <div class="topBar visible-md visible-lg">
         <div class="container">
