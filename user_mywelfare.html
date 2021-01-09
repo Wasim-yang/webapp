@@ -68,7 +68,6 @@
                 let cell4 = document.createElement("td")
                 let cell5 = document.createElement("td")
                 let cell6 = document.createElement("td")
-                let cell7 = document.createElement("td")
                 let seebutton = document.createElement("button")
                 seebutton.type = "button"
                 seebutton.className = "btn btn-primary"
@@ -87,15 +86,15 @@
                     document.getElementById("modalwelfaregain").value = seebutton.getAttribute("wgain")
                     document.getElementById("modalwelfaretotal").value = seebutton.getAttribute("wtotal")
                     document.getElementById("modalwelfarecount").value= seebutton.getAttribute("wcount")
+                    document.getElementById("modalwelfaredescription").value= seebutton.getAttribute("wdescription")
                     document.getElementById('welfaremodal').style.display = 'block'
                 }
                 cell1.appendChild(document.createTextNode(res.wid))
                 cell2.appendChild(document.createTextNode(res.wname))
                 cell3.appendChild(document.createTextNode(res.wtotal))
                 cell4.appendChild(document.createTextNode(res.wgain))
-                cell5.appendChild(document.createTextNode(res.wdescription))
-                cell6.appendChild(document.createTextNode(res.wcount))
-                cell7.appendChild(seebutton)
+                cell5.appendChild(document.createTextNode(res.wcount))
+                cell6.appendChild(seebutton)
 
                 row.appendChild(cell1)
                 row.appendChild(cell2)
@@ -103,7 +102,6 @@
                 row.appendChild(cell4)
                 row.appendChild(cell5)
                 row.appendChild(cell6)
-                row.appendChild(cell7)
                 table.appendChild(row)
 
             })
@@ -157,13 +155,14 @@
                         document.getElementById("modalwelfaregain").value = seebutton.getAttribute("wgain")
                         document.getElementById("modalwelfaretotal").value = seebutton.getAttribute("wtotal")
                         document.getElementById("modalwelfarecount").value= seebutton.getAttribute("wcount")
+                        document.getElementById("modalwelfaredescription").value= seebutton.getAttribute("wdescription")
                         document.getElementById('welfaremodal').style.display = 'block'
                     }
                     cell1.appendChild(document.createTextNode(welfareList[i].wid))
                     cell2.appendChild(document.createTextNode(welfareList[i].wname))
                     cell3.appendChild(document.createTextNode(welfareList[i].wtotal))
                     cell4.appendChild(document.createTextNode(welfareList[i].wgain))
-                    cell5.appendChild(document.createTextNode(welfareList[i].wdescription))
+                    cell5.appendChild(document.createTextNode(welfareList[i].wcount))
                     cell6.appendChild(seebutton)
                     row.appendChild(cell1)
                     row.appendChild(cell2)
@@ -228,8 +227,8 @@
                     <th>公益名称</th>
                     <th>启动条件</th>
                     <th>当前进度</th>
-                    <th>公益信息</th>
                     <th>捐赠积分</th>
+                    <th>操作</th>
                 </tr>
                 </thead>
                 <tbody id="tbody_list">
