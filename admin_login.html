@@ -25,9 +25,9 @@
             let password = document.getElementById("loginPassword").value
             let type = document.getElementById("type").value
             if(type == 1){
-                    if(id==0&&password==0) {alert("您还没有输入账号和密码！")}
-                    else if(id==0&&password!=0) {alert("您还没有输入账户！")}
-                    else if(id!=0&&password==0) {alert("您还没有输入密码！")}
+                    if(id==""&&password=="") {alert("您还没有输入账号和密码！")}
+                    else if(id==""&&password!="") {alert("您还没有输入账户！")}
+                    else if(id!=""&&password=="") {alert("您还没有输入密码！")}
                     else{
                     request("http://127.0.0.1:8080/admin/login",
                         `id=${id}&password=${password}`, res => {
@@ -41,9 +41,9 @@
                     }
                 }
             else if(type==2){
-                    if(id==0&&password==0) {alert("您还没有输入账号和密码！")}
-                    else if(id==0&&password!=0) {alert("您还没有输入账户！")}
-                    else if(id!=0&&password==0) {alert("您还没有输入密码！")}
+                    if(id=="" &&password=="") {alert("您还没有输入账号和密码！")}
+                    else if(id==""&&password!="") {alert("您还没有输入账户！")}
+                    else if(id!="" &&password=="") {alert("您还没有输入密码！")}
                     else {
                         request("http://127.0.0.1:8080/business/login",
                             `id=${id}&password=${password}`, res => {
@@ -56,9 +56,9 @@
                     }
                 }
             else if(type==3){
-                    if(id==0&&password==0) {alert("您还没有输入账号和密码！")}
-                    else if(id==0&&password!=0) {alert("您还没有输入账户！")}
-                    else if(id!=0&&password==0) {alert("您还没有输入密码！")}
+                    if(id==""&&password=="") {alert("您还没有输入账号和密码！")}
+                    else if(id==""&&password!="") {alert("您还没有输入账户！")}
+                    else if(id!=""&&password=="") {alert("您还没有输入密码！")}
                     else{alert("您不是公益项目负责人，请重新选择您的账户类型！")}
 
                 }
