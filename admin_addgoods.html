@@ -43,6 +43,19 @@
                     let number = document.getElementById("goodNumber").value
                     let ean = document.getElementById("goodEAN").value
                     let description = document.getElementById("goodsdescription").value
+                    if(name==null||name==""){
+                        alert("请输入商品名称")
+                    }
+                    if(cost==null||cost=="")
+                    {
+                        alert("请输入商品单价")
+                    }
+                    if(number==null||number==""){
+                        alert("请输入商品库存")
+                    }
+                    if(ean==null||ean==""){
+                        alert("请输入EAN条码")
+                    }
                     request("http://127.0.0.1:8080/admin/goods/insert",
                         `name=${name}&cost=${cost}&number=${number}&ean=${ean}&description=${description}&path=${path}&bid=${bid}`, res => {
                             alert(res.message)
