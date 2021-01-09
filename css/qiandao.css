@@ -11,11 +11,9 @@ img {
     vertical-align: top
 }
 
-@media only screen and (max-width: 550px) {
+@media only screen and (max-width: 500px) {
     .qiandao-con {
-        background-image: url(../images/checkin/qiandao_media.png);
-        background-position:11px 0px;
-        background-size:69% 100%;
+        background-image: url("../images/checkin/qiandao_media.png") ;
     }
 }
 
@@ -31,7 +29,7 @@ img {
 
 .qiandao-sprits {
     background-image: url(../images/checkin/qiandao_sprits.png);
-    background-repeat: no-repeat;
+    background-repeat: no-repeat
 }
 
 .qiandao-tran {
@@ -63,17 +61,16 @@ img {
 
 .qiandao-con {
     margin: 0 auto;
-    width: 1035px;
+    /*width: 1035px;*/
+    width: 102rem;
     height: 684px;
-    background-image: url(../images/checkin/qiandao_con.jpg);
-    background-repeat:no-repeat;
+    background-image: url(../images/checkin/qiandao_con.jpg)
 }
-.qiandao-mcon {
+.qiandao-mycon {
     margin: 0 auto;
     width: 1035px;
     height: 684px;
-    background-image: url(../images/checkin/qiandao_con.jpg);
-    background-repeat:no-repeat;
+    background-image: url(../images/checkin/qiandao_con.jpg)
 }
 
 .qiandao-left {
@@ -166,134 +163,134 @@ img {
     position: relative;
     float: left;
     margin: 0 1px 1px 0;
-    width: 58px;
-    height: 58px;
-    background-image: url(../images/checkin/qiandao_day1.png);
+    width: 85px;
+    height: 85px;
+    background-image: url(../images/checkin/qiandao_day.png);
     background-position: 0 0
 }
 
 .qiandao-list li.date1 {
-    background-position: -295px 0
+    background-position: -430px 0
 }
 
 .qiandao-list li.date2 {
-    background-position: -353px 0
+    background-position: -516px 0
 }
 
 .qiandao-list li.date3 {
-    background-position: 0 -59px
+    background-position: 0 -86px
 }
 
 .qiandao-list li.date4 {
-    background-position: -60px -59px
+    background-position: -86px -86px
 }
 
 .qiandao-list li.date5 {
-    background-position: -118px -59px
+    background-position: -172px -86px
 }
 
 .qiandao-list li.date6 {
-    background-position: -176px -59px
+    background-position: -258px -86px
 }
 
 .qiandao-list li.date7 {
-    background-position: -236px -59px
+    background-position: -344px -86px
 }
 
 .qiandao-list li.date8 {
-    background-position: -295px -59px
+    background-position: -430px -86px
 }
 
 .qiandao-list li.date9 {
-    background-position: -353px -59px
+    background-position: -516px -86px
 }
 
 .qiandao-list li.date10 {
-    background-position: 0 -118px
+    background-position: 0 -172px
 }
 
 .qiandao-list li.date11 {
-    background-position: -60px -118px
+    background-position: -86px -172px
 }
 
 .qiandao-list li.date12 {
-    background-position: -118px -118px
+    background-position: -172px -172px
 }
 
 .qiandao-list li.date13 {
-    background-position: -176px -118px
+    background-position: -258px -172px
 }
 
 .qiandao-list li.date14 {
-    background-position: -236px -118px
+    background-position: -344px -172px
 }
 
 .qiandao-list li.date15 {
-    background-position: -295px -118px
+    background-position: -430px -172px
 }
 
 .qiandao-list li.date16 {
-    background-position: -353px -118px
+    background-position: -516px -172px
 }
 
 .qiandao-list li.date17 {
-    background-position: 0 -177px
+    background-position: 0 -258px
 }
 
 .qiandao-list li.date18 {
-    background-position: -60px -177px
+    background-position: -86px -258px
 }
 
 .qiandao-list li.date19 {
-    background-position: -118px -177px
+    background-position: -172px -258px
 }
 
 .qiandao-list li.date20 {
-    background-position: -176px -177px
+    background-position: -258px -258px
 }
 
 .qiandao-list li.date21 {
-    background-position: -236px -177px
+    background-position: -344px -258px
 }
 
 .qiandao-list li.date22 {
-    background-position: -295px -177px
+    background-position: -430px -258px
 }
 
 .qiandao-list li.date23 {
-    background-position: -353px -177px
+    background-position: -516px -258px
 }
 
 .qiandao-list li.date24 {
-    background-position: 0 -236px
+    background-position: 0 -344px
 }
 
 .qiandao-list li.date25 {
-    background-position: -60px -236px
+    background-position: -86px -344px
 }
 
 .qiandao-list li.date26 {
-    background-position: -118px -236px
+    background-position: -172px -344px
 }
 
 .qiandao-list li.date27 {
-    background-position: -176px -236px
+    background-position: -258px -344px
 }
 
 .qiandao-list li.date28 {
-    background-position: -236px -236px
+    background-position: -344px -344px
 }
 
 .qiandao-list li.date29 {
-    background-position: -295px -236px
+    background-position: -430px -344px
 }
 
 .qiandao-list li.date30 {
-    background-position: -353px -236px
+    background-position: -516px -344px
 }
 
 .qiandao-list li.date31 {
-    background-position: 0 -295px
+    background-position: 0 -430px
 }
 
 .qiandao-list li .qiandao-icon {
@@ -302,8 +299,8 @@ img {
     left: 0;
     z-index: 2;
     display: none;
-    width: 58px;
-    height: 58px;
+    width: 85px;
+    height: 85px;
     background: url(../images/checkin/qiandao_icon.png) no-repeat center center
 }
 

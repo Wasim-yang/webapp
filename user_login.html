@@ -10,7 +10,7 @@
     <title>用户登录界面</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="lib/bootstrap/css/bootstrap.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
     <link href="css/signin.css" rel="stylesheet">
@@ -29,8 +29,7 @@
                 success: function (data) {
                     if (data.code == 200) {
                         window.location.href = "user_index.html"
-                    }
-                    else{
+                    } else {
                         alert("登录失败，请检查账号或密码是否正确！")
                     }
                 },
@@ -39,16 +38,21 @@
                 }
             });
         }
+
         function user_register() {
             let id = document.getElementById("inputId").value
             let password = document.getElementById("inputPassword").value
-            request("http://127.0.0.1:8080/usr/register", `id=${id}&password=${password}`, res => {
-                alert(res.message);
-                if(res.code == 200)
-                    document.getElementById("inputReset").click()
-                else
-                    document.getElementById("inputId").focus()
-            })
+            if (id == "" || password == "") {
+                alert("请输入用户名和密码")
+            } else {
+                request("http://127.0.0.1:8080/usr/register", `id=${id}&password=${password}`, res => {
+                    alert(res.message);
+                    if (res.code == 200)
+                        document.getElementById("inputReset").click()
+                    else
+                        document.getElementById("inputId").focus()
+                })
+            }
         }
     </script>
 </head>
@@ -93,7 +97,8 @@
                     <a href="#" class="" style="padding-left: 85px;"><u>忘记账号/密码？</u></a>
                 </label>
             </div>
-            <button class="btn btn-lg btn-primary btn-block" type="button" onclick="user_login()">登&nbsp;&nbsp;录</button>
+            <button class="btn btn-lg btn-primary btn-block" type="button" onclick="user_login()">登&nbsp;&nbsp;录
+            </button>
             <button class="btn btn-lg btn-primary btn-block" type="button"
                     onclick="changeLoginToRegistered();">注&nbsp;&nbsp;册
             </button>
@@ -117,9 +122,11 @@
                    name="Password" placeholder="*密码" required>
 
             <button class="btn btn-lg btn-primary btn-block" type="button"
-                    style="margin-top: 50px" onclick="user_register();">注&nbsp;&nbsp;册</button>
+                    style="margin-top: 50px" onclick="user_register();">注&nbsp;&nbsp;册
+            </button>
             <button class="btn btn-lg btn-primary btn-block" type="button"
-                    onclick="changeRegisteredToLogin();">返&nbsp;&nbsp;回</button>
+                    onclick="changeRegisteredToLogin();">返&nbsp;&nbsp;回
+            </button>
             <button type="reset" id="inputReset" style="display: none;"></button>
         </form>
     </div> <!-- /container -->
