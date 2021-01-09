@@ -58,7 +58,7 @@
                     exbutton.setAttribute("cid", couponList[i].cid)
                     exbutton.setAttribute("cname", couponList[i].cname)
                     exbutton.setAttribute("cdiscount", couponList[i].cdiscount)
-                    exbutton.setAttribute("cexpoints", couponList[i].cexpoints)
+                    exbutton.setAttribute("cexpoints", couponList[i].cexpoint)
                     exbutton.setAttribute("cdescription", couponList[i].cdescription)
                     exbutton.setAttribute("ctime", ctime)
                     exbutton.onclick = function () {
@@ -72,7 +72,7 @@
                     }
                     cell1.appendChild(document.createTextNode(couponList[i].cname))
                     cell2.appendChild(document.createTextNode(couponList[i].cdiscount))
-                    cell3.appendChild(document.createTextNode(couponList[i].cexpoints))
+                    cell3.appendChild(document.createTextNode(couponList[i].cexpoint))
                     cell4.appendChild(document.createTextNode("7天"))
                     cell5.appendChild(exbutton)
                     row.appendChild(cell1)
@@ -127,7 +127,7 @@
         //                 exbutton.setAttribute("cid",couponList[i].cid)
         //                 exbutton.setAttribute("cname",couponList[i].cname)
         //                 exbutton.setAttribute("cdiscount",couponList[i].cdiscount)
-        //                 exbutton.setAttribute("cexpoints",couponList[i].cexpoints)
+        //                 exbutton.setAttribute("cexpoints",couponList[i].cexpoint)
         //                 exbutton.setAttribute("cdescription",couponList[i].cdescription)
         //                 exbutton.setAttribute("ctime",ctime)
         //                 exbutton.onclick = function () {
@@ -141,7 +141,7 @@
         //                 }
         //                 cell1.appendChild(document.createTextNode(couponList[i].cname))
         //                 cell2.appendChild(document.createTextNode(couponList[i].cdiscount))
-        //                 cell3.appendChild(document.createTextNode(couponList[i].cexpoints))
+        //                 cell3.appendChild(document.createTextNode(couponList[i].cexpoint))
         //                 cell4.appendChild(document.createTextNode("7天"))
         //                 cell5.appendChild(exbutton)
         //                 row.appendChild(cell1)
