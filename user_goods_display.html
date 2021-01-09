@@ -55,7 +55,7 @@
             })
             request("http://127.0.0.1:8080/usr/selectNoPid",`id=${uid}`,res=>{
                 let address=document.getElementById("usr_address")
-                if(res.uaddress==null){
+                if(res.uaddress==null||res.uaddress==""){
                     address.append(document.createTextNode("您还没有设置地址哦 去设置!"))
                 }
                 else{
@@ -152,7 +152,9 @@
             })
             request("http://127.0.0.1:8080/usr/goods/buy", `uid=${uid}&gid=${gid}&cid=${cid}&number=${buy_number}`, res => {
                 alert(res.message)
-                window.location.href="user_info_goods.html"
+                if(res.code==200){
+                    window.location="user_info_goods.html"
+                }
             })
         }
 
@@ -211,7 +213,7 @@
         </div>
         <div class="goods_des3_1" style="color: silver">
             <div id="usr_address" style="float: left">
-                <a style="color: silver;float: right" href="user_address.html">
+                <a style="color: silver;float: right" href="user_info_address.html">
                     <li class="glyphicon glyphicon-chevron-right">
                     </li>
                 </a>
