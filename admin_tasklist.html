@@ -30,6 +30,7 @@
         let totalPage = 1
         let PageSize
         let totalRecord = 0
+
         /*查询并生成表单*/
         function selecttask() {
             request("http://127.0.0.1:8080/admin/task/selectByPage", `currentPage=${currentPage}`, res => {
@@ -68,8 +69,8 @@
                     let ttype = task[i].ttype
                     let t = task[i].tdeadline
                     let s = task[i].tstartime
-                    let tstartime = s.substring(0,16).replace(/-/g,"/")
-                    let tdeadline = t.substring(0,16).replace(/-/g,"/")
+                    let tstartime = s.substring(0, 16).replace(/-/g, "/")
+                    let tdeadline = t.substring(0, 16).replace(/-/g, "/")
                     let bicycle = document.createElement("i")
                     let subway = document.createElement("i")
                     let bus = document.createElement("i")
@@ -176,7 +177,7 @@
 
         function tasksearch() {
             let id = document.getElementById("searchid").value;
-            if(id == "") {
+            if (id == "") {
                 selecttask();
                 return;
             }
@@ -229,7 +230,7 @@
                 seebutton.setAttribute("award", task.taward)
                 seebutton.setAttribute("type", ttype)
                 seebutton.setAttribute("deadline", task.tdeadline)
-                seebutton.setAttribute("startime",task.tstartime)
+                seebutton.setAttribute("startime", task.tstartime)
                 //为删除按钮添加tid
                 deletebutton.setAttribute("id", task.tid)
                 /*查看按钮-在拟态框中显示详细数据*/
@@ -237,7 +238,7 @@
                     document.getElementById("modaltaskid").value = seebutton.getAttribute("id")
                     document.getElementById("modaltaskname").value = seebutton.getAttribute("name")
                     document.getElementById("modaltaskdescription").value = seebutton.getAttribute("description")
-                    document.getElementById("modaltaskrequirement").value = seebutton.getAttribute("requirement")
+                    document.getElementById("modaltaskrequirement").value = sexebutton.getAttribute("requirement")
                     document.getElementById("modaltaskaward").value = seebutton.getAttribute("award")
                     document.getElementById("modaltasktype").value = seebutton.getAttribute("type")
                     document.getElementById("modaltaskstartime").value = seebutton.getAttribute("startime")
@@ -257,7 +258,7 @@
                 cell2.appendChild(document.createTextNode(ttype))
                 cell3.appendChild(document.createTextNode(task.tname))
                 cell4.appendChild(document.createTextNode(task.trequirement))
-                cell5.appendChild(document.getElementById(task.tstartime))
+                cell5.appendChild(document.createTextNode(task.tstartime))
                 cell6.appendChild(document.createTextNode(task.tdeadline))
                 cell7.appendChild(document.createTextNode(task.taward))
                 cell8.appendChild(seebutton)
@@ -523,7 +524,7 @@
     $('#modaltaskstartime').datetimepicker({
         forceParse: 0,//设置为0，时间不会跳转1899，会显示当前时间
         language: 'zh-CN',
-        startdate: new Date(),
+        startDate: new Date(),
         format: 'yyyy/mm/dd hh:ii',
         minView: 0,
         initialDate: new Date(),
@@ -532,12 +533,14 @@
         todayHighlight: true
 
     });
+
+
     $("#taskSt").datetimepicker("setDate", new Date());
     /*日历*/
     $('#modaltaskdeadline').datetimepicker({
         forceParse: 0,//设置为0，时间不会跳转1899，会显示当前时间
         language: 'zh-CN',
-        startdate: new Date(),
+        startDate: new Date(),
         format: 'yyyy/mm/dd hh:ii',
         minView: 0,
         initialDate: new Date(),

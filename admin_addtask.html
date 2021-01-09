@@ -32,11 +32,25 @@
             let descp = document.getElementById("taskDescription").value
             let tstartime = document.getElementById("taskSt").value
             let deadline = document.getElementById("taskDl").value
-            // 前后端分离
-            request("http://127.0.0.1:8080/admin/task/insert",
-                `tname=${name}&tdescription=${descp}&trequirement=${require}&taward=${award}&ttype=${type}&tstartime=${tstartime}&tdeadline=${deadline}`, res => {
-                    alert(res.message)
-                })
+            if (name == "") {
+                alert("任务名称不能为空")
+            } else if (name.length >= 20) {
+                alert("任务名称长度不能大于0")
+            } else if (type == "请选择任务类型") {
+                alert("请选择任务类型")
+            } else if (require == "") {
+                alert("请输入目标里程")
+            } else if (deadline < tstartime) {
+                alert("截止时间需大于开始时间")
+            } else if (award == "") {
+                alert("请输入任务奖励")
+            } else {
+                // 前后端分离
+                request("http://127.0.0.1:8080/admin/task/insert",
+                    `tname=${name}&tdescription=${descp}&trequirement=${require}&taward=${award}&ttype=${type}&tstartime=${tstartime}&tdeadline=${deadline}`, res => {
+                        alert(res.message)
+                    })
+            }
         }
     </script>
 </head>
@@ -216,19 +230,23 @@
                                     <label>开始时间&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
                                     <input class="form-control" type="text" name="taskstartime" id="taskSt"
                                            placeholder="请输入任务开始时间">
-                                    <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
-                                    <span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>
+                                    <span class="input-group-addon"><span
+                                            class="glyphicon glyphicon-remove"></span></span>
+                                    <span class="input-group-addon"><span
+                                            class="glyphicon glyphicon-time"></span></span>
                                 </div>
                             </div>
                             <div class="form-inline">
                                 <div class="form-group">
                                     <span class="fa fa-star-o">&nbsp;&nbsp;&nbsp;</span>
                                     <label>截止时间&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-                                        <input class="form-control" type="text" name="taskdeadline" id="taskDl"
-                                               placeholder="请输入任务截止时间">
-                                    <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
-                                    <span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>
-                                    </div>
+                                    <input class="form-control" type="text" name="taskdeadline" id="taskDl"
+                                           placeholder="请输入任务截止时间" value="1" onclick="setTaskDl();">
+                                    <span class="input-group-addon"><span
+                                            class="glyphicon glyphicon-remove"></span></span>
+                                    <span class="input-group-addon"><span
+                                            class="glyphicon glyphicon-time"></span></span>
+                                </div>
                             </div>
                             <div class="form-inline">
                                 <div class="form-group">
@@ -261,7 +279,7 @@
     $('#taskSt').datetimepicker({
         forceParse: 0,
         language: 'zh-CN',
-        startdate: new Date(),
+        startDate: new Date(),
         format: 'yyyy/mm/dd hh:ii',
         minView: 0,
         initialDate: new Date(),
@@ -274,7 +292,7 @@
     $('#taskDl').datetimepicker({
         forceParse: 0,
         language: 'zh-CN',
-        startdate: new Date(),
+        startDate: new Date(),
         format: 'yyyy/mm/dd hh:ii',
         minView: 0,
         initialDate: new Date(),
@@ -282,6 +300,7 @@
         todayBtn: true,
         todayHighlight: true
     });
+
     $("#taskDl").datetimepicker("setDate", new Date());  //设置显示默认当天的时间
 </script>
 </body>
