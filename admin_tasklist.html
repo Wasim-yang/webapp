@@ -165,14 +165,29 @@
             }
             let require = document.getElementById("modaltaskrequirement").value;
             let award = document.getElementById("modaltaskaward").value;
+            let tstartime = document.getElementById("modaltaskstartime").value;
             let descp = document.getElementById("modaltaskdescription").value;
             let deadline = document.getElementById("modaltaskdeadline").value;
-            request("http://127.0.0.1:8080/admin/task/update", `tid=${id}&tname=${name}&tdescription=${descp}&trequirement=${require}&taward=${award}&ttype=${type}&tdeadline=${deadline}`, res => {
-                alert(res.message)
-                admin_deleteTable()
-                selecttask()
-                document.getElementById('taskmodal').style.display = 'none'
-            })
+            if (name == "") {
+                alert("任务名称不能为空")
+            } else if (name.length >= 20) {
+                alert("任务名称长度不能大于0")
+            } else if (type == "请选择任务类型") {
+                alert("请选择任务类型")
+            } else if (require == "") {
+                alert("请输入目标里程")
+            } else if (deadline < tstartime) {
+                alert("截止时间需大于开始时间")
+            } else if (award == "") {
+                alert("请输入任务奖励")
+            } else {
+                request("http://127.0.0.1:8080/admin/task/update", `tid=${id}&tname=${name}&tdescription=${descp}&trequirement=${require}&taward=${award}&ttype=${type}&tdeadline=${deadline}`, res => {
+                    alert(res.message)
+                    admin_deleteTable()
+                    selecttask()
+                    document.getElementById('taskmodal').style.display = 'none'
+                })
+            }
         }
 
         function tasksearch() {
@@ -353,7 +368,8 @@
     <ul class="app-menu">
         <!--个人信息-->
         <li onclick="ulControl_1();" id="father_adminControl_1">
-            <a class="app-menu__item" href="#"><i class="app-menu__icon fa fa-address-card"></i><span class="app-menu__label">&nbsp;&nbsp;账号管理</span>
+            <a class="app-menu__item" href="#"><i class="app-menu__icon fa fa-address-card"></i><span
+                    class="app-menu__label">&nbsp;&nbsp;账号管理</span>
                 <i id="span1" class="app-menu__icon fa fa-angle-up"></i></span></a>
         </li>
         <ul id="adminControl_1" style="display:none">
@@ -363,7 +379,8 @@
         </ul>
         <!--任务管理-->
         <li onclick="ulControl_2();" id="father_adminControl_2">
-            <a class="app-menu__item" href="#"><i class="app-menu__icon fa fa-calendar-check-o"></i><span class="app-menu__label">&nbsp;&nbsp;任务管理</span>
+            <a class="app-menu__item" href="#"><i class="app-menu__icon fa fa-calendar-check-o"></i><span
+                    class="app-menu__label">&nbsp;&nbsp;任务管理</span>
                 <i id="span2" class="app-menu__icon fa fa-angle-down"></i></span></a>
         </li>
         <ul id="adminControl_2" style="">
@@ -381,7 +398,8 @@
         </ul>
         <!--商品管理-->
         <li onclick="ulControl_4();" id="father_adminControl_4">
-            <a class="app-menu__item" href="#"><i class="app-menu__icon fa fa-shopping-cart"></i><span class="app-menu__label">&nbsp;&nbsp;商品管理</span>
+            <a class="app-menu__item" href="#"><i class="app-menu__icon fa fa-shopping-cart"></i><span
+                    class="app-menu__label">&nbsp;&nbsp;商品管理</span>
                 <i id="span4" class="app-menu__icon fa fa-angle-up"></i></span></a>
         </li>
         <ul id="adminControl_4" style="display:none">
