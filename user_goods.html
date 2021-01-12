@@ -70,7 +70,7 @@
                     scroll().top > 0 ? show(gotop) : hide(gotop);
                     leader = scroll().top;
                     //监听事件内容
-                    if (getScrollHeight() <= getWindowHeight() + getDocumentTop() + 0.5) {
+                    if (getScrollHeight() <= getWindowHeight() + getDocumentTop() + 0.8) {
                         //当滚动条到底时,这里是触发内容
                         //异步请求数据,局部刷新dom
                         ajax_function()

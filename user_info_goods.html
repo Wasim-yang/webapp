@@ -103,7 +103,7 @@
                     myimg.appendChild(img)
                     let mycost = document.createElement("div")
                     mycost.append("实付款￥")
-                    mycost.append(document.createTextNode(goodslist[i].ugcost))
+                    mycost.append(document.createTextNode(goodslist[i].ugcost.toFixed(2)))
                     myimg.appendChild(mycost)
                     goods_display.appendChild(myimg)
                     let menu = document.createElement("div")

@@ -27,6 +27,7 @@
             $(document).ajaxStop(function(){
                 request("http://127.0.0.1:8080/business/selectMoney", `bid=${bid}`, res => {
                     money = res;
+                    money=money.toFixed(2)
                     pushId();
                 })
             });
