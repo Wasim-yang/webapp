@@ -72,7 +72,7 @@
 
         /*查询并生成表单*/
         function selecttask() {
-            request("http://127.0.0.1:8080/usr/task/selectByPageUser", `currentPage=${currentPage}`, res => {
+            request("http://127.0.0.1:8080/usr/task/selectByPageUser", `currentPage=${currentPage}&uid=${uid}`, res => {
                 currentPage = res.currentPage
                 totalPage = res.totalPage
                 PageSize = res.pageSize
