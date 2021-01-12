@@ -35,16 +35,23 @@
             if (name == "") {
                 alert("任务名称不能为空")
             } else if (name.length >= 20) {
-                alert("任务名称长度不能大于0")
+                alert("任务名称长度不能大于20")
             } else if (type == "请选择任务类型") {
                 alert("请选择任务类型")
             } else if (require == "") {
                 alert("请输入目标里程")
+            } else if(require <= 0){
+                alert("目标里程必须大于零！")
             } else if (deadline < tstartime) {
                 alert("截止时间需大于开始时间")
             } else if (award == "") {
                 alert("请输入任务奖励")
-            } else {
+            } else if(award < 0){
+                alert("任务奖励不符规范！")
+            } else if(descp.length > 100){
+                alert("任务描述过长！")
+            }
+            else {
                 // 前后端分离
                 request("http://127.0.0.1:8080/admin/task/insert",
                     `tname=${name}&tdescription=${descp}&trequirement=${require}&taward=${award}&ttype=${type}&tstartime=${tstartime}&tdeadline=${deadline}`, res => {
@@ -221,7 +228,8 @@
                                     <span class="fa fa-star-o">&nbsp;&nbsp;&nbsp;</span>
                                     <label>目标里程&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
                                     <input class="form-control" type="text" name="taskrequire" id="taskRequire"
-                                           placeholder="请输入完成任务所需里程" required>
+                                           placeholder="请输入完成任务所需里程"
+                                           onkeyup="this.value=this.value.replace(/[^\d.]/g,'')" required>
                                 </div>
                             </div>
                             <div class="form-inline">
@@ -253,7 +261,8 @@
                                     <span class="fa fa-star-o">&nbsp;&nbsp;&nbsp;</span>
                                     <label>奖励积分&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
                                     <input class="form-control" type="text" name="taskaward" id="taskAward"
-                                           placeholder="请输入任务奖励碳积分数" required>
+                                           placeholder="请输入任务奖励碳积分数"
+                                           oninput="value=value.replace(/[^\d]/g,'')" required>
                                 </div>
                             </div>
                         </div>

@@ -27,9 +27,21 @@
             let description = document.getElementById("couponsDescription").value
 
             if(name==""){alert("您还没有输入优惠券名称！")}
+            else if(name.length >= 20){
+                alert("优惠券名过长！")
+            }
             else if(discount==""){alert("您还没有输入优惠券折扣度！")}
+            else if(discount <= 0 || discount > 1){
+                alert("优惠券折扣度不符合规范！请确保它在0~1之间")
+            }
             else if(expoints==""){alert("您还没有输入优惠券兑换积分！")}
+            else if(expoints < 0){
+                alert("兑换积分必须大于或等于0")
+            }
             else if(description==""){alert("您还没有输入优惠券描述！")}
+            else if(description.length >= 100){
+                alert("描述过长！")
+            }
 
             else {
                 request("http://127.0.0.1:8080/admin/coupon/insert",
@@ -209,7 +221,7 @@
                                         <input class="form-control" type="text" name="couponsexpoints"
                                                id="couponsExpoints"
                                                placeholder="请输入兑换积分"
-                                               onkeyup="this.value=this.value.replace(/[^\d.]/g,'')"
+                                               oninput="value=value.replace(/[^\d]/g,'')"
                                                required>
                                     </div>
                                 </div>

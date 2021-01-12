@@ -36,6 +36,15 @@
             else if(wname!=""&&wdescription==""&&wtotal==""){alert("您还没有输入公益项目启动条件和描述！")}
             else if(wname==""&&wdescription!=""&&wtotal==""){alert("您还没有输入公益项目名称和启动条件！")}
             else if(wname==""&&wdescription==""&&wtotal!=""){alert("您还没有输入公益项目名称和描述！")}
+            else if(wtotal <= 0){
+                alert("项目启动积分必须大于零！")
+            }
+            else if(wname.length > 20){
+                alert("公益名过长！")
+            }
+            else if(wname.length > 100){
+                alert("公益描述过长！")
+            }
             else{
                 request("http://127.0.0.1:8080/admin/welfare/insert",
                     `wname=${wname}&wdescription=${wdescription}&wtotal=${wtotal}`, res => {
@@ -196,7 +205,9 @@
                                 <div class="form-group">
                                     <span class="fa fa-star-o">&nbsp;&nbsp;&nbsp;</span>
                                     <label>启动条件</label>&nbsp;&nbsp;
-                                    <input class="form-control" type="text" id="welfareTotal" name="name" placeholder="请输入启动条件" required>
+                                    <input class="form-control" type="text" id="welfareTotal" name="name"
+                                           placeholder="执行该项目所需碳积分总量"
+                                           oninput="value=value.replace(/[^\d]/g,'')" required>
                                 </div>
                             </div>
                         </div>
