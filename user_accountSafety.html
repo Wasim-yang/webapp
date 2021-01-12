@@ -14,6 +14,7 @@
     <link rel="stylesheet" type="text/css" href="css/infor/mui.min.css"/>
     <link rel="stylesheet" type="text/css" href="css/infor/loaders.min.css"/>
     <link rel="stylesheet" type="text/css" href="css/iconfont/iconfont.css"/>
+    <link rel="stylesheet" type="text/css" href="css/sweet-alert.css"/>
     <script src="js/request.js"></script>
 </head>
 <body>
@@ -68,7 +69,8 @@
             <li>
                 <a class=".just-cancel" onclick="cancel()">
                     <p>注销账号</p>
-                    <em><em style="color:red;font-size: 0.35rem">注销后无法恢复，请谨慎操作!</em>&nbsp;&nbsp;<i class="iconfont icon-jiantou1"></i></em>
+                    <em><em style="color:red;font-size: 0.35rem">注销后无法恢复，请谨慎操作!</em>&nbsp;&nbsp;<i
+                            class="iconfont icon-jiantou1"></i></em>
                 </a>
             </li>
         </ul>
@@ -83,6 +85,7 @@
 <!-- <link rel="stylesheet" href="css/infor/swiper.min.css">
 <script src="js/user/infor/swiper.jquery.min.js"></script> -->
 </body>
+<script src="js/sweetalert.js"></script>
 <script type="text/javascript">
     let uid;
     window.onload = function () {
@@ -91,6 +94,7 @@
             myonload();
         });
     }
+
     function myonload() {
         request("http://127.0.0.1:8080/usr/selectAll", `uid=${uid}`, user => {
             $(".just-count").html(user.uid)
@@ -99,15 +103,41 @@
             $(".just-age").html(user.uge)
         })
     }
+
     function cancel() {
-        if(confirm("注销后无法恢复，您确定要注销吗?") == true){
-            request("http://127.0.0.1:8080/usr/deleteUsr", `uid=${uid}`, res => {
-                alert(res.message)
-                if (res.code == "200"){
-                    usr_delete()
+        swal({
+
+                title: "您确定要注销吗?",
+
+                text: "下列将无法恢复：已充值财产结算、碳积分清零、卡券清空",
+
+                type: "warning",
+
+                showCancelButton: true,
+
+                confirmButtonColor: "#DD6B55",
+
+                confirmButtonText: "确定",
+
+                cancelButtonText: "返回",
+
+                closeOnConfirm: false
+
+            },
+
+            function (isConfirm) {
+                if (isConfirm) {
+                    request("http://127.0.0.1:8080/usr/deleteUsr", `uid=${uid}`, res => {
+                        if (res.code == "200") {
+                            swal("注销成功!", "您的账户已成功注销,期待与您的再次相遇", "success");
+                            usr_delete()
+                        } else {
+                            swal("注销失败！", "请您稍后重试", "error");
+                        }
+                    })
                 }
-            })
-        }
+
+            });
     }
 </script>
 </html>

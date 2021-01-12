@@ -14,6 +14,7 @@
     <link rel="stylesheet" type="text/css" href="css/infor/mui.min.css"/>
     <link rel="stylesheet" type="text/css" href="css/infor/loaders.min.css"/>
     <link rel="stylesheet" type="text/css" href="css/iconfont/iconfont.css"/>
+    <link rel="stylesheet" type="text/css" href="css/sweet-alert.css"/>
 </head>
 <body>
 <!--header star-->
@@ -40,17 +41,17 @@
 <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
 <script src="js/user/infor/mui.min.js"></script>
 <script type="text/javascript" src="js/user/infor/hmt.js"></script>
-<script src="iconfont/iconfont.js"></script>
 <!--插件-->
 <!-- <link rel="stylesheet" href="css/infor/swiper.min.css">
 <script src="js/user/infor/swiper.jquery.min.js"></script> -->
 </body>
 <script src="js/request.js"></script>
+<script src="js/sweetalert.js"></script>
 <script type="text/javascript">
     let uid;
     window.onload = function () {
         usr_authorization();
-        $(document).ajaxStop(function(){
+        $(document).ajaxStop(function () {
             myonload();
         });
     }
@@ -63,10 +64,21 @@
 
     function updateAge() {
         uage = $("#age").val();
-        request("http://127.0.0.1:8080/usr/info/updateAge", `uid=${uid}&uage=${uage}`, res => {
-            alert(res.message)
-            window.location.href="javascript:history.go(-1)";
-        })
+        if (uage >= 100 || uage <= 0 || uage == "") {
+            swal("输入不合法！", "请重试")
+        } else {
+            request("http://127.0.0.1:8080/usr/info/updateAge", `uid=${uid}&uage=${uage}`, res => {
+                if (res.code == 200) {
+                    swal(res.message, "", "success")
+                    $(".confirm").on("click", function () {
+                        window.location.href = "javascript:history.go(-1)";
+                    })
+                } else {
+                    swal("修改失败！", "请重试", "error")
+                }
+            })
+        }
+
     }
 </script>
 </html>

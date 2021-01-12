@@ -14,6 +14,7 @@
     <link rel="stylesheet" type="text/css" href="css/infor/mui.min.css"/>
     <link rel="stylesheet" type="text/css" href="css/infor/loaders.min.css"/>
     <link rel="stylesheet" type="text/css" href="css/iconfont/iconfont.css"/>
+    <link rel="stylesheet" type="text/css" href="css/sweet-alert.css"/>
 </head>
 <body>
 <!--header star-->
@@ -49,6 +50,7 @@
 <script src="js/user/infor/swiper.jquery.min.js"></script> -->
 </body>
 <script src="js/request.js"></script>
+<script src="js/sweetalert.js"></script>
 <script type="text/javascript">
     let uid;
     window.onload = function () {
@@ -71,8 +73,14 @@
     function updateName() {
         usex = $("#sex").val();
         request("http://127.0.0.1:8080/usr/info/updateSex", `uid=${uid}&usex=${usex}`, res => {
-            alert(res.message)
-            window.location.href="javascript:history.go(-1)";
+            if (res.code == 200) {
+                swal("修改成功!", "", "success")
+                $(".confirm").on("click", function () {
+                    window.location.href = "javascript:history.go(-1)";
+                })
+            } else {
+                swal("修改失败！", "请重试", "error")
+            }
         })
     }
 </script>
