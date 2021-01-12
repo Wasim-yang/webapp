@@ -76,20 +76,20 @@
                     let bus = document.createElement("i")
                     let h_s = document.createElement("i")
                     /*将类型转换为对应中午*/
-                    switch (ttype) {
-                        case 1:
-                            ttype = "自行车"
-                            break;
-                        case 2:
-                            ttype = "公交车"
-                            break;
-                        case 3:
-                            ttype = "地铁"
-                            break;
-                        case 4:
-                            ttype = "高铁"
-                            break;
-                    }
+                    // switch (ttype) {
+                    //     case 1:
+                    //         ttype = "自行车"
+                    //         break;
+                    //     case 2:
+                    //         ttype = "公交车"
+                    //         break;
+                    //     case 3:
+                    //         ttype = "地铁"
+                    //         break;
+                    //     case 4:
+                    //         ttype = "高铁"
+                    //         break;
+                    // }
                     /*为查看按钮提前注入数据*/
                     seebutton.setAttribute("id", task[i].tid)
                     seebutton.setAttribute("name", task[i].tname)
@@ -149,20 +149,20 @@
             let id = document.getElementById("modaltaskid").value;
             let name = document.getElementById("modaltaskname").value;
             let type = document.getElementById("modaltasktype").value;
-            switch (type) {
-                case "自行车":
-                    type = 1;
-                    break;
-                case "公交车":
-                    type = 2;
-                    break;
-                case "地铁":
-                    type = 3;
-                    break;
-                case "高铁":
-                    type = 4;
-                    break;
-            }
+            // switch (type) {
+            //     case "自行车":
+            //         type = 1;
+            //         break;
+            //     case "公交车":
+            //         type = 2;
+            //         break;
+            //     case "地铁":
+            //         type = 3;
+            //         break;
+            //     case "高铁":
+            //         type = 4;
+            //         break;
+            // }
             let require = document.getElementById("modaltaskrequirement").value;
             let award = document.getElementById("modaltaskaward").value;
             let tstartime = document.getElementById("modaltaskstartime").value;
@@ -223,20 +223,20 @@
                 let bus = document.createElement("i")
                 let h_s = document.createElement("i")
                 /*将类型转换为对应中午*/
-                switch (ttype) {
-                    case 1:
-                        ttype = "自行车"
-                        break;
-                    case 2:
-                        ttype = "公交车"
-                        break;
-                    case 3:
-                        ttype = "地铁"
-                        break;
-                    case 4:
-                        ttype = "高铁"
-                        break;
-                }
+                // switch (ttype) {
+                //     case 1:
+                //         ttype = "自行车"
+                //         break;
+                //     case 2:
+                //         ttype = "公交车"
+                //         break;
+                //     case 3:
+                //         ttype = "地铁"
+                //         break;
+                //     case 4:
+                //         ttype = "高铁"
+                //         break;
+                // }
                 /*为查看按钮提前注入数据*/
                 seebutton.setAttribute("id", task.tid)
                 seebutton.setAttribute("name", task.tname)
@@ -511,9 +511,19 @@
             <label><b>任务名称</b></label>
             <input type="text" id="modaltaskname" style=" width: 80%;" required><br>
 
-            <label><b>任务类型</b></label>
-            <input type="text" id="modaltasktype" style=" width: 80%;" required><br>
-
+<!--            <label><b>任务类型</b></label>-->
+<!--            <input type="text" id="modaltasktype" style=" width: 80%;" required><br>-->
+            <div class="form-inline">
+                <div class="form-group">
+                    <label><b>任务类型&nbsp;</b></label>
+                    <select class="form-control" name="updateTime" id="modaltasktype" required>
+                        <option value="1">自行车</option>
+                        <option value="2">公交车</option>
+                        <option value="3">地铁</option>
+                        <option value="4">高铁</option>
+                    </select>
+                </div>
+            </div>
             <label><b>目标里程</b></label>
             <input type="text" id="modaltaskrequirement" style=" width: 80%;" required><br>
 
