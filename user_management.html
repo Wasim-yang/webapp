@@ -14,6 +14,7 @@
     <link rel="stylesheet" type="text/css" href="css/infor/mui.min.css"/>
     <link rel="stylesheet" type="text/css" href="css/infor/loaders.min.css"/>
     <link rel="stylesheet" type="text/css" href="css/iconfont/iconfont.css"/>
+    <link rel="stylesheet" type="text/css" href="css/sweet-alert.css"/>
 </head>
 <body>
 <!--header star-->
@@ -31,7 +32,8 @@
         <div class="mui-tus">
             <div class="huiyuan-text">
                 <img src="images/infor/touxiang1.png"/>
-                <a class="content clearfloat just-name" style="font-size: 0.5rem; color: #fff;display: block;"
+                <a class="content clearfloat just-name"
+                   style="margin-top:0.5rem;font-size: 0.5rem; color: #fff;display: block;"
                    href="#">
                 </a>
 
@@ -258,6 +260,7 @@
 <script src="js/user/infor/swiper.jquery.min.js"></script> -->
 </body>
 <script src="js/request.js"></script>
+<script src="js/sweetalert.js"></script>
 <script type="text/javascript">
     let uid;
     window.onload = function () {
@@ -281,8 +284,10 @@
 
     function a() {
         request("http://127.0.0.1:8080/usr/topupMoney", `uid=${uid}`, res => {
-            alert(res.message)
-            window.location.reload()
+            swal(res.message, "¥ 1000", "success");
+            $(".confirm").on("click", function () {
+                window.location.reload()
+            })
         });
     }
 </script>
