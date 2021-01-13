@@ -48,7 +48,7 @@
                 swal("请输入用户名和密码")
             } else {
                 request("http://127.0.0.1:8080/usr/register", `id=${id}&password=${password}`, res => {
-                    swal(res.message);
+                    swal(res.message,"","success");
                     if (res.code == 200)
                         document.getElementById("inputReset").click()
                     else
