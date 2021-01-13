@@ -14,7 +14,9 @@
 
     <!-- Custom styles for this template -->
     <link href="css/signin.css" rel="stylesheet">
+    <link href="css/sweet-alert.css" rel="stylesheet">
     <script src="js/request.js"></script>
+    <script src="js/sweetalert.js"></script>
 
     <script>
         function user_login() {
@@ -30,11 +32,11 @@
                     if (data.code == 200) {
                         window.location.href = "user_index.html"
                     } else {
-                        alert("登录失败，请检查账号或密码是否正确！")
+                        swal("登录失败!","请检查账号或密码是否正确！","error")
                     }
                 },
                 error: function (data) {
-                    alert("failed")
+                    swal("failed")
                 }
             });
         }
@@ -43,10 +45,10 @@
             let id = document.getElementById("inputId").value
             let password = document.getElementById("inputPassword").value
             if (id == "" || password == "") {
-                alert("请输入用户名和密码")
+                swal("请输入用户名和密码")
             } else {
                 request("http://127.0.0.1:8080/usr/register", `id=${id}&password=${password}`, res => {
-                    alert(res.message);
+                    swal(res.message);
                     if (res.code == 200)
                         document.getElementById("inputReset").click()
                     else
